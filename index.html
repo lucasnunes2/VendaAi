@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>VendaAI — CRM Inteligente para Pequenos Negócios</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+    
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --bg2: #1a1a1a;
+            --bg3: #242424;
+            --border: #2e2e2e;
+            --text: #f0f0f0;
+            --text2: #a0a0a0;
+            --text3: #666;
+            --green: #1D9E75;
+            --green2: #0F6E56;
+            --green-bg: #0d2b22;
+            --radius: 8px;
+            --radius-lg: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Cabeçalho / Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 32px;
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--green);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .navbar nav a {
+            color: var(--text2);
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .navbar nav a:hover {
+            color: var(--green);
+        }
+
+        /* Container Centralizador */
+        .main-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        /* Card de Login */
+        .login-card {
+            background: var(--bg2);
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .login-header h2 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .login-header p {
+            color: var(--text2);
+            font-size: 14px;
+        }
+
+        /* Campos de Entrada (Inputs) */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text2);
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 12px;
+            color: var(--text3);
+            font-size: 18px;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 12px 12px 12px 42px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--bg3);
+            color: var(--text);
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: var(--green);
+        }
+
+        /* Botão Principal */
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: var(--radius);
+            background: var(--green);
+            color: var(--text);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-submit:hover {
+            background: var(--green2);
+        }
+
+        /* Links de Ação */
+        .login-actions {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .login-actions a {
+            color: var(--green);
+            text-decoration: none;
+        }
+
+        .login-actions a:hover {
+            text-decoration: underline;
+        }
+
+        .login-actions p {
+            margin-top: 12px;
+            color: var(--text2);
+        }
+
+        /* Rodapé */
+        .footer {
+            background: var(--bg2);
+            text-align: center;
+            padding: 16px;
+            font-size: 13px;
+            color: var(--text3);
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <i class="ti ti-chart-dots"></i> VendaAI
+        </div>
+        <nav>
+            <a href="#recursos">Recursos</a>
+            <a href="#precos">Preços</a>
+            <a href="#suporte">Suporte</a>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h2>Acesse sua conta</h2>
+                <p>Entre para gerenciar seus negócios</p>
+            </div>
+            
+            <form>
+                <div class="input-group">
+                    <label for="email">E-mail de acesso</label>
+                    <div class="input-wrapper">
+                        <i class="ti ti-mail"></i>
+                        <input type="email" id="email" placeholder="seu@email.com" required>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="password">Senha</label>
+                    <div class="input-wrapper">
+                        <i class="ti ti-lock"></i>
+                        <input type="password" id="password" placeholder="••••••••" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-submit">
+                    Entrar <i class="ti ti-arrow-right"></i>
+                </button>
+            </form>
+            
+            <div class="login-actions">
+                <a href="#">Esqueceu a senha?</a>
+                <p>Novo por aqui? <a href="#">Crie uma conta</a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 VendaAI — CRM Inteligente. Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+</html>
