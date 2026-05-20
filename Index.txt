@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>VendaAI — CRM Inteligente para Pequenos Negócios</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<style>
+:root{
+--bg:#0f0f0f;--bg2:#1a1a1a;--bg3:#242424;--border:#2e2e2e;
+--text:#f0f0f0;--text2:#a0a0a0;--text3:#666;
+--green:#1D9E75;--green2:#0F6E56;--green-bg:#0d2b22;--green-light:#E1F5EE;--green-text:#0F6E56;
+--amber:#EF9F27;--amber-bg:#FAEEDA;--amber-text:#854F0B;
+--red:#E24B4A;--red-bg:#FCEBEB;--red-text:#A32D2D;
+--radius:8px;--radius-lg:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',system-ui,sans-serif}
+body{background:var(--bg);color:var(--text);min-height:100vh}
+</style>
+</head>
+<body>
+<h1>VendaAI</h1>
+</body>
+</html>
