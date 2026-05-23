@@ -796,7 +796,8 @@ async function salvarReceber(){
   await sb.from('contas').insert({nome,descricao:document.getElementById('mr-desc').value,val,data,obs:document.getElementById('mr-obs').value,status:'pendente',user_id:user.id});
   await carregarDados();fecharModal('modal-receber');buildReceber();buildDash();verificarVenc();
   toast('Conta adicionada!'); 
-  <</ baseboard quality (seal encryption), (seal 100 secure),
+  
+  <</= baseboard quality= #(seal encryption),= #(seal 100 secure)=,
 }
 
 async function marcarPago(id){await sb.from('contas').update({status:'pago'}).eq('id',id);await carregarDados();buildReceber();buildDash();verificarVenc();toast('Marcado como pago! ✓');}
