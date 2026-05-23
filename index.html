@@ -3,289 +3,419 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="theme-color" content="#1D9E75"/>
+<meta name="theme-color" content="#2563EB"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-title" content="VendaAI"/>
-<meta name="description" content="Gestão inteligente para pequenos negócios"/>
 <title>VendaAI — Gestão Inteligente</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
 <style>
-:root{--bg:#0f0f0f;--bg2:#1a1a1a;--bg3:#242424;--border:#2e2e2e;--text:#f0f0f0;--text2:#a0a0a0;--text3:#666;--green:#1D9E75;--green2:#0F6E56;--green-bg:#0d2b22;--amber:#EF9F27;--red:#E24B4A;--radius:8px;--radius-lg:12px;}
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',system-ui,sans-serif}
+:root{
+  --primary:#2563EB;--primary-dark:#1D4ED8;--primary-light:#EFF6FF;--primary-mid:#DBEAFE;
+  --success:#059669;--success-light:#ECFDF5;--success-mid:#D1FAE5;
+  --warning:#D97706;--warning-light:#FFFBEB;
+  --danger:#DC2626;--danger-light:#FEF2F2;
+  --bg:#F8FAFC;--bg2:#FFFFFF;--bg3:#F1F5F9;
+  --border:#E2E8F0;--border2:#CBD5E1;
+  --text:#0F172A;--text2:#475569;--text3:#94A3B8;
+  --radius:10px;--radius-lg:14px;--radius-xl:18px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:0 4px 6px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.05);
+  --shadow-lg:0 10px 15px rgba(0,0,0,.08),0 4px 6px rgba(0,0,0,.04);
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',system-ui,-apple-system,sans-serif}
 body{background:var(--bg);color:var(--text);min-height:100vh}
-.auth-screen{display:flex;align-items:center;justify-content:center;min-height:100vh}
-.auth-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:36px;width:360px}
-.auth-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px;justify-content:center}
-.auth-logo-dot{width:10px;height:10px;border-radius:50%;background:var(--green)}
-.auth-logo-text{font-size:22px;font-weight:600}
-.auth-title{font-size:20px;font-weight:600;margin-bottom:6px;text-align:center}
-.auth-sub{font-size:13px;color:var(--text2);text-align:center;margin-bottom:24px}
-.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
-.fl{font-size:12px;color:var(--text2)}
-.fi{padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg3);color:var(--text);font-size:14px;width:100%}
-.fi:focus{outline:none;border-color:var(--green)}
-.btn-full{width:100%;background:var(--green);color:white;border:none;padding:11px;border-radius:var(--radius);font-size:14px;font-weight:500;cursor:pointer;margin-top:4px}
-.btn-full:hover{background:var(--green2)}
-.auth-switch{text-align:center;font-size:13px;color:var(--text2);margin-top:16px}
-.auth-switch a{color:var(--green);cursor:pointer}
-.auth-err{background:#2d1515;border:1px solid #5a2020;border-radius:var(--radius);padding:10px 12px;font-size:13px;color:#f87171;margin-bottom:14px;display:none}
-.loading-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;flex-direction:column;gap:12px}
-.loading-dot{width:40px;height:40px;border-radius:50%;border:3px solid var(--green-bg);border-top-color:var(--green);animation:spin 1s linear infinite}
+/* AUTH */
+.auth-wrap{min-height:100vh;display:flex}
+.auth-left{flex:1;background:linear-gradient(135deg,#1E3A8A 0%,#2563EB 50%,#0891B2 100%);display:flex;flex-direction:column;justify-content:center;padding:60px;position:relative;overflow:hidden}
+.auth-left::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;border-radius:50%;background:rgba(255,255,255,.05)}
+.auth-left::after{content:'';position:absolute;bottom:-80px;left:-80px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.05)}
+.auth-brand{display:flex;align-items:center;gap:12px;margin-bottom:48px;position:relative;z-index:1}
+.auth-brand-icon{width:44px;height:44px;background:rgba(255,255,255,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2)}
+.auth-brand-name{font-size:22px;font-weight:700;color:white}
+.auth-headline{font-size:36px;font-weight:700;color:white;line-height:1.2;margin-bottom:16px;position:relative;z-index:1}
+.auth-sub{font-size:16px;color:rgba(255,255,255,.75);line-height:1.6;position:relative;z-index:1;max-width:400px}
+.auth-features{margin-top:40px;display:flex;flex-direction:column;gap:14px;position:relative;z-index:1}
+.auth-feat{display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.85);font-size:14px}
+.auth-feat-icon{width:28px;height:28px;background:rgba(255,255,255,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.auth-right{width:480px;display:flex;align-items:center;justify-content:center;padding:40px;background:white}
+.auth-box{width:100%;max-width:380px}
+.auth-title{font-size:26px;font-weight:700;color:var(--text);margin-bottom:6px}
+.auth-desc{font-size:14px;color:var(--text2);margin-bottom:32px}
+.fg{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.fl{font-size:13px;font-weight:500;color:var(--text2)}
+.fi{padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--text);font-size:14px;width:100%;transition:border-color .2s}
+.fi:focus{outline:none;border-color:var(--primary);background:white;box-shadow:0 0 0 3px var(--primary-light)}
+.btn-full{width:100%;background:var(--primary);color:white;border:none;padding:12px;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer;margin-top:4px;transition:all .2s;letter-spacing:.2px}
+.btn-full:hover{background:var(--primary-dark);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.auth-switch{text-align:center;font-size:13px;color:var(--text3);margin-top:20px}
+.auth-switch a{color:var(--primary);cursor:pointer;font-weight:500}
+.auth-err{background:var(--danger-light);border:1px solid #FECACA;border-radius:var(--radius);padding:10px 14px;font-size:13px;color:var(--danger);margin-bottom:16px;display:none}
+/* LOADING */
+.loading-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;flex-direction:column;gap:14px;background:var(--bg)}
+.loading-ring{width:44px;height:44px;border-radius:50%;border:3px solid var(--primary-mid);border-top-color:var(--primary);animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.topbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
-.logo{font-size:17px;font-weight:600;display:flex;align-items:center;gap:8px}
-.logo-dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
-.nav{display:flex;gap:2px;overflow-x:auto}
-.tab{padding:6px 11px;border-radius:var(--radius);font-size:12px;cursor:pointer;border:none;background:none;color:var(--text2);display:flex;align-items:center;gap:4px;transition:all .15s;white-space:nowrap}
-.tab.active{background:var(--bg3);color:var(--text);font-weight:500}
-.tab:hover:not(.active){background:var(--bg3)}
-.user-menu{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.plan-badge{background:var(--green-bg);color:var(--green);border:1px solid var(--green2);border-radius:999px;padding:3px 10px;font-size:11px;font-weight:500;white-space:nowrap}
-.ub{width:32px;height:32px;border-radius:50%;background:var(--green-bg);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--green);cursor:pointer;border:1px solid var(--green2);flex-shrink:0}
-.content{padding:20px;max-width:1200px;margin:0 auto}
+/* APP LAYOUT */
+.app-wrap{display:flex;min-height:100vh}
+.sidebar{width:240px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:40}
+.sidebar-brand{padding:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sidebar-brand-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),#0891B2);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.sidebar-brand-name{font-size:17px;font-weight:700;color:var(--text)}
+.sidebar-nav{flex:1;padding:12px 10px;overflow-y:auto}
+.nav-section{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;padding:8px 10px 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius);cursor:pointer;color:var(--text2);font-size:13px;font-weight:500;transition:all .15s;border:none;background:none;width:100%;text-align:left;margin-bottom:2px}
+.nav-item:hover{background:var(--bg3);color:var(--text)}
+.nav-item.active{background:var(--primary-light);color:var(--primary);font-weight:600}
+.nav-item.active i{color:var(--primary)}
+.nav-item i{font-size:17px;color:var(--text3);transition:color .15s;width:20px}
+.sidebar-footer{padding:16px;border-top:1px solid var(--border)}
+.user-card{display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--radius);cursor:pointer;transition:all .15s}
+.user-card:hover{background:var(--bg3)}
+.user-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#0891B2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0}
+.user-info{flex:1;min-width:0}
+.user-name{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-plan{font-size:11px;color:var(--primary);font-weight:500}
+/* MAIN */
+.main{margin-left:240px;flex:1;min-height:100vh}
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:30}
+.page-title{font-size:17px;font-weight:700;color:var(--text)}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.badge-founder{background:linear-gradient(135deg,var(--primary),#0891B2);color:white;border-radius:999px;padding:4px 12px;font-size:11px;font-weight:600}
+.content{padding:28px}
 .sec{display:none}.sec.active{display:block}
-.stitle{font-size:20px;font-weight:600;margin-bottom:2px}
-.ssub{font-size:13px;color:var(--text2);margin-bottom:18px}
-.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.mcard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px}
-.mlabel{font-size:11px;color:var(--text2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px}
-.mval{font-size:24px;font-weight:600}
-.msub{font-size:11px;color:var(--text3);margin-top:3px}
-.mup{color:var(--green)}.mdn{color:var(--red)}
-.btn{background:var(--green);color:white;border:none;padding:8px 14px;border-radius:var(--radius);font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-weight:500}
-.btn:hover{background:var(--green2)}
-.bsec{background:none;border:1px solid var(--border);border-radius:var(--radius);padding:6px 11px;font-size:12px;color:var(--text2);cursor:pointer;display:inline-flex;align-items:center;gap:4px}
-.bsec:hover{background:var(--bg3)}
-.bwarn{background:none;border:1px solid var(--amber);border-radius:var(--radius);padding:6px 9px;font-size:12px;color:var(--amber);cursor:pointer;display:inline-flex;align-items:center;gap:3px}
-.bgreen{background:none;border:1px solid var(--green);border-radius:var(--radius);padding:6px 9px;font-size:12px;color:var(--green);cursor:pointer;display:inline-flex;align-items:center;gap:3px}
-.kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.kcol{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px;min-height:240px}
-.ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.ct{font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
-.cc{background:var(--bg3);border:1px solid var(--border);border-radius:999px;padding:1px 7px;font-size:10px;color:var(--text2)}
-.lcard{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:10px;margin-bottom:8px;transition:border-color .15s}
-.lcard:hover{border-color:#555}
-.lname{font-size:12px;font-weight:500;margin-bottom:2px}
-.lbiz{font-size:11px;color:var(--text2);margin-bottom:7px}
-.lfoot{display:flex;justify-content:space-between;align-items:center}
-.lval{font-size:11px;font-weight:600;color:var(--green)}
-.tbl{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
-.th-row{padding:9px 14px;background:var(--bg3);border-bottom:1px solid var(--border);display:grid}
-.th{font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.4px}
-.td-row{padding:11px 14px;border-bottom:1px solid var(--border);display:grid;align-items:center}
+/* CARDS */
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.mcard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow);transition:box-shadow .2s}
+.mcard:hover{box-shadow:var(--shadow-md)}
+.mcard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.mcard-label{font-size:12px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.5px}
+.mcard-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.mcard-val{font-size:26px;font-weight:700;color:var(--text)}
+.mcard-sub{font-size:12px;color:var(--text3);margin-top:4px;display:flex;align-items:center;gap:4px}
+.mcard-up{color:var(--success)}.mcard-dn{color:var(--danger)}
+/* BUTTONS */
+.btn{background:var(--primary);color:white;border:none;padding:9px 16px;border-radius:var(--radius);font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-weight:600;transition:all .2s;box-shadow:var(--shadow)}
+.btn:hover{background:var(--primary-dark);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.bsec{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:8px 14px;font-size:12px;color:var(--text2);cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-weight:500;transition:all .15s}
+.bsec:hover{border-color:var(--border2);background:var(--bg3)}
+.bwarn{background:var(--warning-light);border:1.5px solid #FCD34D;border-radius:var(--radius);padding:7px 12px;font-size:12px;color:var(--warning);cursor:pointer;display:inline-flex;align-items:center;gap:4px;font-weight:500}
+.bgreen{background:var(--success-light);border:1.5px solid #6EE7B7;border-radius:var(--radius);padding:7px 12px;font-size:12px;color:var(--success);cursor:pointer;display:inline-flex;align-items:center;gap:4px;font-weight:500}
+.bdanger{background:var(--danger-light);border:1.5px solid #FECACA;border-radius:var(--radius);padding:7px 12px;font-size:12px;color:var(--danger);cursor:pointer;display:inline-flex;align-items:center;gap:4px;font-weight:500}
+/* TABLE */
+.tbl{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow)}
+.th-row{padding:10px 16px;background:var(--bg3);border-bottom:1px solid var(--border);display:grid}
+.th{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px}
+.td-row{padding:12px 16px;border-bottom:1px solid var(--border);display:grid;align-items:center;transition:background .1s}
 .td-row:last-child{border-bottom:none}
 .td-row:hover{background:var(--bg3)}
-.td{font-size:13px}.tdm{font-size:13px;color:var(--text2)}
-.badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:500}
-.bg{background:#0d2b22;color:var(--green)}.ba{background:#2d1e00;color:var(--amber)}.br{background:#2d1010;color:#f87171}.bgr{background:var(--bg3);color:var(--text2)}
-.sbar-w{height:5px;background:var(--bg);border-radius:999px;overflow:hidden;margin-top:3px}
+.td{font-size:13px;color:var(--text)}.tdm{font-size:13px;color:var(--text2)}
+/* BADGES */
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600}
+.bg{background:var(--success-mid);color:#065F46}
+.ba{background:#FEF3C7;color:#92400E}
+.br{background:var(--danger-light);color:#991B1B}
+.bgr{background:var(--bg3);color:var(--text3)}
+.bb{background:var(--primary-mid);color:#1E40AF}
+/* KANBAN */
+.kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kcol{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px;min-height:260px}
+.kcol-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.kcol-title{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
+.kcol-count{background:var(--bg2);border:1px solid var(--border);border-radius:999px;padding:2px 8px;font-size:11px;font-weight:600;color:var(--text2)}
+.lcard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;margin-bottom:8px;transition:all .15s;box-shadow:var(--shadow)}
+.lcard:hover{box-shadow:var(--shadow-md);border-color:var(--border2);transform:translateY(-1px)}
+.lcard-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px}
+.lcard-biz{font-size:11px;color:var(--text3);margin-bottom:8px}
+.lcard-foot{display:flex;justify-content:space-between;align-items:center}
+.lcard-val{font-size:12px;font-weight:700;color:var(--primary)}
+/* STOCK BAR */
+.sbar-w{height:4px;background:var(--bg3);border-radius:999px;overflow:hidden;margin-top:4px}
 .sbar{height:100%;border-radius:999px}
-.abox{background:#1e1500;border:1px solid #3d2e00;border-radius:var(--radius);padding:11px 14px;margin-bottom:14px;display:flex;align-items:center;gap:9px}
-.atxt{font-size:12px;color:var(--amber)}
-.rbox{background:#2d1010;border:1px solid #5a2020;border-radius:var(--radius);padding:11px 14px;margin-bottom:14px;display:flex;align-items:center;gap:9px}
-.rtxt{font-size:12px;color:#f87171}
-.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:flex;align-items:center;justify-content:center;z-index:100}
-.modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;width:380px;max-height:90vh;overflow-y:auto}
-.mtitle{font-size:15px;font-weight:600;margin-bottom:16px}
-.fr2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.mact{display:flex;gap:8px;margin-top:14px;justify-content:flex-end}
-.seg-select{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-.seg-btn{padding:6px 13px;border-radius:999px;border:1px solid var(--border);background:none;color:var(--text2);font-size:12px;cursor:pointer;transition:all .15s}
-.seg-btn.active{background:var(--green-bg);border-color:var(--green);color:var(--green);font-weight:500}
-.toast{position:fixed;bottom:20px;right:20px;background:var(--green);color:white;padding:10px 16px;border-radius:var(--radius);font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:200;font-weight:500}
-.toast.show{opacity:1}
-.ia-out{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-top:14px;min-height:80px}
-.ia-txt{font-size:13px;line-height:1.7;white-space:pre-wrap}
-.ia-ph{font-size:12px;color:var(--text3);font-style:italic}
-.tcat{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-.tcat-btn{padding:5px 12px;border-radius:999px;border:1px solid var(--border);background:none;color:var(--text2);font-size:11px;cursor:pointer;transition:all .15s}
-.tcat-btn.active{background:var(--green-bg);border-color:var(--green);color:var(--green);font-weight:500}
-.template-list{display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto}
-.template-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:12px;cursor:pointer;transition:border-color .15s}
-.template-item:hover{border-color:var(--green)}
-.ti-tag{font-size:10px;color:var(--green);font-weight:600;text-transform:uppercase;margin-bottom:3px}
-.ti-title{font-size:12px;font-weight:500;margin-bottom:3px}
-.ti-prev{font-size:11px;color:var(--text2);line-height:1.4}
-@media(max-width:900px){.grid4{grid-template-columns:repeat(2,1fr)}.kanban{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.nav .tab span{display:none}.plan-badge{display:none}}
+/* ALERTS */
+.abox{background:var(--warning-light);border:1px solid #FCD34D;border-radius:var(--radius);padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.atxt{font-size:13px;color:var(--warning);font-weight:500}
+.rbox{background:var(--danger-light);border:1px solid #FECACA;border-radius:var(--radius);padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.rtxt{font-size:13px;color:var(--danger);font-weight:500}
+/* MODAL */
+.modal-ov{position:fixed;inset:0;background:rgba(15,23,42,.5);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(4px)}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-xl);padding:28px;width:420px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg)}
+.mtitle{font-size:17px;font-weight:700;margin-bottom:20px;color:var(--text)}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mact{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
+/* SEGMENTO */
+.seg-wrap{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.seg-btn{padding:6px 14px;border-radius:999px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;transition:all .15s;font-weight:500}
+.seg-btn.active{background:var(--primary-light);border-color:var(--primary);color:var(--primary);font-weight:600}
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:white;padding:12px 18px;border-radius:var(--radius);font-size:13px;opacity:0;transition:all .3s;pointer-events:none;z-index:200;font-weight:500;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:8px}
+.toast.show{opacity:1;transform:translateY(-4px)}
+/* MENSAGENS */
+.ia-out{background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-top:14px;min-height:80px}
+.ia-txt{font-size:13px;line-height:1.8;white-space:pre-wrap;color:var(--text)}
+.ia-ph{font-size:13px;color:var(--text3);font-style:italic}
+.tcat{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tcat-btn{padding:5px 12px;border-radius:999px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);font-size:11px;cursor:pointer;transition:all .15s;font-weight:500}
+.tcat-btn.active{background:var(--primary-light);border-color:var(--primary);color:var(--primary);font-weight:600}
+.tmpl-list{display:flex;flex-direction:column;gap:8px;max-height:340px;overflow-y:auto}
+.tmpl-item{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:12px;cursor:pointer;transition:all .15s}
+.tmpl-item:hover{border-color:var(--primary);box-shadow:var(--shadow)}
+.tmpl-tag{font-size:10px;color:var(--primary);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.tmpl-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px}
+.tmpl-prev{font-size:11px;color:var(--text3);line-height:1.4}
+/* CHART */
+.chart-bars{display:flex;align-items:flex-end;gap:6px;height:80px;padding-top:8px}
+.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.chart-bar{width:100%;border-radius:4px 4px 0 0;transition:height .4s ease;min-height:3px}
+.chart-label{font-size:9px;color:var(--text3);text-align:center}
+/* SECTION HEADER */
+.sec-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.sec-title{font-size:20px;font-weight:700;color:var(--text)}
+.sec-sub{font-size:13px;color:var(--text3);margin-top:2px}
+@media(max-width:1024px){.grid4{grid-template-columns:repeat(2,1fr)}.kanban{grid-template-columns:1fr 1fr}.sidebar{width:200px}.main{margin-left:200px}}
+@media(max-width:768px){.sidebar{display:none}.main{margin-left:0}.auth-left{display:none}.auth-right{width:100%}}
 </style>
 </head>
 <body>
 
 <div id="loading-screen" class="loading-screen">
-  <div class="loading-dot"></div>
-  <div style="font-size:13px;color:var(--text2)">Carregando VendaAI...</div>
+  <div class="loading-ring"></div>
+  <div style="font-size:13px;color:var(--text3);font-weight:500">Carregando VendaAI...</div>
 </div>
 
-<div id="auth-screen" class="auth-screen" style="display:none">
-  <div class="auth-box">
-    <div class="auth-logo"><div class="auth-logo-dot"></div><div class="auth-logo-text">VendaAI</div></div>
-    <div id="auth-err" class="auth-err"></div>
-    <div id="login-form">
-      <div class="auth-title">Bem-vindo de volta</div>
-      <div class="auth-sub">Faça login na sua conta</div>
-      <div class="fg"><label class="fl">E-mail</label><input class="fi" id="l-email" type="email" placeholder="seu@email.com"/></div>
-      <div class="fg"><label class="fl">Senha</label><input class="fi" id="l-senha" type="password" placeholder="••••••••"/></div>
-      <button class="btn-full" onclick="fazerLogin()">Entrar</button>
-      <div class="auth-switch">Não tem conta? <a onclick="toggleAuth('register')">Criar conta grátis</a></div>
+<div id="auth-screen" class="auth-wrap" style="display:none">
+  <div class="auth-left">
+    <div class="auth-brand">
+      <div class="auth-brand-icon"><i class="ti ti-chart-dots-3" style="font-size:20px;color:white"></i></div>
+      <div class="auth-brand-name">VendaAI</div>
     </div>
-    <div id="register-form" style="display:none">
-      <div class="auth-title">Criar conta grátis</div>
-      <div class="auth-sub">Sem cartão de crédito</div>
-      <div class="fg"><label class="fl">Nome completo</label><input class="fi" id="r-nome" type="text" placeholder="Seu nome"/></div>
-      <div class="fg"><label class="fl">E-mail</label><input class="fi" id="r-email" type="email" placeholder="seu@email.com"/></div>
-      <div class="fg"><label class="fl">Senha</label><input class="fi" id="r-senha" type="password" placeholder="Mínimo 6 caracteres"/></div>
-      <button class="btn-full" onclick="fazerRegistro()">Criar conta</button>
-      <div class="auth-switch">Já tem conta? <a onclick="toggleAuth('login')">Fazer login</a></div>
+    <div class="auth-headline">Gestão inteligente para o seu negócio</div>
+    <div class="auth-sub">Pipeline de vendas, controle de estoque, contas a receber e mensagens inteligentes — tudo em um só lugar.</div>
+    <div class="auth-features">
+      <div class="auth-feat"><div class="auth-feat-icon"><i class="ti ti-layout-kanban" style="font-size:14px;color:white"></i></div>Pipeline de vendas visual</div>
+      <div class="auth-feat"><div class="auth-feat-icon"><i class="ti ti-package" style="font-size:14px;color:white"></i></div>Controle de estoque com alertas</div>
+      <div class="auth-feat"><div class="auth-feat-icon"><i class="ti ti-cash" style="font-size:14px;color:white"></i></div>Contas a receber automático</div>
+      <div class="auth-feat"><div class="auth-feat-icon"><i class="ti ti-message-bolt" style="font-size:14px;color:white"></i></div>50+ templates de mensagem</div>
+    </div>
+  </div>
+  <div class="auth-right">
+    <div class="auth-box">
+      <div id="auth-err" class="auth-err"></div>
+      <div id="login-form">
+        <div class="auth-title">Bem-vindo de volta 👋</div>
+        <div class="auth-desc">Entre na sua conta para continuar</div>
+        <div class="fg"><label class="fl">E-mail</label><input class="fi" id="l-email" type="email" placeholder="seu@email.com"/></div>
+        <div class="fg"><label class="fl">Senha</label><input class="fi" id="l-senha" type="password" placeholder="••••••••"/></div>
+        <button class="btn-full" onclick="fazerLogin()">Entrar na conta</button>
+        <div class="auth-switch">Não tem conta? <a onclick="toggleAuth('register')">Criar conta grátis</a></div>
+      </div>
+      <div id="register-form" style="display:none">
+        <div class="auth-title">Criar conta grátis</div>
+        <div class="auth-desc">Sem cartão de crédito • Cancele quando quiser</div>
+        <div class="fg"><label class="fl">Nome completo</label><input class="fi" id="r-nome" type="text" placeholder="Seu nome"/></div>
+        <div class="fg"><label class="fl">E-mail</label><input class="fi" id="r-email" type="email" placeholder="seu@email.com"/></div>
+        <div class="fg"><label class="fl">Senha</label><input class="fi" id="r-senha" type="password" placeholder="Mínimo 6 caracteres"/></div>
+        <button class="btn-full" onclick="fazerRegistro()">Criar minha conta</button>
+        <div class="auth-switch">Já tem conta? <a onclick="toggleAuth('login')">Fazer login</a></div>
+      </div>
     </div>
   </div>
 </div>
 
-<div id="app-screen" style="display:none">
-  <div class="topbar">
-    <div class="logo"><div class="logo-dot"></div>VendaAI</div>
-    <div class="nav">
-      <button class="tab active" onclick="show('dashboard',this)"><i class="ti ti-chart-bar"></i> <span>Dashboard</span></button>
-      <button class="tab" onclick="show('pipeline',this)"><i class="ti ti-layout-kanban"></i> <span>Pipeline</span></button>
-      <button class="tab" onclick="show('vendas',this)"><i class="ti ti-shopping-cart"></i> <span>Vendas</span></button>
-      <button class="tab" onclick="show('ia',this)"><i class="ti ti-message-bolt"></i> <span>Mensagens</span></button>
-      <button class="tab" onclick="show('estoque',this)"><i class="ti ti-package"></i> <span>Estoque</span></button>
-      <button class="tab" onclick="show('clientes',this)"><i class="ti ti-users"></i> <span>Clientes</span></button>
-      <button class="tab" onclick="show('receber',this)"><i class="ti ti-cash"></i> <span>A Receber</span></button>
+<div id="app-screen" class="app-wrap" style="display:none">
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-icon"><i class="ti ti-chart-dots-3" style="font-size:18px;color:white"></i></div>
+      <div class="sidebar-brand-name">VendaAI</div>
     </div>
-    <div class="user-menu">
-      <span class="plan-badge">✦ Founder R$47/mês</span>
-      <div class="ub" id="user-initials" onclick="sair()" title="Sair">?</div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Principal</div>
+      <button class="nav-item active" onclick="show('dashboard',this)"><i class="ti ti-layout-dashboard"></i>Dashboard</button>
+      <button class="nav-item" onclick="show('pipeline',this)"><i class="ti ti-layout-kanban"></i>Pipeline</button>
+      <button class="nav-item" onclick="show('vendas',this)"><i class="ti ti-shopping-cart"></i>Vendas</button>
+      <div class="nav-section">Gestão</div>
+      <button class="nav-item" onclick="show('estoque',this)"><i class="ti ti-package"></i>Estoque</button>
+      <button class="nav-item" onclick="show('clientes',this)"><i class="ti ti-users"></i>Clientes</button>
+      <button class="nav-item" onclick="show('receber',this)"><i class="ti ti-cash"></i>A Receber</button>
+      <div class="nav-section">Ferramentas</div>
+      <button class="nav-item" onclick="show('ia',this)"><i class="ti ti-message-bolt"></i>Mensagens</button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card" onclick="sair()">
+        <div class="user-avatar" id="user-avatar">?</div>
+        <div class="user-info">
+          <div class="user-name" id="user-name">Usuário</div>
+          <div class="user-plan">✦ Founder R$47/mês</div>
+        </div>
+        <i class="ti ti-logout" style="font-size:15px;color:var(--text3)"></i>
+      </div>
     </div>
   </div>
-  <div class="content">
-    <div class="sec active" id="sec-dashboard">
-      <div class="stitle">Visão geral</div>
-      <div class="ssub">Resumo do seu negócio hoje</div>
-      <div id="dash-venc-alert"></div>
-      <div class="grid4">
-        <div class="mcard"><div class="mlabel">Receita total</div><div class="mval mup" id="d-receita">R$ 0,00</div><div class="msub mup"><i class="ti ti-trending-up" style="font-size:10px"></i> Vendas + fechamentos</div></div>
-        <div class="mcard"><div class="mlabel">Clientes no pipeline</div><div class="mval" id="d-leads">0</div></div>
-        <div class="mcard"><div class="mlabel">Produtos em falta</div><div class="mval mdn" id="d-falta">0</div></div>
-        <div class="mcard"><div class="mlabel">A receber</div><div class="mval" style="color:var(--amber)" id="d-receber">R$ 0,00</div></div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px">
-          <div style="font-size:13px;font-weight:600;margin-bottom:14px">Funil de vendas</div>
-          <div id="funnel"></div>
-        </div>
-        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px">
-          <div style="font-size:13px;font-weight:600;margin-bottom:8px">Últimas vendas</div>
-          <div id="dash-vendas"></div>
-        </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="page-title" id="page-title">Dashboard</div>
+      <div class="topbar-right">
+        <span class="badge-founder">✦ Founder</span>
       </div>
     </div>
-    <div class="sec" id="sec-pipeline">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-        <div><div class="stitle">Pipeline</div><div class="ssub">Gerencie seus clientes por etapa</div></div>
-        <button class="btn" onclick="abrirModalLead(null)"><i class="ti ti-plus"></i> Novo cliente</button>
-      </div>
-      <div class="kanban" id="kanban"></div>
-    </div>
-    <div class="sec" id="sec-vendas">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-        <div><div class="stitle">Vendas diretas</div><div class="ssub">Registre vendas da loja física</div></div>
-        <button class="btn" onclick="abrirModalVenda()"><i class="ti ti-plus"></i> Nova venda</button>
-      </div>
-      <div class="grid4">
-        <div class="mcard"><div class="mlabel">Total do dia</div><div class="mval mup" id="v-dia">R$ 0,00</div></div>
-        <div class="mcard"><div class="mlabel">Total do mês</div><div class="mval mup" id="v-mes">R$ 0,00</div></div>
-        <div class="mcard"><div class="mlabel">Nº de vendas</div><div class="mval" id="v-qtd">0</div></div>
-        <div class="mcard"><div class="mlabel">Ticket médio</div><div class="mval" id="v-ticket">R$ 0,00</div></div>
-      </div>
-      <div class="tbl">
-        <div class="th-row" style="grid-template-columns:2fr 1fr 1fr 1fr 60px">
-          <div class="th">Produto/Serviço</div><div class="th">Cliente</div><div class="th">Valor</div><div class="th">Data</div><div class="th"></div>
-        </div>
-        <div id="vendas-list"></div>
-      </div>
-    </div>
-    <div class="sec" id="sec-ia">
-      <div class="stitle">Central de Mensagens</div>
-      <div class="ssub">50+ templates prontos para WhatsApp</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px">
-          <div style="font-size:13px;font-weight:600;margin-bottom:12px">Personalizar</div>
-          <div class="fg"><label class="fl">Nome do cliente</label><input class="fi" id="ia-nome" placeholder="Ex: João Silva"/></div>
-          <div class="fr2">
-            <div class="fg"><label class="fl">Valor</label><input class="fi" id="ia-valor" placeholder="Ex: 150,00"/></div>
-            <div class="fg"><label class="fl">Produto</label><input class="fi" id="ia-prod" placeholder="Ex: bolo..."/></div>
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div class="sec active" id="sec-dashboard">
+        <div id="dash-venc-alert"></div>
+        <div class="grid4">
+          <div class="mcard">
+            <div class="mcard-top"><div class="mcard-label">Receita total</div><div class="mcard-icon" style="background:var(--primary-light)"><i class="ti ti-trending-up" style="color:var(--primary)"></i></div></div>
+            <div class="mcard-val" id="d-receita">R$ 0,00</div>
+            <div class="mcard-sub mcard-up"><i class="ti ti-arrow-up-right" style="font-size:11px"></i>Vendas + fechamentos</div>
           </div>
-          <div class="ia-out" id="ia-out"><div class="ia-ph">Selecione um template ao lado...</div></div>
-          <div style="display:flex;gap:8px;margin-top:10px" id="ia-acts" style="display:none">
-            <button class="bsec" onclick="copiarMsg()"><i class="ti ti-copy" style="font-size:13px"></i> Copiar</button>
-            <button class="bsec" onclick="limparMsg()"><i class="ti ti-refresh" style="font-size:13px"></i> Limpar</button>
+          <div class="mcard">
+            <div class="mcard-top"><div class="mcard-label">Clientes ativos</div><div class="mcard-icon" style="background:#F0FDF4"><i class="ti ti-users" style="color:var(--success)"></i></div></div>
+            <div class="mcard-val" id="d-leads">0</div>
+            <div class="mcard-sub"><i class="ti ti-point" style="font-size:11px"></i>No pipeline</div>
+          </div>
+          <div class="mcard">
+            <div class="mcard-top"><div class="mcard-label">Produtos em falta</div><div class="mcard-icon" style="background:var(--danger-light)"><i class="ti ti-alert-circle" style="color:var(--danger)"></i></div></div>
+            <div class="mcard-val mcard-dn" id="d-falta">0</div>
+            <div class="mcard-sub mcard-dn"><i class="ti ti-alert-triangle" style="font-size:11px"></i>Precisam reposição</div>
+          </div>
+          <div class="mcard">
+            <div class="mcard-top"><div class="mcard-label">A receber</div><div class="mcard-icon" style="background:var(--warning-light)"><i class="ti ti-cash" style="color:var(--warning)"></i></div></div>
+            <div class="mcard-val" style="color:var(--warning)" id="d-receber">R$ 0,00</div>
+            <div class="mcard-sub" style="color:var(--warning)"><i class="ti ti-clock" style="font-size:11px"></i>Pendente</div>
           </div>
         </div>
-        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px">
-          <div style="font-size:13px;font-weight:600;margin-bottom:10px">Templates</div>
-          <div class="tcat" id="tcat"></div>
-          <div class="template-list" id="template-list"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+          <div class="mcard">
+            <div style="font-size:14px;font-weight:700;margin-bottom:16px;color:var(--text)">Funil de vendas</div>
+            <div id="funnel"></div>
+          </div>
+          <div class="mcard">
+            <div style="font-size:14px;font-weight:700;margin-bottom:16px;color:var(--text)">Últimas vendas</div>
+            <div id="dash-vendas"></div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="sec" id="sec-estoque">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-        <div><div class="stitle">Estoque</div><div class="ssub">Controle de produtos</div></div>
-        <button class="btn" onclick="abrirModalProd(null)"><i class="ti ti-plus"></i> Novo produto</button>
-      </div>
-      <div class="seg-select">
-        <button class="seg-btn active" onclick="setSegmento('todos',this)">Todos</button>
-        <button class="seg-btn" onclick="setSegmento('Roupas',this)">Roupas</button>
-        <button class="seg-btn" onclick="setSegmento('Alimentos',this)">Alimentos</button>
-        <button class="seg-btn" onclick="setSegmento('Calçados',this)">Calçados</button>
-        <button class="seg-btn" onclick="setSegmento('Serviços',this)">Serviços</button>
-        <button class="seg-btn" onclick="setSegmento('Acessórios',this)">Acessórios</button>
-      </div>
-      <div class="grid4">
-        <div class="mcard"><div class="mlabel">Total</div><div class="mval" id="st-tot">0</div></div>
-        <div class="mcard"><div class="mlabel">Estoque baixo</div><div class="mval mdn" id="st-bx">0</div></div>
-        <div class="mcard"><div class="mlabel">Sem estoque</div><div class="mval mdn" id="st-z">0</div></div>
-        <div class="mcard"><div class="mlabel">Valor total</div><div class="mval" id="st-v">R$ 0,00</div></div>
-      </div>
-      <div id="alert-box" style="display:none" class="abox"><i class="ti ti-alert-triangle" style="font-size:16px;color:var(--amber);flex-shrink:0"></i><div class="atxt" id="alert-txt"></div></div>
-      <div class="tbl">
-        <div class="th-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 130px">
-          <div class="th">Produto</div><div class="th">Cat.</div><div class="th">Qtd</div><div class="th">Mín.</div><div class="th">Preço</div><div class="th">Ações</div>
+
+      <!-- PIPELINE -->
+      <div class="sec" id="sec-pipeline">
+        <div class="sec-header">
+          <div><div class="sec-title">Pipeline de vendas</div><div class="sec-sub">Acompanhe seus clientes em cada etapa</div></div>
+          <button class="btn" onclick="abrirModalLead(null)"><i class="ti ti-plus"></i> Novo cliente</button>
         </div>
-        <div id="est-list"></div>
+        <div class="kanban" id="kanban"></div>
       </div>
-    </div>
-    <div class="sec" id="sec-clientes">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-        <div><div class="stitle">Clientes</div><div class="ssub">Todos os seus clientes</div></div>
-        <button class="btn" onclick="abrirModalLead(null)"><i class="ti ti-plus"></i> Novo cliente</button>
-      </div>
-      <div class="tbl">
-        <div class="th-row" style="grid-template-columns:2fr 1.5fr 1fr 1fr 110px">
-          <div class="th">Cliente</div><div class="th">Negócio</div><div class="th">Valor</div><div class="th">Status</div><div class="th">Ações</div>
+
+      <!-- VENDAS -->
+      <div class="sec" id="sec-vendas">
+        <div class="sec-header">
+          <div><div class="sec-title">Vendas diretas</div><div class="sec-sub">Registre vendas da loja física</div></div>
+          <button class="btn" onclick="abrirModalVenda()"><i class="ti ti-plus"></i> Nova venda</button>
         </div>
-        <div id="cli-list"></div>
-      </div>
-    </div>
-    <div class="sec" id="sec-receber">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-        <div><div class="stitle">Contas a Receber</div><div class="ssub">Pagamentos pendentes</div></div>
-        <button class="btn" onclick="abrirModalReceber()"><i class="ti ti-plus"></i> Nova conta</button>
-      </div>
-      <div class="grid4">
-        <div class="mcard"><div class="mlabel">Total a receber</div><div class="mval" style="color:var(--amber)" id="cr-total">R$ 0,00</div></div>
-        <div class="mcard"><div class="mlabel">Vence hoje</div><div class="mval mdn" id="cr-hoje">0</div></div>
-        <div class="mcard"><div class="mlabel">Em atraso</div><div class="mval mdn" id="cr-atraso">0</div></div>
-        <div class="mcard"><div class="mlabel">A vencer</div><div class="mval mup" id="cr-futuro">0</div></div>
-      </div>
-      <div id="receber-alert" style="display:none" class="rbox"><i class="ti ti-alert-circle" style="font-size:16px;color:#f87171;flex-shrink:0"></i><div class="rtxt" id="receber-alert-txt"></div></div>
-      <div class="tbl">
-        <div class="th-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 120px">
-          <div class="th">Cliente</div><div class="th">Descrição</div><div class="th">Valor</div><div class="th">Vencimento</div><div class="th">Status</div><div class="th">Ações</div>
+        <div class="grid4">
+          <div class="mcard"><div class="mcard-top"><div class="mcard-label">Hoje</div><div class="mcard-icon" style="background:var(--primary-light)"><i class="ti ti-sun" style="color:var(--primary)"></i></div></div><div class="mcard-val mcard-up" id="v-dia">R$ 0,00</div></div>
+          <div class="mcard"><div class="mcard-top"><div class="mcard-label">Este mês</div><div class="mcard-icon" style="background:#F0FDF4"><i class="ti ti-calendar" style="color:var(--success)"></i></div></div><div class="mcard-val" style="color:var(--success)" id="v-mes">R$ 0,00</div></div>
+          <div class="mcard"><div class="mcard-top"><div class="mcard-label">Total de vendas</div><div class="mcard-icon" style="background:var(--warning-light)"><i class="ti ti-shopping-bag" style="color:var(--warning)"></i></div></div><div class="mcard-val" id="v-qtd">0</div></div>
+          <div class="mcard"><div class="mcard-top"><div class="mcard-label">Ticket médio</div><div class="mcard-icon" style="background:var(--primary-light)"><i class="ti ti-receipt" style="color:var(--primary)"></i></div></div><div class="mcard-val" id="v-ticket">R$ 0,00</div></div>
         </div>
-        <div id="receber-list"></div>
+        <div class="tbl">
+          <div class="th-row" style="grid-template-columns:2fr 1fr 1fr 1fr 60px">
+            <div class="th">Produto/Serviço</div><div class="th">Cliente</div><div class="th">Valor</div><div class="th">Data</div><div class="th"></div>
+          </div>
+          <div id="vendas-list"></div>
+        </div>
       </div>
+
+      <!-- ESTOQUE -->
+      <div class="sec" id="sec-estoque">
+        <div class="sec-header">
+          <div><div class="sec-title">Controle de estoque</div><div class="sec-sub">Monitore produtos e receba alertas</div></div>
+          <button class="btn" onclick="abrirModalProd(null)"><i class="ti ti-plus"></i> Novo produto</button>
+        </div>
+        <div class="seg-wrap">
+          <button class="seg-btn active" onclick="setSeg('todos',this)">Todos</button>
+          <button class="seg-btn" onclick="setSeg('Roupas',this)">👕 Roupas</button>
+          <button class="seg-btn" onclick="setSeg('Alimentos',this)">🥗 Alimentos</button>
+          <button class="seg-btn" onclick="setSeg('Calçados',this)">👟 Calçados</button>
+          <button class="seg-btn" onclick="setSeg('Serviços',this)">🔧 Serviços</button>
+          <button class="seg-btn" onclick="setSeg('Acessórios',this)">🏷️ Acessórios</button>
+        </div>
+        <div class="grid4">
+          <div class="mcard"><div class="mcard-label">Total</div><div class="mcard-val" id="st-tot">0</div></div>
+          <div class="mcard"><div class="mcard-label">Estoque baixo</div><div class="mcard-val mcard-dn" id="st-bx">0</div></div>
+          <div class="mcard"><div class="mcard-label">Sem estoque</div><div class="mcard-val mcard-dn" id="st-z">0</div></div>
+          <div class="mcard"><div class="mcard-label">Valor em estoque</div><div class="mcard-val" id="st-v">R$ 0,00</div></div>
+        </div>
+        <div id="alert-box" style="display:none" class="abox"><i class="ti ti-alert-triangle" style="font-size:16px;color:var(--warning);flex-shrink:0"></i><div class="atxt" id="alert-txt"></div></div>
+        <div class="tbl">
+          <div class="th-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 140px">
+            <div class="th">Produto</div><div class="th">Categoria</div><div class="th">Qtd</div><div class="th">Mínimo</div><div class="th">Preço</div><div class="th">Ações</div>
+          </div>
+          <div id="est-list"></div>
+        </div>
+      </div>
+
+      <!-- CLIENTES -->
+      <div class="sec" id="sec-clientes">
+        <div class="sec-header">
+          <div><div class="sec-title">Clientes</div><div class="sec-sub">Todos os seus clientes em um só lugar</div></div>
+          <button class="btn" onclick="abrirModalLead(null)"><i class="ti ti-plus"></i> Novo cliente</button>
+        </div>
+        <div class="tbl">
+          <div class="th-row" style="grid-template-columns:2fr 1.5fr 1fr 1fr 120px">
+            <div class="th">Cliente</div><div class="th">Negócio</div><div class="th">Valor</div><div class="th">Status</div><div class="th">Ações</div>
+          </div>
+          <div id="cli-list"></div>
+        </div>
+      </div>
+
+      <!-- A RECEBER -->
+      <div class="sec" id="sec-receber">
+        <div class="sec-header">
+          <div><div class="sec-title">Contas a Receber</div><div class="sec-sub">Controle de pagamentos pendentes</div></div>
+          <button class="btn" onclick="abrirModalReceber()"><i class="ti ti-plus"></i> Nova conta</button>
+        </div>
+        <div class="grid4">
+          <div class="mcard"><div class="mcard-top"><div class="mcard-label">Total a receber</div><div class="mcard-icon" style="background:var(--warning-light)"><i class="ti ti-cash" style="color:var(--warning)"></i></div></div><div class="mcard-val" style="color:var(--warning)" id="cr-total">R$ 0,00</div></div>
+          <div class="mcard"><div class="mcard-top"><div class="mcard-label">Vence hoje</div><div class="mcard-icon" style="background:var(--danger-light)"><i class="ti ti-bell" style="color:var(--danger)"></i></div></div><div class="mcard-val mcard-dn" id="cr-hoje">0</div></div>
+          <div class="mcard"><div class="mcard-top"><div class="mcard-label">Em atraso</div><div class="mcard-icon" style="background:var(--danger-light)"><i class="ti ti-alert-circle" style="color:var(--danger)"></i></div></div><div class="mcard-val mcard-dn" id="cr-atraso">0</div></div>
+          <div class="mcard"><div class="mcard-top"><div class="mcard-label">A vencer</div><div class="mcard-icon" style="background:#F0FDF4"><i class="ti ti-clock" style="color:var(--success)"></i></div></div><div class="mcard-val mcard-up" id="cr-futuro">0</div></div>
+        </div>
+        <div id="receber-alert" style="display:none" class="rbox"><i class="ti ti-alert-circle" style="font-size:16px;color:var(--danger);flex-shrink:0"></i><div class="rtxt" id="receber-alert-txt"></div></div>
+        <div class="tbl">
+          <div class="th-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 130px">
+            <div class="th">Cliente</div><div class="th">Descrição</div><div class="th">Valor</div><div class="th">Vencimento</div><div class="th">Status</div><div class="th">Ações</div>
+          </div>
+          <div id="receber-list"></div>
+        </div>
+      </div>
+
+      <!-- MENSAGENS -->
+      <div class="sec" id="sec-ia">
+        <div class="sec-header">
+          <div><div class="sec-title">Central de Mensagens</div><div class="sec-sub">50+ templates prontos para WhatsApp</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:20px">
+          <div class="mcard">
+            <div style="font-size:14px;font-weight:700;margin-bottom:16px">Personalizar mensagem</div>
+            <div class="fg"><label class="fl">Nome do cliente</label><input class="fi" id="ia-nome" placeholder="Ex: João Silva"/></div>
+            <div class="fr2">
+              <div class="fg"><label class="fl">Valor</label><input class="fi" id="ia-valor" placeholder="Ex: 150,00"/></div>
+              <div class="fg"><label class="fl">Produto</label><input class="fi" id="ia-prod" placeholder="Ex: bolo..."/></div>
+            </div>
+            <div class="ia-out" id="ia-out"><div class="ia-ph">Selecione um template ao lado para gerar a mensagem personalizada...</div></div>
+            <div style="display:flex;gap:8px;margin-top:12px" id="ia-acts" style="display:none">
+              <button class="btn" onclick="copiarMsg()" style="flex:1;justify-content:center"><i class="ti ti-copy"></i> Copiar mensagem</button>
+              <button class="bsec" onclick="limparMsg()"><i class="ti ti-refresh"></i></button>
+            </div>
+          </div>
+          <div class="mcard">
+            <div style="font-size:14px;font-weight:700;margin-bottom:12px">Templates disponíveis</div>
+            <div class="tcat" id="tcat"></div>
+            <div class="tmpl-list" id="tmpl-list"></div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -294,7 +424,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 <div class="modal-ov" id="modal-prod" style="display:none" onclick="fecharModal('modal-prod',event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="mtitle" id="mprod-title">Produto</div>
-    <div class="fg"><label class="fl">Nome</label><input class="fi" id="mp-nome" placeholder="Ex: Camiseta M azul"/></div>
+    <div class="fg"><label class="fl">Nome do produto</label><input class="fi" id="mp-nome" placeholder="Ex: Camiseta M azul"/></div>
     <div class="fr2">
       <div class="fg"><label class="fl">Categoria</label><select class="fi" id="mp-cat"><option>Roupas</option><option>Alimentos</option><option>Calçados</option><option>Serviços</option><option>Acessórios</option><option>Outros</option></select></div>
       <div class="fg"><label class="fl">Preço (R$)</label><input class="fi" id="mp-preco" type="number" step="0.01" min="0" placeholder="0,00"/></div>
@@ -306,47 +436,50 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
     <div class="mact"><button class="bsec" onclick="fecharModal('modal-prod')">Cancelar</button><button class="btn" onclick="salvarProd()"><i class="ti ti-check"></i> Salvar</button></div>
   </div>
 </div>
+
 <div class="modal-ov" id="modal-lead" style="display:none" onclick="fecharModal('modal-lead',event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="mtitle" id="mlead-title">Cliente</div>
-    <div class="fg"><label class="fl">Nome</label><input class="fi" id="ml-nome" placeholder="Ex: João Silva"/></div>
-    <div class="fg"><label class="fl">Negócio / produto interesse</label><input class="fi" id="ml-biz" placeholder="Ex: loja de roupas..."/></div>
+    <div class="fg"><label class="fl">Nome completo</label><input class="fi" id="ml-nome" placeholder="Ex: João Silva"/></div>
+    <div class="fg"><label class="fl">Negócio / produto de interesse</label><input class="fi" id="ml-biz" placeholder="Ex: loja de roupas, quer bolo..."/></div>
     <div class="fr2">
-      <div class="fg"><label class="fl">Valor (R$)</label><input class="fi" id="ml-val" type="number" step="0.01" min="0" placeholder="0,00"/></div>
+      <div class="fg"><label class="fl">Valor da venda (R$)</label><input class="fi" id="ml-val" type="number" step="0.01" min="0" placeholder="0,00"/></div>
       <div class="fg"><label class="fl">Etapa</label><select class="fi" id="ml-stage"><option value="contato">Primeiro contato</option><option value="proposta">Proposta enviada</option><option value="negociando">Negociando</option><option value="fechando">Fechado ✓</option></select></div>
     </div>
-    <div class="fg"><label class="fl">Observação</label><input class="fi" id="ml-obs" placeholder="Ex: prefere pix..."/></div>
+    <div class="fg"><label class="fl">Observação (opcional)</label><input class="fi" id="ml-obs" placeholder="Ex: prefere pix, liga só pela manhã..."/></div>
     <div class="mact"><button class="bsec" onclick="fecharModal('modal-lead')">Cancelar</button><button class="btn" onclick="salvarLead()"><i class="ti ti-check"></i> Salvar</button></div>
   </div>
 </div>
+
 <div class="modal-ov" id="modal-venda" style="display:none" onclick="fecharModal('modal-venda',event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="mtitle">Registrar venda</div>
-    <div class="fg"><label class="fl">Produto ou serviço</label><input class="fi" id="mv-prod" placeholder="Ex: Bolo de chocolate..."/></div>
+    <div class="fg"><label class="fl">Produto ou serviço vendido</label><input class="fi" id="mv-prod" placeholder="Ex: Bolo de chocolate, Camiseta P..."/></div>
     <div class="fg"><label class="fl">Cliente (opcional)</label><input class="fi" id="mv-cliente" placeholder="Ex: Maria..."/></div>
     <div class="fr2">
       <div class="fg"><label class="fl">Valor (R$)</label><input class="fi" id="mv-val" type="number" step="0.01" min="0" placeholder="0,00"/></div>
       <div class="fg"><label class="fl">Data</label><input class="fi" id="mv-data" type="date"/></div>
     </div>
     <div class="fg"><label class="fl">Forma de pagamento</label><select class="fi" id="mv-forma"><option>Pix</option><option>Dinheiro</option><option>Cartão débito</option><option>Cartão crédito</option><option>Boleto</option></select></div>
-    <div class="mact"><button class="bsec" onclick="fecharModal('modal-venda')">Cancelar</button><button class="btn" onclick="salvarVenda()"><i class="ti ti-check"></i> Registrar</button></div>
+    <div class="mact"><button class="bsec" onclick="fecharModal('modal-venda')">Cancelar</button><button class="btn" onclick="salvarVenda()"><i class="ti ti-check"></i> Registrar venda</button></div>
   </div>
 </div>
+
 <div class="modal-ov" id="modal-receber" style="display:none" onclick="fecharModal('modal-receber',event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="mtitle">Nova conta a receber</div>
     <div class="fg"><label class="fl">Nome do cliente</label><input class="fi" id="mr-nome" placeholder="Ex: Maria Silva"/></div>
-    <div class="fg"><label class="fl">Descrição</label><input class="fi" id="mr-desc" placeholder="Ex: Bolo encomendado..."/></div>
+    <div class="fg"><label class="fl">Descrição</label><input class="fi" id="mr-desc" placeholder="Ex: Bolo encomendado, roupa no fiado..."/></div>
     <div class="fr2">
       <div class="fg"><label class="fl">Valor (R$)</label><input class="fi" id="mr-val" type="number" step="0.01" min="0" placeholder="0,00"/></div>
-      <div class="fg"><label class="fl">Vencimento</label><input class="fi" id="mr-data" type="date"/></div>
+      <div class="fg"><label class="fl">Data de vencimento</label><input class="fi" id="mr-data" type="date"/></div>
     </div>
-    <div class="fg"><label class="fl">Observação</label><input class="fi" id="mr-obs" placeholder="Ex: 3x de R$50..."/></div>
+    <div class="fg"><label class="fl">Observação (opcional)</label><input class="fi" id="mr-obs" placeholder="Ex: 3x de R$50, combinou pagar sexta..."/></div>
     <div class="mact"><button class="bsec" onclick="fecharModal('modal-receber')">Cancelar</button><button class="btn" onclick="salvarReceber()"><i class="ti ti-check"></i> Salvar</button></div>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast"><i class="ti ti-check" style="font-size:15px"></i><span id="toast-msg"></span></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -355,44 +488,38 @@ const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI
 const sb=supabase.createClient(SURL,SKEY);
 let user=null,leads=[],prods=[],contas=[],vendas=[],seg='todos',editLead=null,editProd=null,tcat='Todos';
 const stgs=[{k:"contato",l:"Primeiro contato"},{k:"proposta",l:"Proposta enviada"},{k:"negociando",l:"Negociando"},{k:"fechando",l:"Fechado ✓"}];
+const pageTitles={dashboard:'Dashboard',pipeline:'Pipeline de Vendas',vendas:'Vendas Diretas',estoque:'Controle de Estoque',clientes:'Clientes',receber:'Contas a Receber',ia:'Central de Mensagens'};
 const tmpl=[
-  {c:"Primeiro contato",t:"Apresentação",m:"Olá, {nome}! Tudo bem? 😊 Meu nome é [SEU NOME] e queria te apresentar algo que pode ajudar muito o seu negócio. Posso te contar mais?"},
-  {c:"Primeiro contato",t:"Indicação",m:"Oi, {nome}! Recebi seu contato através de [NOME] que me falou muito bem de você. Queria bater um papo rápido. Tem um minutinho?"},
+  {c:"Primeiro contato",t:"Apresentação simples",m:"Olá, {nome}! Tudo bem? 😊 Meu nome é [SEU NOME] e queria te apresentar algo que pode ajudar muito o seu negócio. Posso te contar mais?"},
+  {c:"Primeiro contato",t:"Por indicação",m:"Oi, {nome}! Recebi seu contato através de [NOME] que me falou muito bem de você. Queria bater um papo rápido. Tem um minutinho?"},
   {c:"Primeiro contato",t:"Redes sociais",m:"Olá, {nome}! Vi seu perfil e adorei o que você faz! 👏 Acredito que tenho algo que pode complementar o seu negócio. Posso te apresentar?"},
-  {c:"Primeiro contato",t:"Abordagem direta",m:"Olá, {nome}! Trabalho com [PRODUTO] e acredito que pode fazer muito sentido para você. Posso te mostrar como funciona?"},
+  {c:"Primeiro contato",t:"Abordagem direta",m:"Olá, {nome}! Trabalho com [PRODUTO/SERVIÇO] e acredito que pode fazer muito sentido para você. Posso te mostrar como funciona?"},
   {c:"Follow-up",t:"Retorno gentil",m:"Oi, {nome}! 😊 Passando para saber se você teve a chance de pensar na nossa conversa. Fico à disposição para tirar qualquer dúvida!"},
   {c:"Follow-up",t:"Proposta enviada",m:"Olá, {nome}! Conforme combinamos, segue a proposta. Quando você consegue dar uma olhada? 📋"},
   {c:"Follow-up",t:"Sem resposta 3 dias",m:"Oi, {nome}! Tudo bem por aí? Imagino que você deve estar muito ocupado. Quando tiver um momento, adoraria continuar nossa conversa. 😊"},
-  {c:"Follow-up",t:"Sem resposta 1 semana",m:"Olá, {nome}! Sei que a rotina é corrida, mas não queria deixar nossa conversa em aberto. Tem 5 minutinhos?"},
   {c:"Follow-up",t:"Última tentativa",m:"Oi, {nome}! Esse será meu último contato para não te incomodar. Se quiser retomar nossa conversa, estarei por aqui. Abraços! 🤝"},
   {c:"Negociação",t:"Condição especial",m:"Oi, {nome}! Tenho uma condição especial disponível por tempo limitado. Posso te apresentar agora? 🎯"},
   {c:"Negociação",t:"Objeção de preço",m:"Entendo sua preocupação com o investimento, {nome}. Posso te mostrar exatamente quanto isso vai gerar de retorno? 📊"},
-  {c:"Negociação",t:"Facilitar pagamento",m:"Oi, {nome}! Para facilitar, posso oferecer parcelamento no cartão ou Pix. Qual opção funciona melhor? 💳"},
-  {c:"Negociação",t:"Bônus exclusivo",m:"Olá, {nome}! Para fecharmos hoje, posso incluir [BÔNUS] sem custo adicional. Isso resolve? 🎁"},
-  {c:"Negociação",t:"Urgência",m:"Oi, {nome}! Essa condição especial encerra [DATA]. Não quero que você perca essa oportunidade!"},
+  {c:"Negociação",t:"Facilitar pagamento",m:"Oi, {nome}! Para facilitar, posso oferecer parcelamento no cartão ou Pix. Qual opção funciona melhor para você? 💳"},
+  {c:"Negociação",t:"Urgência",m:"Oi, {nome}! Essa condição especial encerra em breve. Não quero que você perca essa oportunidade!"},
   {c:"Fechamento",t:"Hora de fechar",m:"Olá, {nome}! 🤝 Baseado em tudo que conversamos, estamos alinhados. O que falta para fecharmos hoje?"},
-  {c:"Fechamento",t:"Resumo e CTA",m:"Oi, {nome}! Você terá [BENEFÍCIO] por apenas {valor}. Vamos dar andamento? Como prefere pagar?"},
   {c:"Fechamento",t:"Confirmar pedido",m:"Perfeito, {nome}! Confirmo seu pedido de {produto}. O pagamento será por Pix ou dinheiro? 😊"},
-  {c:"Fechamento",t:"Fechar no pix",m:"Oi, {nome}! Para confirmar, basta o pix de {valor} para [CHAVE PIX]. Já providencio tudo! 💚"},
+  {c:"Fechamento",t:"Fechar no pix",m:"Oi, {nome}! Para confirmar, basta o pix de {valor} para [CHAVE PIX]. Assim que confirmar já providencio tudo! 💚"},
+  {c:"Fechamento",t:"Após aprovação",m:"Ótima escolha, {nome}! 🎉 Estou super feliz em ter você como cliente. Vou te passar todos os próximos passos agora mesmo!"},
   {c:"Cobrança",t:"Lembrete amigável",m:"Olá, {nome}! Tudo bem? 😊 Passando para lembrar que temos um valor de {valor} em aberto. Quando consegue resolver?"},
-  {c:"Cobrança",t:"Vencimento hoje",m:"Oi, {nome}! Lembrete: o pagamento de {valor} vence hoje. Pode ser no Pix! 😊"},
+  {c:"Cobrança",t:"Vencimento hoje",m:"Oi, {nome}! Lembrete rápido: o pagamento de {valor} vence hoje. Pode ser no Pix! 😊"},
   {c:"Cobrança",t:"Pagamento atrasado",m:"Olá, {nome}! O pagamento de {valor} ainda está em aberto. Pode me avisar quando consegue regularizar? 🙏"},
-  {c:"Cobrança",t:"Segunda cobrança",m:"Oi, {nome}! Já entrei em contato antes sobre o valor de {valor}. Preciso que você me dê uma posição."},
   {c:"Cobrança",t:"Acordo de pagamento",m:"Olá, {nome}! Podemos negociar uma forma de pagamento que funcione para você? Me conta a situação. 🤝"},
-  {c:"Cobrança",t:"Parcelamento",m:"Oi, {nome}! Posso dividir o valor de {valor} em parcelas menores. Isso te ajudaria?"},
   {c:"Pós-venda",t:"Agradecimento",m:"Oi, {nome}! Muito obrigado pela sua compra! 🙏 Qualquer dúvida ou problema, pode me chamar!"},
-  {c:"Pós-venda",t:"Verificar satisfação",m:"Olá, {nome}! Como está sendo sua experiência com {produto}? Seu feedback é muito importante! 🌟"},
+  {c:"Pós-venda",t:"Verificar satisfação",m:"Olá, {nome}! Como está sendo sua experiência com {produto}? Seu feedback é muito importante para mim! 🌟"},
   {c:"Pós-venda",t:"Pedir indicação",m:"Oi, {nome}! Fico feliz que gostou! 😊 Você conhece alguém que poderia se beneficiar? Se indicar, tenho condição especial para você!"},
-  {c:"Pós-venda",t:"Recompra",m:"Oi, {nome}! Seu estoque de {produto} deve estar acabando. Posso já separar mais? 😊"},
   {c:"Promoção",t:"Oferta relâmpago",m:"🔥 OFERTA RELÂMPAGO, {nome}! Por hoje apenas, {produto} por apenas {valor}. Garante o seu agora?"},
-  {c:"Promoção",t:"Liquidação",m:"Oi, {nome}! Grande liquidação aqui! Grandes descontos em vários produtos. Passa lá? 🛍️"},
   {c:"Promoção",t:"Novo produto",m:"Olá, {nome}! 🎉 Acabou de chegar {produto} aqui! Lembrei de você. Quer dar uma olhada?"},
   {c:"Promoção",t:"Black Friday",m:"🖤 BLACK FRIDAY, {nome}! {produto} saindo por {valor}. Aproveita enquanto tem estoque!"},
   {c:"Confirmações",t:"Confirmar pedido",m:"Olá, {nome}! Confirmo seu pedido: {produto}. Valor total: {valor}. ✅"},
   {c:"Confirmações",t:"Pagamento recebido",m:"Pagamento confirmado, {nome}! 💚 Já estou providenciando {produto}. Te aviso quando estiver pronto!"},
   {c:"Confirmações",t:"Pedido pronto",m:"Oi, {nome}! Seu pedido está pronto! 🎉 Pode retirar quando quiser!"},
   {c:"Reengajamento",t:"Cliente sumido",m:"Oi, {nome}! Saudades! 😊 Faz um tempo que não te vejo. Tem novidades que você vai adorar!"},
-  {c:"Reengajamento",t:"Oferta retorno",m:"Oi, {nome}! Preparei uma surpresa especial para quem faz tempo não aparece. Curiosidade? 😊"},
   {c:"Suporte",t:"Resolver problema",m:"Oi, {nome}! Lamento pelo inconveniente. Vou resolver isso agora mesmo. Pode me contar o que aconteceu? 🙏"},
   {c:"Suporte",t:"Troca ou devolução",m:"Olá, {nome}! Vamos resolver a troca sem problema. Pode trazer {produto} que te ajudo! 😊"},
 ];
@@ -402,10 +529,7 @@ async function init(){
     const{data:{session}}=await sb.auth.getSession();
     if(session){user=session.user;await entrarApp();}
     else{document.getElementById('loading-screen').style.display='none';document.getElementById('auth-screen').style.display='flex';}
-  }catch(e){
-    document.getElementById('loading-screen').style.display='none';
-    document.getElementById('auth-screen').style.display='flex';
-  }
+  }catch(e){document.getElementById('loading-screen').style.display='none';document.getElementById('auth-screen').style.display='flex';}
 }
 
 function toggleAuth(t){
@@ -415,8 +539,7 @@ function toggleAuth(t){
 }
 
 async function fazerLogin(){
-  const email=document.getElementById('l-email').value.trim();
-  const senha=document.getElementById('l-senha').value;
+  const email=document.getElementById('l-email').value.trim(),senha=document.getElementById('l-senha').value;
   if(!email||!senha){showErr('Preencha todos os campos');return;}
   const{data,error}=await sb.auth.signInWithPassword({email,password:senha});
   if(error){showErr('E-mail ou senha incorretos');return;}
@@ -424,9 +547,7 @@ async function fazerLogin(){
 }
 
 async function fazerRegistro(){
-  const nome=document.getElementById('r-nome').value.trim();
-  const email=document.getElementById('r-email').value.trim();
-  const senha=document.getElementById('r-senha').value;
+  const nome=document.getElementById('r-nome').value.trim(),email=document.getElementById('r-email').value.trim(),senha=document.getElementById('r-senha').value;
   if(!nome||!email||!senha){showErr('Preencha todos os campos');return;}
   if(senha.length<6){showErr('Senha mínimo 6 caracteres');return;}
   const{data,error}=await sb.auth.signUp({email,password:senha,options:{data:{nome}}});
@@ -439,18 +560,17 @@ function showErr(msg){const el=document.getElementById('auth-err');el.textConten
 async function entrarApp(){
   document.getElementById('loading-screen').style.display='none';
   document.getElementById('auth-screen').style.display='none';
-  document.getElementById('app-screen').style.display='block';
-  const nome=user.user_metadata?.nome||user.email||'U';
-  document.getElementById('user-initials').textContent=nome.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+  document.getElementById('app-screen').style.display='flex';
+  const nome=user.user_metadata?.nome||user.email||'Usuário';
+  document.getElementById('user-avatar').textContent=nome.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+  document.getElementById('user-name').textContent=nome.split(' ')[0];
   await carregarDados();buildAll();verificarVenc();
 }
 
 async function sair(){
   if(!confirm('Sair da conta?'))return;
   await sb.auth.signOut();
-  user=null;leads=[];prods=[];contas=[];vendas=[];
-  document.getElementById('app-screen').style.display='none';
-  document.getElementById('auth-screen').style.display='flex';
+  user=null;document.getElementById('app-screen').style.display='none';document.getElementById('auth-screen').style.display='flex';
 }
 
 async function carregarDados(){
@@ -466,14 +586,18 @@ async function carregarDados(){
 
 function show(id,el){
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(t=>t.classList.remove('active'));
   document.getElementById('sec-'+id).classList.add('active');
   el.classList.add('active');
+  document.getElementById('page-title').textContent=pageTitles[id]||'VendaAI';
 }
 
-function toast(msg,cor){
+function toast(msg,tipo){
   const t=document.getElementById('toast');
-  t.textContent=msg;t.style.background=cor||'var(--green)';
+  const ic=t.querySelector('i');
+  document.getElementById('toast-msg').textContent=msg;
+  if(tipo==='error'){t.style.background='var(--danger)';ic.className='ti ti-x';}
+  else{t.style.background='#0F172A';ic.className='ti ti-check';}
   t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);
 }
 
@@ -489,22 +613,23 @@ function buildDash(){
   document.getElementById('d-falta').textContent=prods.filter(p=>p.qtd<=p.min).length;
   document.getElementById('d-receber').textContent=R(contas.filter(c=>c.status!=='pago').reduce((s,c)=>s+(parseFloat(c.val)||0),0));
   const mx=leads.length||1;
-  const cr=["#9FE1CB","#5DCAA5","#1D9E75","#0F6E56"];
-  const d=[{l:"Total",v:leads.length},{l:"Proposta",v:leads.filter(x=>['proposta','negociando','fechando'].includes(x.stage)).length},{l:"Negociando",v:leads.filter(x=>['negociando','fechando'].includes(x.stage)).length},{l:"Fechados",v:leads.filter(x=>x.stage==='fechando').length}];
-  document.getElementById('funnel').innerHTML=d.map((x,i)=>`<div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:2px"><span>${x.l}</span><span style="font-weight:600;color:var(--text)">${x.v}</span></div><div style="height:6px;background:var(--bg3);border-radius:999px;overflow:hidden"><div style="height:100%;width:${Math.round(x.v/mx*100)}%;background:${cr[i]};border-radius:999px"></div></div></div>`).join('');
-  document.getElementById('dash-vendas').innerHTML=vendas.length?vendas.slice(0,4).map(v=>`<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)"><div><div style="font-size:12px;font-weight:500">${v.prod}</div><div style="font-size:10px;color:var(--text2)">${v.cliente||'—'} · ${v.forma}</div></div><span style="font-size:12px;font-weight:600;color:var(--green)">${R(v.val)}</span></div>`).join(''):'<div style="font-size:12px;color:var(--text3)">Nenhuma venda ainda</div>';
+  const cr=['#BFDBFE','#93C5FD','#3B82F6','#1D4ED8'];
+  const d=[{l:"Total clientes",v:leads.length},{l:"Proposta enviada",v:leads.filter(x=>['proposta','negociando','fechando'].includes(x.stage)).length},{l:"Negociando",v:leads.filter(x=>['negociando','fechando'].includes(x.stage)).length},{l:"Fechados",v:leads.filter(x=>x.stage==='fechando').length}];
+  document.getElementById('funnel').innerHTML=d.map((x,i)=>`<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:4px;font-weight:500"><span>${x.l}</span><span style="font-weight:700;color:var(--text)">${x.v}</span></div><div style="height:8px;background:var(--bg3);border-radius:999px;overflow:hidden"><div style="height:100%;width:${Math.round(x.v/mx*100)}%;background:${cr[i]};border-radius:999px;transition:width .6s ease"></div></div></div>`).join('');
+  document.getElementById('dash-vendas').innerHTML=vendas.length?vendas.slice(0,4).map(v=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)"><div><div style="font-size:13px;font-weight:600;color:var(--text)">${v.prod}</div><div style="font-size:11px;color:var(--text3)">${v.cliente||'—'} · ${v.forma}</div></div><span style="font-size:13px;font-weight:700;color:var(--success)">${R(v.val)}</span></div>`).join(''):'<div style="font-size:13px;color:var(--text3);padding:12px 0">Nenhuma venda ainda</div>';
 }
 
 function buildKanban(){
   const b=document.getElementById('kanban');b.innerHTML='';
+  const stgColors={contato:'#EFF6FF',proposta:'#FFFBEB',negociando:'#FEF3C7',fechando:'#ECFDF5'};
   stgs.forEach(st=>{
     const sl=leads.filter(l=>l.stage===st.k);
     const col=document.createElement('div');col.className='kcol';
-    col.innerHTML=`<div class="ch"><span class="ct">${st.l}</span><span class="cc">${sl.length}</span></div>`;
-    if(!sl.length)col.innerHTML+=`<div style="font-size:12px;color:var(--text3);text-align:center;padding:20px 0">Nenhum cliente</div>`;
+    col.innerHTML=`<div class="kcol-header"><span class="kcol-title">${st.l}</span><span class="kcol-count">${sl.length}</span></div>`;
+    if(!sl.length)col.innerHTML+=`<div style="font-size:12px;color:var(--text3);text-align:center;padding:24px 0;border:2px dashed var(--border);border-radius:var(--radius)">Nenhum cliente</div>`;
     sl.forEach(l=>{
       const c=document.createElement('div');c.className='lcard';
-      c.innerHTML=`<div class="lname">${l.nome}</div><div class="lbiz">${l.biz||'—'}</div><div class="lfoot"><span class="lval">${R(l.val)}</span><div style="display:flex;gap:4px"><button onclick="abrirModalLead('${l.id}')" style="background:none;border:none;color:var(--amber);cursor:pointer;font-size:13px">✎</button><button onclick="remLead('${l.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>${l.obs?`<div style="font-size:10px;color:var(--text3);margin-top:5px">${l.obs}</div>`:''}`;
+      c.innerHTML=`<div class="lcard-name">${l.nome}</div><div class="lcard-biz">${l.biz||'—'}</div><div class="lcard-foot"><span class="lcard-val">${R(l.val)}</span><div style="display:flex;gap:4px"><button onclick="abrirModalLead('${l.id}')" style="background:var(--warning-light);border:1px solid #FCD34D;border-radius:6px;color:var(--warning);cursor:pointer;font-size:12px;padding:4px 7px" title="Editar">✎</button><button onclick="remLead('${l.id}')" style="background:var(--danger-light);border:1px solid #FECACA;border-radius:6px;color:var(--danger);cursor:pointer;font-size:12px;padding:4px 7px" title="Remover">✕</button></div></div>${l.obs?`<div style="font-size:11px;color:var(--text3);margin-top:6px;padding-top:6px;border-top:1px solid var(--border)">${l.obs}</div>`:''}`;
       col.appendChild(c);
     });
     b.appendChild(col);
@@ -512,13 +637,12 @@ function buildKanban(){
 }
 
 function buildVendas(){
-  const h=new Date().toISOString().split('T')[0];
-  const m=h.substring(0,7);
+  const h=new Date().toISOString().split('T')[0],m=h.substring(0,7);
   document.getElementById('v-dia').textContent=R(vendas.filter(v=>v.data===h).reduce((s,v)=>s+(parseFloat(v.val)||0),0));
   document.getElementById('v-mes').textContent=R(vendas.filter(v=>v.data&&v.data.startsWith(m)).reduce((s,v)=>s+(parseFloat(v.val)||0),0));
   document.getElementById('v-qtd').textContent=vendas.length;
   document.getElementById('v-ticket').textContent=vendas.length?R(vendas.reduce((s,v)=>s+(parseFloat(v.val)||0),0)/vendas.length):R(0);
-  document.getElementById('vendas-list').innerHTML=vendas.length?vendas.map(v=>`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 60px"><div class="td"><div style="font-weight:500">${v.prod}</div><div style="font-size:10px;color:var(--text2)">${v.forma}</div></div><div class="tdm">${v.cliente||'—'}</div><div class="td" style="color:var(--green);font-weight:600">${R(v.val)}</div><div class="tdm">${v.data?new Date(v.data+'T00:00:00').toLocaleDateString('pt-BR'):'—'}</div><div><button onclick="remVenda('${v.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>`).join(''):'<div style="padding:24px;text-align:center;font-size:13px;color:var(--text3)">Nenhuma venda registrada.</div>';
+  document.getElementById('vendas-list').innerHTML=vendas.length?vendas.map(v=>`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 60px"><div class="td"><div style="font-weight:600">${v.prod}</div><div style="font-size:11px;color:var(--text3)">${v.forma}</div></div><div class="tdm">${v.cliente||'—'}</div><div class="td" style="color:var(--success);font-weight:700">${R(v.val)}</div><div class="tdm">${v.data?new Date(v.data+'T00:00:00').toLocaleDateString('pt-BR'):'—'}</div><div><button onclick="remVenda('${v.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:4px">✕</button></div></div>`).join(''):'<div style="padding:28px;text-align:center;font-size:13px;color:var(--text3)">Nenhuma venda registrada ainda.</div>';
 }
 
 function buildEst(){
@@ -529,28 +653,28 @@ function buildEst(){
   document.getElementById('st-v').textContent=R(f.reduce((s,p)=>s+p.qtd*p.preco,0));
   const al=f.filter(p=>p.qtd<=p.min);
   const ab=document.getElementById('alert-box');
-  if(al.length){ab.style.display='flex';document.getElementById('alert-txt').textContent=`${al.length} produto(s) precisam de reposição`;}
+  if(al.length){ab.style.display='flex';document.getElementById('alert-txt').textContent=`${al.length} produto(s) precisam de reposição: ${al.map(p=>p.nome).join(', ')}`;}
   else ab.style.display='none';
   document.getElementById('est-list').innerHTML=f.length?f.map(p=>{
     const pct=p.min>0?Math.min(100,Math.round(p.qtd/(p.min*3)*100)):100;
-    const cor=p.qtd===0?'#E24B4A':p.qtd<=p.min?'#EF9F27':'#1D9E75';
+    const cor=p.qtd===0?'var(--danger)':p.qtd<=p.min?'var(--warning)':'var(--success)';
     const st=p.qtd===0?'br':p.qtd<=p.min?'ba':'bg';
-    const lb=p.qtd===0?'Sem estoque':p.qtd<=p.min?'Baixo':'Normal';
-    return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 130px"><div class="td">${p.nome}</div><div class="tdm">${p.cat}</div><div class="td"><span style="font-weight:600">${p.qtd}</span><div class="sbar-w"><div class="sbar" style="width:${pct}%;background:${cor}"></div></div></div><div class="tdm">${p.min}</div><div class="td" style="color:var(--green);font-weight:600">${R(p.preco)}</div><div style="display:flex;gap:5px;align-items:center"><button class="bwarn" onclick="abrirModalProd('${p.id}')" style="font-size:11px;padding:4px 8px"><i class="ti ti-edit" style="font-size:12px"></i></button><span class="badge ${st}">${lb}</span><button onclick="remProd('${p.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>`;
-  }).join(''):'<div style="padding:24px;text-align:center;font-size:13px;color:var(--text3)">Nenhum produto cadastrado.</div>';
+    const lb=p.qtd===0?'Sem estoque':p.qtd<=p.min?'Estoque baixo':'Normal';
+    return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 140px"><div class="td" style="font-weight:500">${p.nome}</div><div class="tdm">${p.cat}</div><div class="td"><span style="font-weight:700">${p.qtd}</span><div class="sbar-w"><div class="sbar" style="width:${pct}%;background:${cor}"></div></div></div><div class="tdm">${p.min}</div><div class="td" style="color:var(--success);font-weight:700">${R(p.preco)}</div><div style="display:flex;gap:6px;align-items:center"><button class="bwarn" onclick="abrirModalProd('${p.id}')" style="font-size:11px;padding:4px 8px"><i class="ti ti-edit" style="font-size:12px"></i></button><span class="badge ${st}">${lb}</span><button onclick="remProd('${p.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px">✕</button></div></div>`;
+  }).join(''):'<div style="padding:28px;text-align:center;font-size:13px;color:var(--text3)">Nenhum produto cadastrado.</div>';
 }
 
 function buildClients(){
-  const cl=['#0d2b22','#0d1e2d','#2d1e00','#2d1010','#1a1040','#1a2d0a'];
-  const tc=['#1D9E75','#378ADD','#EF9F27','#f87171','#8b7cf6','#5dbd3a'];
-  document.getElementById('cli-list').innerHTML=leads.length?leads.map((l,i)=>`<div class="td-row" style="grid-template-columns:2fr 1.5fr 1fr 1fr 110px"><div class="td" style="display:flex;align-items:center;gap:9px"><div style="width:28px;height:28px;border-radius:50%;background:${cl[i%6]};color:${tc[i%6]};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0">${l.nome.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()}</div><div>${l.nome}${l.obs?`<div style="font-size:10px;color:var(--text3)">${l.obs}</div>`:''}</div></div><div class="tdm">${l.biz||'—'}</div><div class="td" style="color:var(--green);font-weight:600">${R(l.val)}</div><div><span class="badge ${l.stage==='fechando'?'bg':l.stage==='negociando'?'ba':'bgr'}">${stgs.find(s=>s.k===l.stage)?.l||l.stage}</span></div><div style="display:flex;gap:5px"><button class="bwarn" onclick="abrirModalLead('${l.id}')" style="font-size:11px;padding:4px 8px"><i class="ti ti-edit" style="font-size:12px"></i></button><button class="bsec" onclick="preIA('${l.nome.replace(/'/g,"\\'")}','${R(l.val)}')" style="font-size:11px;padding:4px 8px">MSG</button><button onclick="remLead('${l.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>`).join(''):'<div style="padding:24px;text-align:center;font-size:13px;color:var(--text3)">Nenhum cliente cadastrado.</div>';
+  const ava=['#EFF6FF','#ECFDF5','#FFFBEB','#FEF2F2','#F5F3FF','#F0FDF4'];
+  const avc=['#1D4ED8','#065F46','#92400E','#991B1B','#5B21B6','#14532D'];
+  document.getElementById('cli-list').innerHTML=leads.length?leads.map((l,i)=>`<div class="td-row" style="grid-template-columns:2fr 1.5fr 1fr 1fr 120px"><div class="td" style="display:flex;align-items:center;gap:10px"><div style="width:32px;height:32px;border-radius:50%;background:${ava[i%6]};color:${avc[i%6]};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">${l.nome.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()}</div><div><div style="font-weight:600">${l.nome}</div>${l.obs?`<div style="font-size:11px;color:var(--text3)">${l.obs}</div>`:''}</div></div><div class="tdm">${l.biz||'—'}</div><div class="td" style="color:var(--primary);font-weight:700">${R(l.val)}</div><div><span class="badge ${l.stage==='fechando'?'bg':l.stage==='negociando'?'ba':'bgr'}">${stgs.find(s=>s.k===l.stage)?.l||l.stage}</span></div><div style="display:flex;gap:6px"><button class="bwarn" onclick="abrirModalLead('${l.id}')" style="font-size:11px;padding:4px 8px"><i class="ti ti-edit" style="font-size:12px"></i></button><button class="bsec" onclick="preIA('${l.nome.replace(/'/g,"\\'")}','${R(l.val)}')" style="font-size:11px;padding:4px 8px">MSG</button><button onclick="remLead('${l.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px">✕</button></div></div>`).join(''):'<div style="padding:28px;text-align:center;font-size:13px;color:var(--text3)">Nenhum cliente cadastrado.</div>';
 }
 
 function buildReceber(){
   const hj=new Date();hj.setHours(0,0,0,0);
   const pend=contas.filter(c=>c.status!=='pago');
   document.getElementById('cr-total').textContent=R(pend.reduce((s,c)=>s+(parseFloat(c.val)||0),0));
-  document.getElementById('cr-hoje').textContent=pend.filter(c=>{const d=new Date(c.data+'T00:00:00');return d.getTime()===hj.getTime();}).length;
+  document.getElementById('cr-hoje').textContent=pend.filter(c=>new Date(c.data+'T00:00:00').getTime()===hj.getTime()).length;
   document.getElementById('cr-atraso').textContent=pend.filter(c=>new Date(c.data+'T00:00:00')<hj).length;
   document.getElementById('cr-futuro').textContent=pend.filter(c=>new Date(c.data+'T00:00:00')>hj).length;
   const at=pend.filter(c=>new Date(c.data+'T00:00:00')<=hj);
@@ -559,19 +683,18 @@ function buildReceber(){
   else ra.style.display='none';
   document.getElementById('receber-list').innerHTML=contas.length?contas.map(c=>{
     const d=new Date(c.data+'T00:00:00');
-    const at=c.status!=='pago'&&d<hj;
-    const vh=c.status!=='pago'&&d.getTime()===hj.getTime();
+    const at=c.status!=='pago'&&d<hj,vh=c.status!=='pago'&&d.getTime()===hj.getTime();
     const st=c.status==='pago'?'bg':at?'br':vh?'ba':'bgr';
-    const lb=c.status==='pago'?'Pago':at?'Atrasado':vh?'Vence hoje':'A vencer';
-    return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 120px"><div class="td"><div style="font-weight:500">${c.nome}</div>${c.obs?`<div style="font-size:10px;color:var(--text3)">${c.obs}</div>`:''}</div><div class="tdm">${c.descricao||'—'}</div><div class="td" style="color:var(--amber);font-weight:600">${R(c.val)}</div><div class="tdm">${new Date(c.data+'T00:00:00').toLocaleDateString('pt-BR')}</div><div><span class="badge ${st}">${lb}</span></div><div style="display:flex;gap:5px;align-items:center">${c.status!=='pago'?`<button class="bgreen" onclick="marcarPago('${c.id}')" style="font-size:11px;padding:4px 8px"><i class="ti ti-check" style="font-size:12px"></i> Pago</button>`:'<span style="font-size:11px;color:var(--green)">✓</span>'}<button onclick="remConta('${c.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>`;
-  }).join(''):'<div style="padding:24px;text-align:center;font-size:13px;color:var(--text3)">Nenhuma conta cadastrada.</div>';
+    const lb=c.status==='pago'?'✓ Pago':at?'Atrasado':vh?'Vence hoje':'A vencer';
+    return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 130px"><div class="td"><div style="font-weight:600">${c.nome}</div>${c.obs?`<div style="font-size:11px;color:var(--text3)">${c.obs}</div>`:''}</div><div class="tdm">${c.descricao||'—'}</div><div class="td" style="color:var(--warning);font-weight:700">${R(c.val)}</div><div class="tdm">${new Date(c.data+'T00:00:00').toLocaleDateString('pt-BR')}</div><div><span class="badge ${st}">${lb}</span></div><div style="display:flex;gap:6px;align-items:center">${c.status!=='pago'?`<button class="bgreen" onclick="marcarPago('${c.id}')" style="font-size:11px;padding:5px 10px"><i class="ti ti-check" style="font-size:12px"></i> Pago</button>`:'<span style="font-size:11px;color:var(--success);font-weight:600">✓ Recebido</span>'}<button onclick="remConta('${c.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px">✕</button></div></div>`;
+  }).join(''):'<div style="padding:28px;text-align:center;font-size:13px;color:var(--text3)">Nenhuma conta cadastrada.</div>';
 }
 
 function buildTmpl(){
   const cats=['Todos',...new Set(tmpl.map(t=>t.c))];
   document.getElementById('tcat').innerHTML=cats.map(c=>`<button class="tcat-btn${c===tcat?' active':''}" onclick="setTcat('${c}',this)">${c}</button>`).join('');
   const f=tcat==='Todos'?tmpl:tmpl.filter(t=>t.c===tcat);
-  document.getElementById('template-list').innerHTML=f.map((t,i)=>`<div class="template-item" onclick="usarTmpl(${tmpl.indexOf(t)})"><div class="ti-tag">${t.c}</div><div class="ti-title">${t.t}</div><div class="ti-prev">${t.m.substring(0,70)}...</div></div>`).join('');
+  document.getElementById('tmpl-list').innerHTML=f.map((t,i)=>`<div class="tmpl-item" onclick="usarTmpl(${tmpl.indexOf(t)})"><div class="tmpl-tag">${t.c}</div><div class="tmpl-title">${t.t}</div><div class="tmpl-prev">${t.m.substring(0,75)}...</div></div>`).join('');
 }
 
 function setTcat(c,el){tcat=c;document.querySelectorAll('.tcat-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');buildTmpl();}
@@ -585,15 +708,15 @@ function usarTmpl(i){
   document.getElementById('ia-acts').style.display='flex';
 }
 
-function copiarMsg(){const t=document.querySelector('.ia-txt');if(t){navigator.clipboard.writeText(t.innerText);toast('Mensagem copiada! 📋');}}
+function copiarMsg(){const t=document.querySelector('.ia-txt');if(t){navigator.clipboard.writeText(t.innerText);toast('Mensagem copiada!');}}
 function limparMsg(){document.getElementById('ia-out').innerHTML='<div class="ia-ph">Selecione um template ao lado...</div>';document.getElementById('ia-acts').style.display='none';}
-function preIA(n,v){document.getElementById('ia-nome').value=n;document.getElementById('ia-valor').value=v;show('ia',document.querySelectorAll('.tab')[3]);}
+function preIA(n,v){document.getElementById('ia-nome').value=n;document.getElementById('ia-valor').value=v;show('ia',document.querySelectorAll('.nav-item')[6]);}
 
 function verificarVenc(){
   const hj=new Date();hj.setHours(0,0,0,0);
   const u=contas.filter(c=>c.status!=='pago'&&new Date(c.data+'T00:00:00')<=hj);
   const el=document.getElementById('dash-venc-alert');
-  if(u.length){el.innerHTML=`<div class="rbox" style="margin-bottom:16px"><i class="ti ti-alert-circle" style="font-size:16px;color:#f87171;flex-shrink:0"></i><div class="rtxt">⚠️ ${u.length} conta(s) vencida(s) hoje! <a onclick="show('receber',document.querySelectorAll('.tab')[6])" style="color:#f87171;cursor:pointer;text-decoration:underline;font-weight:600">Ver →</a></div></div>`;}
+  if(u.length){el.innerHTML=`<div class="rbox" style="margin-bottom:20px"><i class="ti ti-alert-circle" style="font-size:16px;color:var(--danger);flex-shrink:0"></i><div class="rtxt">⚠️ ${u.length} conta(s) vencida(s) ou vencendo hoje! <a onclick="show('receber',document.querySelectorAll('.nav-item')[5])" style="color:var(--danger);cursor:pointer;text-decoration:underline;font-weight:700">Ver agora →</a></div></div>`;}
   else el.innerHTML='';
 }
 
@@ -613,15 +736,14 @@ function abrirModalProd(id){
 
 async function salvarProd(){
   const nome=document.getElementById('mp-nome').value.trim();
-  if(!nome){toast('Informe o nome','var(--red)');return;}
+  if(!nome){toast('Informe o nome','error');return;}
   const d={nome,cat:document.getElementById('mp-cat').value,qtd:parseInt(document.getElementById('mp-qtd').value)||0,min:parseInt(document.getElementById('mp-min').value)||5,preco:parseFloat(document.getElementById('mp-preco').value)||0,user_id:user.id};
-  if(editProd){await sb.from('produtos').update(d).eq('id',editProd);}
-  else{await sb.from('produtos').insert(d);}
+  if(editProd){await sb.from('produtos').update(d).eq('id',editProd);}else{await sb.from('produtos').insert(d);}
   await carregarDados();fecharModal('modal-prod');buildEst();buildDash();
   toast(editProd?'Produto atualizado!':'Produto adicionado!');
 }
 
-async function remProd(id){if(!confirm('Remover?'))return;await sb.from('produtos').delete().eq('id',id);await carregarDados();buildEst();buildDash();toast('Removido');}
+async function remProd(id){if(!confirm('Remover produto?'))return;await sb.from('produtos').delete().eq('id',id);await carregarDados();buildEst();buildDash();toast('Produto removido');}
 
 function abrirModalLead(id){
   editLead=id;
@@ -637,15 +759,14 @@ function abrirModalLead(id){
 
 async function salvarLead(){
   const nome=document.getElementById('ml-nome').value.trim();
-  if(!nome){toast('Informe o nome','var(--red)');return;}
+  if(!nome){toast('Informe o nome','error');return;}
   const d={nome,biz:document.getElementById('ml-biz').value,val:parseFloat(document.getElementById('ml-val').value)||0,stage:document.getElementById('ml-stage').value,obs:document.getElementById('ml-obs').value,user_id:user.id};
-  if(editLead){await sb.from('leads').update(d).eq('id',editLead);}
-  else{await sb.from('leads').insert(d);}
+  if(editLead){await sb.from('leads').update(d).eq('id',editLead);}else{await sb.from('leads').insert(d);}
   await carregarDados();fecharModal('modal-lead');buildAll();
   toast(editLead?'Cliente atualizado!':'Cliente adicionado!');
 }
 
-async function remLead(id){if(!confirm('Remover?'))return;await sb.from('leads').delete().eq('id',id);await carregarDados();buildAll();toast('Removido');}
+async function remLead(id){if(!confirm('Remover cliente?'))return;await sb.from('leads').delete().eq('id',id);await carregarDados();buildAll();toast('Cliente removido');}
 
 function abrirModalVenda(){
   document.getElementById('mv-data').value=new Date().toISOString().split('T')[0];
@@ -654,15 +775,14 @@ function abrirModalVenda(){
 }
 
 async function salvarVenda(){
-  const prod=document.getElementById('mv-prod').value.trim();
-  const val=parseFloat(document.getElementById('mv-val').value)||0;
-  if(!prod||!val){toast('Preencha produto e valor','var(--red)');return;}
+  const prod=document.getElementById('mv-prod').value.trim(),val=parseFloat(document.getElementById('mv-val').value)||0;
+  if(!prod||!val){toast('Preencha produto e valor','error');return;}
   await sb.from('vendas').insert({prod,cliente:document.getElementById('mv-cliente').value,val,data:document.getElementById('mv-data').value,forma:document.getElementById('mv-forma').value,user_id:user.id});
   await carregarDados();fecharModal('modal-venda');buildVendas();buildDash();
   toast('Venda registrada! 💰');
 }
 
-async function remVenda(id){if(!confirm('Remover?'))return;await sb.from('vendas').delete().eq('id',id);await carregarDados();buildVendas();buildDash();toast('Removido');}
+async function remVenda(id){if(!confirm('Remover venda?'))return;await sb.from('vendas').delete().eq('id',id);await carregarDados();buildVendas();buildDash();toast('Venda removida');}
 
 function abrirModalReceber(){
   document.getElementById('mr-data').value=new Date().toISOString().split('T')[0];
@@ -671,18 +791,16 @@ function abrirModalReceber(){
 }
 
 async function salvarReceber(){
-  const nome=document.getElementById('mr-nome').value.trim();
-  const val=parseFloat(document.getElementById('mr-val').value)||0;
-  const data=document.getElementById('mr-data').value;
-  if(!nome||!val||!data){toast('Preencha os campos','var(--red)');return;}
+  const nome=document.getElementById('mr-nome').value.trim(),val=parseFloat(document.getElementById('mr-val').value)||0,data=document.getElementById('mr-data').value;
+  if(!nome||!val||!data){toast('Preencha os campos obrigatórios','error');return;}
   await sb.from('contas').insert({nome,descricao:document.getElementById('mr-desc').value,val,data,obs:document.getElementById('mr-obs').value,status:'pendente',user_id:user.id});
   await carregarDados();fecharModal('modal-receber');buildReceber();buildDash();verificarVenc();
   toast('Conta adicionada!');
 }
 
 async function marcarPago(id){await sb.from('contas').update({status:'pago'}).eq('id',id);await carregarDados();buildReceber();buildDash();verificarVenc();toast('Marcado como pago! ✓');}
-async function remConta(id){if(!confirm('Remover?'))return;await sb.from('contas').delete().eq('id',id);await carregarDados();buildReceber();buildDash();verificarVenc();toast('Removido');}
-function setSegmento(s,el){seg=s;document.querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');buildEst();}
+async function remConta(id){if(!confirm('Remover conta?'))return;await sb.from('contas').delete().eq('id',id);await carregarDados();buildReceber();buildDash();verificarVenc();toast('Conta removida');}
+function setSeg(s,el){seg=s;document.querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');buildEst();}
 
 init();
 </script>
