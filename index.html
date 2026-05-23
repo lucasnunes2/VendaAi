@@ -1,3 +1,6 @@
+bash
+
+cat > /home/claude/vendaai/index.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -5,14 +8,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="theme-color" content="#1D9E75"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="VendaAI"/>
 <meta name="description" content="Gestão inteligente para pequenos negócios"/>
-<link rel="manifest" href="manifest.json"/>
 <title>VendaAI — Gestão Inteligente</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
 <style>
-:root{--bg:#0f0f0f;--bg2:#1a1a1a;--bg3:#242424;--border:#2e2e2e;--text:#f0f0f0;--text2:#a0a0a0;--text3:#666;--green:#1D9E75;--green2:#0F6E56;--green-bg:#0d2b22;--amber:#EF9F27;--red:#E24B4A;--blue:#378ADD;--radius:8px;--radius-lg:12px;}
+:root{--bg:#0f0f0f;--bg2:#1a1a1a;--bg3:#242424;--border:#2e2e2e;--text:#f0f0f0;--text2:#a0a0a0;--text3:#666;--green:#1D9E75;--green2:#0F6E56;--green-bg:#0d2b22;--amber:#EF9F27;--red:#E24B4A;--radius:8px;--radius-lg:12px;}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',system-ui,sans-serif}
 body{background:var(--bg);color:var(--text);min-height:100vh}
 .auth-screen{display:flex;align-items:center;justify-content:center;min-height:100vh}
@@ -108,20 +109,11 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 .ti-tag{font-size:10px;color:var(--green);font-weight:600;text-transform:uppercase;margin-bottom:3px}
 .ti-title{font-size:12px;font-weight:500;margin-bottom:3px}
 .ti-prev{font-size:11px;color:var(--text2);line-height:1.4}
-.install-bar{background:var(--green-bg);border-bottom:1px solid var(--green2);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;font-size:13px}
 @media(max-width:900px){.grid4{grid-template-columns:repeat(2,1fr)}.kanban{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.nav .tab span{display:none}.plan-badge{display:none}}
 </style>
 </head>
 <body>
-
-<div id="install-bar" class="install-bar" style="display:none">
-  <span>📱 Instale o VendaAI no seu celular para acesso rápido!</span>
-  <div style="display:flex;gap:8px">
-    <button class="btn" id="btn-install" style="padding:6px 12px;font-size:12px">Instalar app</button>
-    <button onclick="document.getElementById('install-bar').style.display='none'" style="background:none;border:none;color:var(--green);cursor:pointer;font-size:18px">✕</button>
-  </div>
-</div>
 
 <div id="loading-screen" class="loading-screen">
   <div class="loading-dot"></div>
@@ -194,7 +186,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
     <div class="sec" id="sec-pipeline">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
         <div><div class="stitle">Pipeline</div><div class="ssub">Gerencie seus clientes por etapa</div></div>
-        <button class="btn" onclick="abrirModalLead(-1)"><i class="ti ti-plus"></i> Novo cliente</button>
+        <button class="btn" onclick="abrirModalLead(null)"><i class="ti ti-plus"></i> Novo cliente</button>
       </div>
       <div class="kanban" id="kanban"></div>
     </div>
@@ -243,7 +235,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
     <div class="sec" id="sec-estoque">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
         <div><div class="stitle">Estoque</div><div class="ssub">Controle de produtos</div></div>
-        <button class="btn" onclick="abrirModalProd(-1)"><i class="ti ti-plus"></i> Novo produto</button>
+        <button class="btn" onclick="abrirModalProd(null)"><i class="ti ti-plus"></i> Novo produto</button>
       </div>
       <div class="seg-select">
         <button class="seg-btn active" onclick="setSegmento('todos',this)">Todos</button>
@@ -262,7 +254,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
       <div id="alert-box" style="display:none" class="abox"><i class="ti ti-alert-triangle" style="font-size:16px;color:var(--amber);flex-shrink:0"></i><div class="atxt" id="alert-txt"></div></div>
       <div class="tbl">
         <div class="th-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 130px">
-          <div class="th">Produto</div><div class="th">Categoria</div><div class="th">Qtd</div><div class="th">Mínimo</div><div class="th">Preço</div><div class="th">Ações</div>
+          <div class="th">Produto</div><div class="th">Cat.</div><div class="th">Qtd</div><div class="th">Mín.</div><div class="th">Preço</div><div class="th">Ações</div>
         </div>
         <div id="est-list"></div>
       </div>
@@ -270,7 +262,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
     <div class="sec" id="sec-clientes">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
         <div><div class="stitle">Clientes</div><div class="ssub">Todos os seus clientes</div></div>
-        <button class="btn" onclick="abrirModalLead(-1)"><i class="ti ti-plus"></i> Novo cliente</button>
+        <button class="btn" onclick="abrirModalLead(null)"><i class="ti ti-plus"></i> Novo cliente</button>
       </div>
       <div class="tbl">
         <div class="th-row" style="grid-template-columns:2fr 1.5fr 1fr 1fr 110px">
@@ -317,7 +309,6 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
     <div class="mact"><button class="bsec" onclick="fecharModal('modal-prod')">Cancelar</button><button class="btn" onclick="salvarProd()"><i class="ti ti-check"></i> Salvar</button></div>
   </div>
 </div>
-
 <div class="modal-ov" id="modal-lead" style="display:none" onclick="fecharModal('modal-lead',event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="mtitle" id="mlead-title">Cliente</div>
@@ -331,7 +322,6 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
     <div class="mact"><button class="bsec" onclick="fecharModal('modal-lead')">Cancelar</button><button class="btn" onclick="salvarLead()"><i class="ti ti-check"></i> Salvar</button></div>
   </div>
 </div>
-
 <div class="modal-ov" id="modal-venda" style="display:none" onclick="fecharModal('modal-venda',event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="mtitle">Registrar venda</div>
@@ -345,7 +335,6 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
     <div class="mact"><button class="bsec" onclick="fecharModal('modal-venda')">Cancelar</button><button class="btn" onclick="salvarVenda()"><i class="ti ti-check"></i> Registrar</button></div>
   </div>
 </div>
-
 <div class="modal-ov" id="modal-receber" style="display:none" onclick="fecharModal('modal-receber',event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="mtitle">Nova conta a receber</div>
@@ -364,80 +353,62 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPA_URL='https://nouyivisxqffmzfcbukn.supabase.co';
-const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vdXlpdmlzeHFmZm16ZmNidWtuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNDQwMjQsImV4cCI6MjA5NDcyMDAyNH0.aUpkk4L_jOt8DnnQuzUvB2nd47F5Tc_NYnO6Boy6ZeQ';
-const supa=supabase.createClient(SUPA_URL,SUPA_KEY);
-
-let user=null,leads=[],prods=[],contas=[],vendas=[],segFiltro='todos',editLeadIdx=-1,editProdIdx=-1,tcatAtivo='Todos';
-let deferredPrompt=null;
-
+const SURL='https://nouyivisxqffmzfcbukn.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vdXlpdmlzeHFmZm16ZmNidWtuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNDQwMjQsImV4cCI6MjA5NDcyMDAyNH0.aUpkk4L_jOt8DnnQuzUvB2nd47F5Tc_NYnO6Boy6ZeQ';
+const sb=supabase.createClient(SURL,SKEY);
+let user=null,leads=[],prods=[],contas=[],vendas=[],seg='todos',editLead=null,editProd=null,tcat='Todos';
 const stgs=[{k:"contato",l:"Primeiro contato"},{k:"proposta",l:"Proposta enviada"},{k:"negociando",l:"Negociando"},{k:"fechando",l:"Fechado ✓"}];
-
-const templates=[
-  {cat:"Primeiro contato",title:"Apresentação simples",msg:"Olá, {nome}! Tudo bem? 😊 Meu nome é [SEU NOME] e queria te apresentar algo que pode ajudar muito o seu negócio. Posso te contar mais?"},
-  {cat:"Primeiro contato",title:"Indicação de amigo",msg:"Oi, {nome}! Recebi seu contato através de [NOME] que me falou muito bem de você. Queria bater um papo rápido. Tem um minutinho?"},
-  {cat:"Primeiro contato",title:"Redes sociais",msg:"Olá, {nome}! Vi seu perfil e adorei o que você faz! 👏 Acredito que tenho algo que pode complementar o seu negócio. Posso te apresentar?"},
-  {cat:"Primeiro contato",title:"Abordagem direta",msg:"Olá, {nome}! Trabalho com [PRODUTO/SERVIÇO] e acredito que pode fazer muito sentido para você. Posso te mostrar rapidamente como funciona?"},
-  {cat:"Primeiro contato",title:"Após evento",msg:"Oi, {nome}! Foi um prazer te conhecer hoje! Como combinamos, aqui estou para te passar mais informações. Quando seria um bom horário para conversarmos?"},
-  {cat:"Follow-up",title:"Retorno gentil",msg:"Oi, {nome}! 😊 Passando para saber se você teve a chance de pensar na nossa conversa. Fico à disposição para tirar qualquer dúvida!"},
-  {cat:"Follow-up",title:"Proposta enviada",msg:"Olá, {nome}! Conforme combinamos, segue a proposta. Qualquer dúvida pode me chamar. Quando você consegue dar uma olhada? 📋"},
-  {cat:"Follow-up",title:"Sem resposta 3 dias",msg:"Oi, {nome}! Tudo bem por aí? Imagino que você deve estar muito ocupado. Quando tiver um momento, adoraria continuar nossa conversa. 😊"},
-  {cat:"Follow-up",title:"Sem resposta 1 semana",msg:"Olá, {nome}! Sei que a rotina é corrida, mas não queria deixar nossa conversa em aberto. Tem 5 minutinhos para bater um papo?"},
-  {cat:"Follow-up",title:"Última tentativa",msg:"Oi, {nome}! Vou ser direto: esse será meu último contato para não te incomodar. Se quiser retomar nossa conversa, estarei por aqui. Abraços! 🤝"},
-  {cat:"Negociação",title:"Condição especial",msg:"Oi, {nome}! Tenho uma condição especial disponível por tempo limitado que acho que faz muito sentido para você. Posso te apresentar agora? 🎯"},
-  {cat:"Negociação",title:"Objeção de preço",msg:"Entendo sua preocupação com o investimento, {nome}. Posso te mostrar exatamente quanto isso vai gerar de retorno? Os números são bem interessantes! 📊"},
-  {cat:"Negociação",title:"Facilitar pagamento",msg:"Oi, {nome}! Para facilitar, posso oferecer parcelamento no cartão ou Pix. Qual opção funciona melhor para você? 💳"},
-  {cat:"Negociação",title:"Bônus exclusivo",msg:"Olá, {nome}! Para fecharmos hoje, posso incluir [BÔNUS] sem custo adicional. Isso resolve? 🎁"},
-  {cat:"Negociação",title:"Urgência",msg:"Oi, {nome}! Preciso te avisar que essa condição especial encerra [DATA]. Não quero que você perca essa oportunidade!"},
-  {cat:"Fechamento",title:"Hora de fechar",msg:"Olá, {nome}! 🤝 Baseado em tudo que conversamos, acredito que estamos alinhados. O que falta para fecharmos hoje?"},
-  {cat:"Fechamento",title:"Resumo e CTA",msg:"Oi, {nome}! Resumindo: você terá [BENEFÍCIO 1] e [BENEFÍCIO 2] por apenas {valor}. Vamos dar andamento? Como prefere pagar?"},
-  {cat:"Fechamento",title:"Confirmar pedido",msg:"Perfeito, {nome}! Confirmo seu pedido de {produto}. Vou separar agora. 😊 O pagamento será por Pix ou dinheiro?"},
-  {cat:"Fechamento",title:"Fechar no pix",msg:"Oi, {nome}! Para confirmar, basta me fazer o pix de {valor} para [CHAVE PIX]. Assim que confirmar, já providencio tudo! 💚"},
-  {cat:"Fechamento",title:"Após aprovação",msg:"Ótima escolha, {nome}! 🎉 Estou super feliz em ter você como cliente. Vou te passar todos os próximos passos agora mesmo!"},
-  {cat:"Cobrança",title:"Lembrete amigável",msg:"Olá, {nome}! Tudo bem? 😊 Passando para lembrar que temos um valor de {valor} em aberto. Quando consegue resolver?"},
-  {cat:"Cobrança",title:"Vencimento hoje",msg:"Oi, {nome}! Lembrete rápido: o pagamento de {valor} vence hoje. Para facilitar, pode ser no Pix! 😊"},
-  {cat:"Cobrança",title:"Pagamento atrasado",msg:"Olá, {nome}! Notei que o pagamento de {valor} ainda está em aberto. Pode me avisar quando consegue regularizar? 🙏"},
-  {cat:"Cobrança",title:"Segunda cobrança",msg:"Oi, {nome}! Já entrei em contato antes sobre o valor de {valor}. Preciso que você me dê uma posição. Quando consegue pagar?"},
-  {cat:"Cobrança",title:"Acordo de pagamento",msg:"Olá, {nome}! Podemos negociar uma forma de pagamento que funcione para você? Me conta a situação. 🤝"},
-  {cat:"Cobrança",title:"Parcelamento",msg:"Oi, {nome}! Para facilitar, posso dividir o valor de {valor} em parcelas menores. Isso te ajudaria?"},
-  {cat:"Cobrança",title:"Última cobrança",msg:"Olá, {nome}! Esse é meu último contato sobre o valor de {valor}. Preciso de uma resposta para saber como prosseguir."},
-  {cat:"Pós-venda",title:"Agradecimento",msg:"Oi, {nome}! Muito obrigado pela sua compra! 🙏 Qualquer dúvida ou problema, pode me chamar!"},
-  {cat:"Pós-venda",title:"Verificar satisfação",msg:"Olá, {nome}! Como está sendo sua experiência com {produto}? Seu feedback é muito importante! 🌟"},
-  {cat:"Pós-venda",title:"Pedir indicação",msg:"Oi, {nome}! Fico feliz que gostou! 😊 Você conhece alguém que também poderia se beneficiar? Se indicar, tenho uma condição especial para você!"},
-  {cat:"Pós-venda",title:"Recompra",msg:"Oi, {nome}! Seu estoque de {produto} deve estar acabando. Posso já separar mais para você? 😊"},
-  {cat:"Promoção",title:"Oferta relâmpago",msg:"🔥 OFERTA RELÂMPAGO, {nome}! Por hoje apenas, estou com {produto} por apenas {valor}. Garante o seu agora?"},
-  {cat:"Promoção",title:"Liquidação",msg:"Oi, {nome}! Grande liquidação aqui na loja! Grandes descontos em vários produtos. Passa lá ou me fala o que você precisa? 🛍️"},
-  {cat:"Promoção",title:"Novo produto",msg:"Olá, {nome}! 🎉 Acabou de chegar {produto} aqui! Lembrei de você porque [MOTIVO]. Quer dar uma olhada?"},
-  {cat:"Promoção",title:"Black Friday",msg:"🖤 BLACK FRIDAY, {nome}! Ofertas imperdíveis por tempo limitado. {produto} saindo por {valor}. Aproveita enquanto tem estoque!"},
-  {cat:"Confirmações",title:"Confirmar pedido",msg:"Olá, {nome}! Confirmo seu pedido: {produto}. Valor total: {valor}. Qualquer dúvida estou aqui! ✅"},
-  {cat:"Confirmações",title:"Confirmar agendamento",msg:"Oi, {nome}! Confirmo seu agendamento para [DIA] às [HORA]. Lembrando o endereço: [ENDEREÇO]. Qualquer imprevisto me avisa! 📅"},
-  {cat:"Confirmações",title:"Pagamento recebido",msg:"Pagamento confirmado, {nome}! 💚 Obrigado! Já estou providenciando {produto}. Te aviso assim que estiver pronto!"},
-  {cat:"Confirmações",title:"Pedido pronto",msg:"Oi, {nome}! Seu pedido está pronto! 🎉 Pode retirar quando quiser!"},
-  {cat:"Reengajamento",title:"Cliente sumido",msg:"Oi, {nome}! Saudades! 😊 Faz um tempo que não te vejo. Tem novidades que acho que você vai adorar. Passa lá?"},
-  {cat:"Reengajamento",title:"Oferta para retorno",msg:"Oi, {nome}! Preparei uma surpresa especial para clientes que faz tempo não aparecem. Curiosidade? Me responde! 😊"},
-  {cat:"Suporte",title:"Resolver problema",msg:"Oi, {nome}! Lamento pelo inconveniente. Vou resolver isso para você agora mesmo. Pode me contar melhor o que aconteceu? 🙏"},
-  {cat:"Suporte",title:"Troca ou devolução",msg:"Olá, {nome}! Claro, vamos resolver a troca sem problema. Pode trazer {produto} que te ajudo imediatamente! 😊"},
-  {cat:"Suporte",title:"Entrega atrasada",msg:"Oi, {nome}! Lamento pelo atraso. Seu pedido chegará em [NOVA DATA]. Obrigado pela paciência! 🙏"},
+const tmpl=[
+  {c:"Primeiro contato",t:"Apresentação",m:"Olá, {nome}! Tudo bem? 😊 Meu nome é [SEU NOME] e queria te apresentar algo que pode ajudar muito o seu negócio. Posso te contar mais?"},
+  {c:"Primeiro contato",t:"Indicação",m:"Oi, {nome}! Recebi seu contato através de [NOME] que me falou muito bem de você. Queria bater um papo rápido. Tem um minutinho?"},
+  {c:"Primeiro contato",t:"Redes sociais",m:"Olá, {nome}! Vi seu perfil e adorei o que você faz! 👏 Acredito que tenho algo que pode complementar o seu negócio. Posso te apresentar?"},
+  {c:"Primeiro contato",t:"Abordagem direta",m:"Olá, {nome}! Trabalho com [PRODUTO] e acredito que pode fazer muito sentido para você. Posso te mostrar como funciona?"},
+  {c:"Follow-up",t:"Retorno gentil",m:"Oi, {nome}! 😊 Passando para saber se você teve a chance de pensar na nossa conversa. Fico à disposição para tirar qualquer dúvida!"},
+  {c:"Follow-up",t:"Proposta enviada",m:"Olá, {nome}! Conforme combinamos, segue a proposta. Quando você consegue dar uma olhada? 📋"},
+  {c:"Follow-up",t:"Sem resposta 3 dias",m:"Oi, {nome}! Tudo bem por aí? Imagino que você deve estar muito ocupado. Quando tiver um momento, adoraria continuar nossa conversa. 😊"},
+  {c:"Follow-up",t:"Sem resposta 1 semana",m:"Olá, {nome}! Sei que a rotina é corrida, mas não queria deixar nossa conversa em aberto. Tem 5 minutinhos?"},
+  {c:"Follow-up",t:"Última tentativa",m:"Oi, {nome}! Esse será meu último contato para não te incomodar. Se quiser retomar nossa conversa, estarei por aqui. Abraços! 🤝"},
+  {c:"Negociação",t:"Condição especial",m:"Oi, {nome}! Tenho uma condição especial disponível por tempo limitado. Posso te apresentar agora? 🎯"},
+  {c:"Negociação",t:"Objeção de preço",m:"Entendo sua preocupação com o investimento, {nome}. Posso te mostrar exatamente quanto isso vai gerar de retorno? 📊"},
+  {c:"Negociação",t:"Facilitar pagamento",m:"Oi, {nome}! Para facilitar, posso oferecer parcelamento no cartão ou Pix. Qual opção funciona melhor? 💳"},
+  {c:"Negociação",t:"Bônus exclusivo",m:"Olá, {nome}! Para fecharmos hoje, posso incluir [BÔNUS] sem custo adicional. Isso resolve? 🎁"},
+  {c:"Negociação",t:"Urgência",m:"Oi, {nome}! Essa condição especial encerra [DATA]. Não quero que você perca essa oportunidade!"},
+  {c:"Fechamento",t:"Hora de fechar",m:"Olá, {nome}! 🤝 Baseado em tudo que conversamos, estamos alinhados. O que falta para fecharmos hoje?"},
+  {c:"Fechamento",t:"Resumo e CTA",m:"Oi, {nome}! Você terá [BENEFÍCIO] por apenas {valor}. Vamos dar andamento? Como prefere pagar?"},
+  {c:"Fechamento",t:"Confirmar pedido",m:"Perfeito, {nome}! Confirmo seu pedido de {produto}. O pagamento será por Pix ou dinheiro? 😊"},
+  {c:"Fechamento",t:"Fechar no pix",m:"Oi, {nome}! Para confirmar, basta o pix de {valor} para [CHAVE PIX]. Já providencio tudo! 💚"},
+  {c:"Cobrança",t:"Lembrete amigável",m:"Olá, {nome}! Tudo bem? 😊 Passando para lembrar que temos um valor de {valor} em aberto. Quando consegue resolver?"},
+  {c:"Cobrança",t:"Vencimento hoje",m:"Oi, {nome}! Lembrete: o pagamento de {valor} vence hoje. Pode ser no Pix! 😊"},
+  {c:"Cobrança",t:"Pagamento atrasado",m:"Olá, {nome}! O pagamento de {valor} ainda está em aberto. Pode me avisar quando consegue regularizar? 🙏"},
+  {c:"Cobrança",t:"Segunda cobrança",m:"Oi, {nome}! Já entrei em contato antes sobre o valor de {valor}. Preciso que você me dê uma posição."},
+  {c:"Cobrança",t:"Acordo de pagamento",m:"Olá, {nome}! Podemos negociar uma forma de pagamento que funcione para você? Me conta a situação. 🤝"},
+  {c:"Cobrança",t:"Parcelamento",m:"Oi, {nome}! Posso dividir o valor de {valor} em parcelas menores. Isso te ajudaria?"},
+  {c:"Pós-venda",t:"Agradecimento",m:"Oi, {nome}! Muito obrigado pela sua compra! 🙏 Qualquer dúvida ou problema, pode me chamar!"},
+  {c:"Pós-venda",t:"Verificar satisfação",m:"Olá, {nome}! Como está sendo sua experiência com {produto}? Seu feedback é muito importante! 🌟"},
+  {c:"Pós-venda",t:"Pedir indicação",m:"Oi, {nome}! Fico feliz que gostou! 😊 Você conhece alguém que poderia se beneficiar? Se indicar, tenho condição especial para você!"},
+  {c:"Pós-venda",t:"Recompra",m:"Oi, {nome}! Seu estoque de {produto} deve estar acabando. Posso já separar mais? 😊"},
+  {c:"Promoção",t:"Oferta relâmpago",m:"🔥 OFERTA RELÂMPAGO, {nome}! Por hoje apenas, {produto} por apenas {valor}. Garante o seu agora?"},
+  {c:"Promoção",t:"Liquidação",m:"Oi, {nome}! Grande liquidação aqui! Grandes descontos em vários produtos. Passa lá? 🛍️"},
+  {c:"Promoção",t:"Novo produto",m:"Olá, {nome}! 🎉 Acabou de chegar {produto} aqui! Lembrei de você. Quer dar uma olhada?"},
+  {c:"Promoção",t:"Black Friday",m:"🖤 BLACK FRIDAY, {nome}! {produto} saindo por {valor}. Aproveita enquanto tem estoque!"},
+  {c:"Confirmações",t:"Confirmar pedido",m:"Olá, {nome}! Confirmo seu pedido: {produto}. Valor total: {valor}. ✅"},
+  {c:"Confirmações",t:"Pagamento recebido",m:"Pagamento confirmado, {nome}! 💚 Já estou providenciando {produto}. Te aviso quando estiver pronto!"},
+  {c:"Confirmações",t:"Pedido pronto",m:"Oi, {nome}! Seu pedido está pronto! 🎉 Pode retirar quando quiser!"},
+  {c:"Reengajamento",t:"Cliente sumido",m:"Oi, {nome}! Saudades! 😊 Faz um tempo que não te vejo. Tem novidades que você vai adorar!"},
+  {c:"Reengajamento",t:"Oferta retorno",m:"Oi, {nome}! Preparei uma surpresa especial para quem faz tempo não aparece. Curiosidade? 😊"},
+  {c:"Suporte",t:"Resolver problema",m:"Oi, {nome}! Lamento pelo inconveniente. Vou resolver isso agora mesmo. Pode me contar o que aconteceu? 🙏"},
+  {c:"Suporte",t:"Troca ou devolução",m:"Olá, {nome}! Vamos resolver a troca sem problema. Pode trazer {produto} que te ajudo! 😊"},
 ];
 
-// PWA Install
-window.addEventListener('beforeinstallprompt',(e)=>{
-  e.preventDefault();deferredPrompt=e;
-  document.getElementById('install-bar').style.display='flex';
-});
-document.getElementById('btn-install').addEventListener('click',async()=>{
-  if(!deferredPrompt)return;
-  deferredPrompt.prompt();
-  const{outcome}=await deferredPrompt.userChoice;
-  if(outcome==='accepted')document.getElementById('install-bar').style.display='none';
-  deferredPrompt=null;
-});
-
-// AUTH
 async function init(){
-  const{data:{session}}=await supa.auth.getSession();
-  if(session){user=session.user;await entrarApp();}
-  else{document.getElementById('loading-screen').style.display='none';document.getElementById('auth-screen').style.display='flex';}
+  try{
+    const{data:{session}}=await sb.auth.getSession();
+    if(session){user=session.user;await entrarApp();}
+    else{document.getElementById('loading-screen').style.display='none';document.getElementById('auth-screen').style.display='flex';}
+  }catch(e){
+    document.getElementById('loading-screen').style.display='none';
+    document.getElementById('auth-screen').style.display='flex';
+  }
 }
 
 function toggleAuth(t){
@@ -449,9 +420,9 @@ function toggleAuth(t){
 async function fazerLogin(){
   const email=document.getElementById('l-email').value.trim();
   const senha=document.getElementById('l-senha').value;
-  if(!email||!senha){showAuthErr('Preencha todos os campos');return;}
-  const{data,error}=await supa.auth.signInWithPassword({email,password:senha});
-  if(error){showAuthErr('E-mail ou senha incorretos');return;}
+  if(!email||!senha){showErr('Preencha todos os campos');return;}
+  const{data,error}=await sb.auth.signInWithPassword({email,password:senha});
+  if(error){showErr('E-mail ou senha incorretos');return;}
   user=data.user;await entrarApp();
 }
 
@@ -459,14 +430,14 @@ async function fazerRegistro(){
   const nome=document.getElementById('r-nome').value.trim();
   const email=document.getElementById('r-email').value.trim();
   const senha=document.getElementById('r-senha').value;
-  if(!nome||!email||!senha){showAuthErr('Preencha todos os campos');return;}
-  if(senha.length<6){showAuthErr('Senha mínimo 6 caracteres');return;}
-  const{data,error}=await supa.auth.signUp({email,password:senha,options:{data:{nome}}});
-  if(error){showAuthErr(error.message);return;}
+  if(!nome||!email||!senha){showErr('Preencha todos os campos');return;}
+  if(senha.length<6){showErr('Senha mínimo 6 caracteres');return;}
+  const{data,error}=await sb.auth.signUp({email,password:senha,options:{data:{nome}}});
+  if(error){showErr(error.message);return;}
   user=data.user;await entrarApp();
 }
 
-function showAuthErr(msg){const el=document.getElementById('auth-err');el.textContent=msg;el.style.display='block';}
+function showErr(msg){const el=document.getElementById('auth-err');el.textContent=msg;el.style.display='block';}
 
 async function entrarApp(){
   document.getElementById('loading-screen').style.display='none';
@@ -474,25 +445,24 @@ async function entrarApp(){
   document.getElementById('app-screen').style.display='block';
   const nome=user.user_metadata?.nome||user.email||'U';
   document.getElementById('user-initials').textContent=nome.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
-  await carregarDados();buildAll();verificarVencimentos();
+  await carregarDados();buildAll();verificarVenc();
 }
 
 async function sair(){
   if(!confirm('Sair da conta?'))return;
-  await supa.auth.signOut();
+  await sb.auth.signOut();
   user=null;leads=[];prods=[];contas=[];vendas=[];
   document.getElementById('app-screen').style.display='none';
   document.getElementById('auth-screen').style.display='flex';
 }
 
-// SUPABASE DATA
 async function carregarDados(){
   const uid=user.id;
   const[l,p,c,v]=await Promise.all([
-    supa.from('leads').select('*').eq('user_id',uid).order('created_at',{ascending:false}),
-    supa.from('produtos').select('*').eq('user_id',uid).order('created_at',{ascending:false}),
-    supa.from('contas').select('*').eq('user_id',uid).order('created_at',{ascending:false}),
-    supa.from('vendas').select('*').eq('user_id',uid).order('created_at',{ascending:false}),
+    sb.from('leads').select('*').eq('user_id',uid).order('created_at',{ascending:false}),
+    sb.from('produtos').select('*').eq('user_id',uid).order('created_at',{ascending:false}),
+    sb.from('contas').select('*').eq('user_id',uid).order('created_at',{ascending:false}),
+    sb.from('vendas').select('*').eq('user_id',uid).order('created_at',{ascending:false}),
   ]);
   leads=l.data||[];prods=p.data||[];contas=c.data||[];vendas=v.data||[];
 }
@@ -510,23 +480,22 @@ function toast(msg,cor){
   t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);
 }
 
-function fmtMoeda(v){return'R$ '+(parseFloat(v)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function R(v){return'R$ '+(parseFloat(v)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
 
-function buildAll(){buildDash();buildKanban();buildVendas();buildEstoque();buildClients();buildReceber();buildTemplates();}
+function buildAll(){buildDash();buildKanban();buildVendas();buildEst();buildClients();buildReceber();buildTmpl();}
 
 function buildDash(){
-  const recLeads=leads.filter(l=>l.stage==='fechando').reduce((s,l)=>s+(parseFloat(l.val)||0),0);
-  const recVendas=vendas.reduce((s,v)=>s+(parseFloat(v.val)||0),0);
-  document.getElementById('d-receita').textContent=fmtMoeda(recLeads+recVendas);
+  const rL=leads.filter(l=>l.stage==='fechando').reduce((s,l)=>s+(parseFloat(l.val)||0),0);
+  const rV=vendas.reduce((s,v)=>s+(parseFloat(v.val)||0),0);
+  document.getElementById('d-receita').textContent=R(rL+rV);
   document.getElementById('d-leads').textContent=leads.length;
   document.getElementById('d-falta').textContent=prods.filter(p=>p.qtd<=p.min).length;
-  document.getElementById('d-receber').textContent=fmtMoeda(contas.filter(c=>c.status!=='pago').reduce((s,c)=>s+(parseFloat(c.val)||0),0));
-  const max=leads.length||1;
-  const cores=["#9FE1CB","#5DCAA5","#1D9E75","#0F6E56"];
-  const d=[{l:"Total clientes",v:leads.length},{l:"Proposta enviada",v:leads.filter(x=>['proposta','negociando','fechando'].includes(x.stage)).length},{l:"Negociando",v:leads.filter(x=>['negociando','fechando'].includes(x.stage)).length},{l:"Fechados",v:leads.filter(x=>x.stage==='fechando').length}];
-  document.getElementById('funnel').innerHTML=d.map((x,i)=>`<div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:2px"><span>${x.l}</span><span style="font-weight:600;color:var(--text)">${x.v}</span></div><div style="height:6px;background:var(--bg3);border-radius:999px;overflow:hidden"><div style="height:100%;width:${Math.round(x.v/max*100)}%;background:${cores[i]};border-radius:999px"></div></div></div>`).join('');
-  const ults=vendas.slice(0,4);
-  document.getElementById('dash-vendas').innerHTML=ults.length?ults.map(v=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)"><div><div style="font-size:12px;font-weight:500">${v.prod}</div><div style="font-size:10px;color:var(--text2)">${v.cliente||'—'} • ${v.forma}</div></div><span style="font-size:12px;font-weight:600;color:var(--green)">${fmtMoeda(v.val)}</span></div>`).join(''):'<div style="font-size:12px;color:var(--text3)">Nenhuma venda ainda</div>';
+  document.getElementById('d-receber').textContent=R(contas.filter(c=>c.status!=='pago').reduce((s,c)=>s+(parseFloat(c.val)||0),0));
+  const mx=leads.length||1;
+  const cr=["#9FE1CB","#5DCAA5","#1D9E75","#0F6E56"];
+  const d=[{l:"Total",v:leads.length},{l:"Proposta",v:leads.filter(x=>['proposta','negociando','fechando'].includes(x.stage)).length},{l:"Negociando",v:leads.filter(x=>['negociando','fechando'].includes(x.stage)).length},{l:"Fechados",v:leads.filter(x=>x.stage==='fechando').length}];
+  document.getElementById('funnel').innerHTML=d.map((x,i)=>`<div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:2px"><span>${x.l}</span><span style="font-weight:600;color:var(--text)">${x.v}</span></div><div style="height:6px;background:var(--bg3);border-radius:999px;overflow:hidden"><div style="height:100%;width:${Math.round(x.v/mx*100)}%;background:${cr[i]};border-radius:999px"></div></div></div>`).join('');
+  document.getElementById('dash-vendas').innerHTML=vendas.length?vendas.slice(0,4).map(v=>`<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)"><div><div style="font-size:12px;font-weight:500">${v.prod}</div><div style="font-size:10px;color:var(--text2)">${v.cliente||'—'} · ${v.forma}</div></div><span style="font-size:12px;font-weight:600;color:var(--green)">${R(v.val)}</span></div>`).join(''):'<div style="font-size:12px;color:var(--text3)">Nenhuma venda ainda</div>';
 }
 
 function buildKanban(){
@@ -538,7 +507,7 @@ function buildKanban(){
     if(!sl.length)col.innerHTML+=`<div style="font-size:12px;color:var(--text3);text-align:center;padding:20px 0">Nenhum cliente</div>`;
     sl.forEach(l=>{
       const c=document.createElement('div');c.className='lcard';
-      c.innerHTML=`<div class="lname">${l.nome}</div><div class="lbiz">${l.biz||'—'}</div><div class="lfoot"><span class="lval">${fmtMoeda(l.val)}</span><div style="display:flex;gap:4px"><button onclick="abrirModalLead('${l.id}')" style="background:none;border:none;color:var(--amber);cursor:pointer;font-size:13px" title="Editar">✎</button><button onclick="removerLead('${l.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>${l.obs?`<div style="font-size:10px;color:var(--text3);margin-top:5px">${l.obs}</div>`:''}`;
+      c.innerHTML=`<div class="lname">${l.nome}</div><div class="lbiz">${l.biz||'—'}</div><div class="lfoot"><span class="lval">${R(l.val)}</span><div style="display:flex;gap:4px"><button onclick="abrirModalLead('${l.id}')" style="background:none;border:none;color:var(--amber);cursor:pointer;font-size:13px">✎</button><button onclick="remLead('${l.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>${l.obs?`<div style="font-size:10px;color:var(--text3);margin-top:5px">${l.obs}</div>`:''}`;
       col.appendChild(c);
     });
     b.appendChild(col);
@@ -546,98 +515,96 @@ function buildKanban(){
 }
 
 function buildVendas(){
-  const hoje=new Date().toISOString().split('T')[0];
-  const mes=hoje.substring(0,7);
-  const vHoje=vendas.filter(v=>v.data===hoje).reduce((s,v)=>s+(parseFloat(v.val)||0),0);
-  const vMes=vendas.filter(v=>v.data&&v.data.startsWith(mes)).reduce((s,v)=>s+(parseFloat(v.val)||0),0);
-  document.getElementById('v-dia').textContent=fmtMoeda(vHoje);
-  document.getElementById('v-mes').textContent=fmtMoeda(vMes);
+  const h=new Date().toISOString().split('T')[0];
+  const m=h.substring(0,7);
+  document.getElementById('v-dia').textContent=R(vendas.filter(v=>v.data===h).reduce((s,v)=>s+(parseFloat(v.val)||0),0));
+  document.getElementById('v-mes').textContent=R(vendas.filter(v=>v.data&&v.data.startsWith(m)).reduce((s,v)=>s+(parseFloat(v.val)||0),0));
   document.getElementById('v-qtd').textContent=vendas.length;
-  document.getElementById('v-ticket').textContent=vendas.length?fmtMoeda(vendas.reduce((s,v)=>s+(parseFloat(v.val)||0),0)/vendas.length):fmtMoeda(0);
-  document.getElementById('vendas-list').innerHTML=vendas.length?vendas.map(v=>`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 60px"><div class="td"><div style="font-weight:500">${v.prod}</div><div style="font-size:10px;color:var(--text2)">${v.forma}</div></div><div class="tdm">${v.cliente||'—'}</div><div class="td" style="color:var(--green);font-weight:600">${fmtMoeda(v.val)}</div><div class="tdm">${v.data?new Date(v.data+'T00:00:00').toLocaleDateString('pt-BR'):'—'}</div><div><button onclick="removerVenda('${v.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>`).join(''):'<div style="padding:24px;text-align:center;font-size:13px;color:var(--text3)">Nenhuma venda registrada ainda.</div>';
+  document.getElementById('v-ticket').textContent=vendas.length?R(vendas.reduce((s,v)=>s+(parseFloat(v.val)||0),0)/vendas.length):R(0);
+  document.getElementById('vendas-list').innerHTML=vendas.length?vendas.map(v=>`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 60px"><div class="td"><div style="font-weight:500">${v.prod}</div><div style="font-size:10px;color:var(--text2)">${v.forma}</div></div><div class="tdm">${v.cliente||'—'}</div><div class="td" style="color:var(--green);font-weight:600">${R(v.val)}</div><div class="tdm">${v.data?new Date(v.data+'T00:00:00').toLocaleDateString('pt-BR'):'—'}</div><div><button onclick="remVenda('${v.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>`).join(''):'<div style="padding:24px;text-align:center;font-size:13px;color:var(--text3)">Nenhuma venda registrada.</div>';
 }
 
-function buildEstoque(){
-  const filtrado=segFiltro==='todos'?prods:prods.filter(p=>p.cat===segFiltro);
-  document.getElementById('st-tot').textContent=filtrado.length;
-  document.getElementById('st-bx').textContent=filtrado.filter(p=>p.qtd>0&&p.qtd<=p.min).length;
-  document.getElementById('st-z').textContent=filtrado.filter(p=>p.qtd===0).length;
-  document.getElementById('st-v').textContent=fmtMoeda(filtrado.reduce((s,p)=>s+p.qtd*p.preco,0));
-  const al=filtrado.filter(p=>p.qtd<=p.min);
+function buildEst(){
+  const f=seg==='todos'?prods:prods.filter(p=>p.cat===seg);
+  document.getElementById('st-tot').textContent=f.length;
+  document.getElementById('st-bx').textContent=f.filter(p=>p.qtd>0&&p.qtd<=p.min).length;
+  document.getElementById('st-z').textContent=f.filter(p=>p.qtd===0).length;
+  document.getElementById('st-v').textContent=R(f.reduce((s,p)=>s+p.qtd*p.preco,0));
+  const al=f.filter(p=>p.qtd<=p.min);
   const ab=document.getElementById('alert-box');
   if(al.length){ab.style.display='flex';document.getElementById('alert-txt').textContent=`${al.length} produto(s) precisam de reposição`;}
   else ab.style.display='none';
-  document.getElementById('est-list').innerHTML=filtrado.length?filtrado.map(p=>{
+  document.getElementById('est-list').innerHTML=f.length?f.map(p=>{
     const pct=p.min>0?Math.min(100,Math.round(p.qtd/(p.min*3)*100)):100;
     const cor=p.qtd===0?'#E24B4A':p.qtd<=p.min?'#EF9F27':'#1D9E75';
     const st=p.qtd===0?'br':p.qtd<=p.min?'ba':'bg';
     const lb=p.qtd===0?'Sem estoque':p.qtd<=p.min?'Baixo':'Normal';
-    return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 130px"><div class="td">${p.nome}</div><div class="tdm">${p.cat}</div><div class="td"><span style="font-weight:600">${p.qtd}</span><div class="sbar-w"><div class="sbar" style="width:${pct}%;background:${cor}"></div></div></div><div class="tdm">${p.min}</div><div class="td" style="color:var(--green);font-weight:600">${fmtMoeda(p.preco)}</div><div style="display:flex;gap:5px;align-items:center"><button class="bwarn" onclick="abrirModalProd('${p.id}')" style="font-size:11px;padding:4px 8px"><i class="ti ti-edit" style="font-size:12px"></i></button><span class="badge ${st}">${lb}</span><button onclick="removerProd('${p.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>`;
+    return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 130px"><div class="td">${p.nome}</div><div class="tdm">${p.cat}</div><div class="td"><span style="font-weight:600">${p.qtd}</span><div class="sbar-w"><div class="sbar" style="width:${pct}%;background:${cor}"></div></div></div><div class="tdm">${p.min}</div><div class="td" style="color:var(--green);font-weight:600">${R(p.preco)}</div><div style="display:flex;gap:5px;align-items:center"><button class="bwarn" onclick="abrirModalProd('${p.id}')" style="font-size:11px;padding:4px 8px"><i class="ti ti-edit" style="font-size:12px"></i></button><span class="badge ${st}">${lb}</span><button onclick="remProd('${p.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>`;
   }).join(''):'<div style="padding:24px;text-align:center;font-size:13px;color:var(--text3)">Nenhum produto cadastrado.</div>';
 }
 
 function buildClients(){
-  const colors=['#0d2b22','#0d1e2d','#2d1e00','#2d1010','#1a1040','#1a2d0a'];
-  const tcols=['#1D9E75','#378ADD','#EF9F27','#f87171','#8b7cf6','#5dbd3a'];
-  document.getElementById('cli-list').innerHTML=leads.length?leads.map((l,i)=>`<div class="td-row" style="grid-template-columns:2fr 1.5fr 1fr 1fr 110px"><div class="td" style="display:flex;align-items:center;gap:9px"><div style="width:28px;height:28px;border-radius:50%;background:${colors[i%6]};color:${tcols[i%6]};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;border:1px solid ${tcols[i%6]}44">${l.nome.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()}</div><div><div>${l.nome}</div>${l.obs?`<div style="font-size:10px;color:var(--text3)">${l.obs}</div>`:''}</div></div><div class="tdm">${l.biz||'—'}</div><div class="td" style="color:var(--green);font-weight:600">${fmtMoeda(l.val)}</div><div><span class="badge ${l.stage==='fechando'?'bg':l.stage==='negociando'?'ba':'bgr'}">${stgs.find(s=>s.k===l.stage)?.l||l.stage}</span></div><div style="display:flex;gap:5px"><button class="bwarn" onclick="abrirModalLead('${l.id}')" style="font-size:11px;padding:4px 8px"><i class="ti ti-edit" style="font-size:12px"></i></button><button class="bsec" onclick="preencherIA('${l.nome.replace(/'/g,"\\'")}','${fmtMoeda(l.val)}')" style="font-size:11px;padding:4px 8px">MSG</button><button onclick="removerLead('${l.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>`).join(''):'<div style="padding:24px;text-align:center;font-size:13px;color:var(--text3)">Nenhum cliente cadastrado.</div>';
+  const cl=['#0d2b22','#0d1e2d','#2d1e00','#2d1010','#1a1040','#1a2d0a'];
+  const tc=['#1D9E75','#378ADD','#EF9F27','#f87171','#8b7cf6','#5dbd3a'];
+  document.getElementById('cli-list').innerHTML=leads.length?leads.map((l,i)=>`<div class="td-row" style="grid-template-columns:2fr 1.5fr 1fr 1fr 110px"><div class="td" style="display:flex;align-items:center;gap:9px"><div style="width:28px;height:28px;border-radius:50%;background:${cl[i%6]};color:${tc[i%6]};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0">${l.nome.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()}</div><div>${l.nome}${l.obs?`<div style="font-size:10px;color:var(--text3)">${l.obs}</div>`:''}</div></div><div class="tdm">${l.biz||'—'}</div><div class="td" style="color:var(--green);font-weight:600">${R(l.val)}</div><div><span class="badge ${l.stage==='fechando'?'bg':l.stage==='negociando'?'ba':'bgr'}">${stgs.find(s=>s.k===l.stage)?.l||l.stage}</span></div><div style="display:flex;gap:5px"><button class="bwarn" onclick="abrirModalLead('${l.id}')" style="font-size:11px;padding:4px 8px"><i class="ti ti-edit" style="font-size:12px"></i></button><button class="bsec" onclick="preIA('${l.nome.replace(/'/g,"\\'")}','${R(l.val)}')" style="font-size:11px;padding:4px 8px">MSG</button><button onclick="remLead('${l.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>`).join(''):'<div style="padding:24px;text-align:center;font-size:13px;color:var(--text3)">Nenhum cliente cadastrado.</div>';
 }
 
 function buildReceber(){
-  const hoje=new Date();hoje.setHours(0,0,0,0);
-  const pendentes=contas.filter(c=>c.status!=='pago');
-  document.getElementById('cr-total').textContent=fmtMoeda(pendentes.reduce((s,c)=>s+(parseFloat(c.val)||0),0));
-  document.getElementById('cr-hoje').textContent=pendentes.filter(c=>{const d=new Date(c.data+'T00:00:00');return d.getTime()===hoje.getTime();}).length;
-  document.getElementById('cr-atraso').textContent=pendentes.filter(c=>{const d=new Date(c.data+'T00:00:00');return d<hoje;}).length;
-  document.getElementById('cr-futuro').textContent=pendentes.filter(c=>{const d=new Date(c.data+'T00:00:00');return d>hoje;}).length;
-  const atrasados=pendentes.filter(c=>{const d=new Date(c.data+'T00:00:00');return d<=hoje;});
+  const hj=new Date();hj.setHours(0,0,0,0);
+  const pend=contas.filter(c=>c.status!=='pago');
+  document.getElementById('cr-total').textContent=R(pend.reduce((s,c)=>s+(parseFloat(c.val)||0),0));
+  document.getElementById('cr-hoje').textContent=pend.filter(c=>{const d=new Date(c.data+'T00:00:00');return d.getTime()===hj.getTime();}).length;
+  document.getElementById('cr-atraso').textContent=pend.filter(c=>new Date(c.data+'T00:00:00')<hj).length;
+  document.getElementById('cr-futuro').textContent=pend.filter(c=>new Date(c.data+'T00:00:00')>hj).length;
+  const at=pend.filter(c=>new Date(c.data+'T00:00:00')<=hj);
   const ra=document.getElementById('receber-alert');
-  if(atrasados.length){ra.style.display='flex';document.getElementById('receber-alert-txt').textContent=`${atrasados.length} conta(s) vencida(s) ou vencendo hoje: ${atrasados.map(c=>c.nome).join(', ')}`;}
+  if(at.length){ra.style.display='flex';document.getElementById('receber-alert-txt').textContent=`${at.length} conta(s) vencida(s) ou vencendo hoje: ${at.map(c=>c.nome).join(', ')}`;}
   else ra.style.display='none';
   document.getElementById('receber-list').innerHTML=contas.length?contas.map(c=>{
     const d=new Date(c.data+'T00:00:00');
-    const atrasado=c.status!=='pago'&&d<hoje;
-    const venceHoje=c.status!=='pago'&&d.getTime()===hoje.getTime();
-    const st=c.status==='pago'?'bg':atrasado?'br':venceHoje?'ba':'bgr';
-    const lb=c.status==='pago'?'Pago':atrasado?'Atrasado':venceHoje?'Vence hoje':'A vencer';
-    return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 120px"><div class="td"><div style="font-weight:500">${c.nome}</div>${c.obs?`<div style="font-size:10px;color:var(--text3)">${c.obs}</div>`:''}</div><div class="tdm">${c.desc||'—'}</div><div class="td" style="color:var(--amber);font-weight:600">${fmtMoeda(c.val)}</div><div class="tdm">${new Date(c.data+'T00:00:00').toLocaleDateString('pt-BR')}</div><div><span class="badge ${st}">${lb}</span></div><div style="display:flex;gap:5px;align-items:center">${c.status!=='pago'?`<button class="bgreen" onclick="marcarPago('${c.id}')" style="font-size:11px;padding:4px 8px"><i class="ti ti-check" style="font-size:12px"></i> Pago</button>`:'<span style="font-size:11px;color:var(--green)">✓</span>'}<button onclick="removerConta('${c.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>`;
+    const at=c.status!=='pago'&&d<hj;
+    const vh=c.status!=='pago'&&d.getTime()===hj.getTime();
+    const st=c.status==='pago'?'bg':at?'br':vh?'ba':'bgr';
+    const lb=c.status==='pago'?'Pago':at?'Atrasado':vh?'Vence hoje':'A vencer';
+    return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 120px"><div class="td"><div style="font-weight:500">${c.nome}</div>${c.obs?`<div style="font-size:10px;color:var(--text3)">${c.obs}</div>`:''}</div><div class="tdm">${c.descricao||'—'}</div><div class="td" style="color:var(--amber);font-weight:600">${R(c.val)}</div><div class="tdm">${new Date(c.data+'T00:00:00').toLocaleDateString('pt-BR')}</div><div><span class="badge ${st}">${lb}</span></div><div style="display:flex;gap:5px;align-items:center">${c.status!=='pago'?`<button class="bgreen" onclick="marcarPago('${c.id}')" style="font-size:11px;padding:4px 8px"><i class="ti ti-check" style="font-size:12px"></i> Pago</button>`:'<span style="font-size:11px;color:var(--green)">✓</span>'}<button onclick="remConta('${c.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>`;
   }).join(''):'<div style="padding:24px;text-align:center;font-size:13px;color:var(--text3)">Nenhuma conta cadastrada.</div>';
 }
 
-function buildTemplates(){
-  const cats=['Todos',...new Set(templates.map(t=>t.cat))];
-  document.getElementById('tcat').innerHTML=cats.map(c=>`<button class="tcat-btn${c===tcatAtivo?' active':''}" onclick="setTcat('${c}',this)">${c}</button>`).join('');
-  const filtrados=tcatAtivo==='Todos'?templates:templates.filter(t=>t.cat===tcatAtivo);
-  document.getElementById('template-list').innerHTML=filtrados.map((t,i)=>`<div class="template-item" onclick="usarTemplate(${templates.indexOf(t)})"><div class="ti-tag">${t.cat}</div><div class="ti-title">${t.title}</div><div class="ti-prev">${t.msg.substring(0,70)}...</div></div>`).join('');
+function buildTmpl(){
+  const cats=['Todos',...new Set(tmpl.map(t=>t.c))];
+  document.getElementById('tcat').innerHTML=cats.map(c=>`<button class="tcat-btn${c===tcat?' active':''}" onclick="setTcat('${c}',this)">${c}</button>`).join('');
+  const f=tcat==='Todos'?tmpl:tmpl.filter(t=>t.c===tcat);
+  document.getElementById('template-list').innerHTML=f.map((t,i)=>`<div class="template-item" onclick="usarTmpl(${tmpl.indexOf(t)})"><div class="ti-tag">${t.c}</div><div class="ti-title">${t.t}</div><div class="ti-prev">${t.m.substring(0,70)}...</div></div>`).join('');
 }
 
-function setTcat(cat,el){tcatAtivo=cat;document.querySelectorAll('.tcat-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');buildTemplates();}
+function setTcat(c,el){tcat=c;document.querySelectorAll('.tcat-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');buildTmpl();}
 
-function usarTemplate(i){
-  const nome=document.getElementById('ia-nome').value||'{nome}';
-  const valor=document.getElementById('ia-valor').value||'{valor}';
-  const prod=document.getElementById('ia-prod').value||'{produto}';
-  const msg=templates[i].msg.replace(/{nome}/g,nome).replace(/{valor}/g,valor).replace(/{produto}/g,prod);
+function usarTmpl(i){
+  const n=document.getElementById('ia-nome').value||'{nome}';
+  const v=document.getElementById('ia-valor').value||'{valor}';
+  const p=document.getElementById('ia-prod').value||'{produto}';
+  const msg=tmpl[i].m.replace(/{nome}/g,n).replace(/{valor}/g,v).replace(/{produto}/g,p);
   document.getElementById('ia-out').innerHTML=`<div class="ia-txt">${msg}</div>`;
   document.getElementById('ia-acts').style.display='flex';
 }
 
 function copiarMsg(){const t=document.querySelector('.ia-txt');if(t){navigator.clipboard.writeText(t.innerText);toast('Mensagem copiada! 📋');}}
 function limparMsg(){document.getElementById('ia-out').innerHTML='<div class="ia-ph">Selecione um template ao lado...</div>';document.getElementById('ia-acts').style.display='none';}
-function preencherIA(nome,valor){document.getElementById('ia-nome').value=nome;document.getElementById('ia-valor').value=valor;show('ia',document.querySelectorAll('.tab')[3]);}
+function preIA(n,v){document.getElementById('ia-nome').value=n;document.getElementById('ia-valor').value=v;show('ia',document.querySelectorAll('.tab')[3]);}
 
-function verificarVencimentos(){
-  const hoje=new Date();hoje.setHours(0,0,0,0);
-  const urgentes=contas.filter(c=>c.status!=='pago'&&new Date(c.data+'T00:00:00')<=hoje);
+function verificarVenc(){
+  const hj=new Date();hj.setHours(0,0,0,0);
+  const u=contas.filter(c=>c.status!=='pago'&&new Date(c.data+'T00:00:00')<=hj);
   const el=document.getElementById('dash-venc-alert');
-  if(urgentes.length){el.innerHTML=`<div class="rbox" style="margin-bottom:16px"><i class="ti ti-alert-circle" style="font-size:16px;color:#f87171;flex-shrink:0"></i><div class="rtxt">⚠️ ${urgentes.length} conta(s) vencida(s) ou vencendo hoje! <a onclick="show('receber',document.querySelectorAll('.tab')[6])" style="color:#f87171;cursor:pointer;text-decoration:underline;font-weight:600">Ver agora →</a></div></div>`;}
+  if(u.length){el.innerHTML=`<div class="rbox" style="margin-bottom:16px"><i class="ti ti-alert-circle" style="font-size:16px;color:#f87171;flex-shrink:0"></i><div class="rtxt">⚠️ ${u.length} conta(s) vencida(s) hoje! <a onclick="show('receber',document.querySelectorAll('.tab')[6])" style="color:#f87171;cursor:pointer;text-decoration:underline;font-weight:600">Ver →</a></div></div>`;}
   else el.innerHTML='';
 }
 
 function fecharModal(id,e){if(!e||e.target===document.getElementById(id))document.getElementById(id).style.display='none';}
 
 function abrirModalProd(id){
-  editProdIdx=id;
-  const p=id&&id!=-1?prods.find(x=>x.id===id):null;
+  editProd=id;
+  const p=id?prods.find(x=>x.id===id):null;
   document.getElementById('mprod-title').textContent=p?'Editar produto':'Adicionar produto';
   document.getElementById('mp-nome').value=p?.nome||'';
   document.getElementById('mp-cat').value=p?.cat||'Roupas';
@@ -650,18 +617,18 @@ function abrirModalProd(id){
 async function salvarProd(){
   const nome=document.getElementById('mp-nome').value.trim();
   if(!nome){toast('Informe o nome','var(--red)');return;}
-  const prod={nome,cat:document.getElementById('mp-cat').value,qtd:parseInt(document.getElementById('mp-qtd').value)||0,min:parseInt(document.getElementById('mp-min').value)||5,preco:parseFloat(document.getElementById('mp-preco').value)||0,user_id:user.id};
-  if(editProdIdx&&editProdIdx!=-1){await supa.from('produtos').update(prod).eq('id',editProdIdx);}
-  else{await supa.from('produtos').insert(prod);}
-  await carregarDados();fecharModal('modal-prod');buildEstoque();buildDash();
-  toast(editProdIdx&&editProdIdx!=-1?'Produto atualizado!':'Produto adicionado!');
+  const d={nome,cat:document.getElementById('mp-cat').value,qtd:parseInt(document.getElementById('mp-qtd').value)||0,min:parseInt(document.getElementById('mp-min').value)||5,preco:parseFloat(document.getElementById('mp-preco').value)||0,user_id:user.id};
+  if(editProd){await sb.from('produtos').update(d).eq('id',editProd);}
+  else{await sb.from('produtos').insert(d);}
+  await carregarDados();fecharModal('modal-prod');buildEst();buildDash();
+  toast(editProd?'Produto atualizado!':'Produto adicionado!');
 }
 
-async function removerProd(id){if(!confirm('Remover produto?'))return;await supa.from('produtos').delete().eq('id',id);await carregarDados();buildEstoque();buildDash();toast('Produto removido');}
+async function remProd(id){if(!confirm('Remover?'))return;await sb.from('produtos').delete().eq('id',id);await carregarDados();buildEst();buildDash();toast('Removido');}
 
 function abrirModalLead(id){
-  editLeadIdx=id;
-  const l=id&&id!=-1?leads.find(x=>x.id===id):null;
+  editLead=id;
+  const l=id?leads.find(x=>x.id===id):null;
   document.getElementById('mlead-title').textContent=l?'Editar cliente':'Novo cliente';
   document.getElementById('ml-nome').value=l?.nome||'';
   document.getElementById('ml-biz').value=l?.biz||'';
@@ -674,14 +641,14 @@ function abrirModalLead(id){
 async function salvarLead(){
   const nome=document.getElementById('ml-nome').value.trim();
   if(!nome){toast('Informe o nome','var(--red)');return;}
-  const lead={nome,biz:document.getElementById('ml-biz').value,val:parseFloat(document.getElementById('ml-val').value)||0,stage:document.getElementById('ml-stage').value,obs:document.getElementById('ml-obs').value,user_id:user.id};
-  if(editLeadIdx&&editLeadIdx!=-1){await supa.from('leads').update(lead).eq('id',editLeadIdx);}
-  else{await supa.from('leads').insert(lead);}
+  const d={nome,biz:document.getElementById('ml-biz').value,val:parseFloat(document.getElementById('ml-val').value)||0,stage:document.getElementById('ml-stage').value,obs:document.getElementById('ml-obs').value,user_id:user.id};
+  if(editLead){await sb.from('leads').update(d).eq('id',editLead);}
+  else{await sb.from('leads').insert(d);}
   await carregarDados();fecharModal('modal-lead');buildAll();
-  toast(editLeadIdx&&editLeadIdx!=-1?'Cliente atualizado!':'Cliente adicionado!');
+  toast(editLead?'Cliente atualizado!':'Cliente adicionado!');
 }
 
-async function removerLead(id){if(!confirm('Remover cliente?'))return;await supa.from('leads').delete().eq('id',id);await carregarDados();buildAll();toast('Cliente removido');}
+async function remLead(id){if(!confirm('Remover?'))return;await sb.from('leads').delete().eq('id',id);await carregarDados();buildAll();toast('Removido');}
 
 function abrirModalVenda(){
   document.getElementById('mv-data').value=new Date().toISOString().split('T')[0];
@@ -692,14 +659,13 @@ function abrirModalVenda(){
 async function salvarVenda(){
   const prod=document.getElementById('mv-prod').value.trim();
   const val=parseFloat(document.getElementById('mv-val').value)||0;
-  if(!prod){toast('Informe o produto','var(--red)');return;}
-  if(!val){toast('Informe o valor','var(--red)');return;}
-  await supa.from('vendas').insert({prod,cliente:document.getElementById('mv-cliente').value,val,data:document.getElementById('mv-data').value,forma:document.getElementById('mv-forma').value,user_id:user.id});
+  if(!prod||!val){toast('Preencha produto e valor','var(--red)');return;}
+  await sb.from('vendas').insert({prod,cliente:document.getElementById('mv-cliente').value,val,data:document.getElementById('mv-data').value,forma:document.getElementById('mv-forma').value,user_id:user.id});
   await carregarDados();fecharModal('modal-venda');buildVendas();buildDash();
   toast('Venda registrada! 💰');
 }
 
-async function removerVenda(id){if(!confirm('Remover venda?'))return;await supa.from('vendas').delete().eq('id',id);await carregarDados();buildVendas();buildDash();toast('Venda removida');}
+async function remVenda(id){if(!confirm('Remover?'))return;await sb.from('vendas').delete().eq('id',id);await carregarDados();buildVendas();buildDash();toast('Removido');}
 
 function abrirModalReceber(){
   document.getElementById('mr-data').value=new Date().toISOString().split('T')[0];
@@ -711,51 +677,19 @@ async function salvarReceber(){
   const nome=document.getElementById('mr-nome').value.trim();
   const val=parseFloat(document.getElementById('mr-val').value)||0;
   const data=document.getElementById('mr-data').value;
-  if(!nome||!val||!data){toast('Preencha todos os campos','var(--red)');return;}
-  await supa.from('contas').insert({nome,desc:document.getElementById('mr-desc').value,val,data,obs:document.getElementById('mr-obs').value,status:'pendente',user_id:user.id});
-  await carregarDados();fecharModal('modal-receber');buildReceber();buildDash();verificarVencimentos();
+  if(!nome||!val||!data){toast('Preencha os campos','var(--red)');return;}
+  await sb.from('contas').insert({nome,descricao:document.getElementById('mr-desc').value,val,data,obs:document.getElementById('mr-obs').value,status:'pendente',user_id:user.id});
+  await carregarDados();fecharModal('modal-receber');buildReceber();buildDash();verificarVenc();
   toast('Conta adicionada!');
 }
 
-async function marcarPago(id){await supa.from('contas').update({status:'pago'}).eq('id',id);await carregarDados();buildReceber();buildDash();verificarVencimentos();toast('Marcado como pago! ✓');}
-async function removerConta(id){if(!confirm('Remover conta?'))return;await supa.from('contas').delete().eq('id',id);await carregarDados();buildReceber();buildDash();verificarVencimentos();toast('Conta removida');}
-function setSegmento(seg,el){segFiltro=seg;document.querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');buildEstoque();}
-
-// PWA Service Worker
-if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('/sw.js').catch(()=>{});
-  });
-}
+async function marcarPago(id){await sb.from('contas').update({status:'pago'}).eq('id',id);await carregarDados();buildReceber();buildDash();verificarVenc();toast('Marcado como pago! ✓');}
+async function remConta(id){if(!confirm('Remover?'))return;await sb.from('contas').delete().eq('id',id);await carregarDados();buildReceber();buildDash();verificarVenc();toast('Removido');}
+function setSegmento(s,el){seg=s;document.querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');buildEst();}
 
 init();
 </script>
 </body>
 </html>
-{
-  "name": "VendaAI — Gestão Inteligente",
-  "short_name": "VendaAI",
-  "description": "Gestão inteligente para pequenos negócios",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#0f0f0f",
-  "theme_color": "#1D9E75",
-  "orientation": "portrait-primary",
-  "icons": [
-    {"src": "https://placehold.co/192x192/1D9E75/ffffff?text=V", "sizes": "192x192", "type": "image/png"},
-    {"src": "https://placehold.co/512x512/1D9E75/ffffff?text=V", "sizes": "512x512", "type": "image/png"}
-  ]
-}const CACHE = 'vendaai-v1';
-const ASSETS = ['/', '/index.html', '/manifest.json'];
-
-self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
-});
-
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    fetch(e.request).catch(() => caches.match(e.request))
-  );
-});
-
-
+HTMLEOF
+echo "✅ $(wc -l < /home/claude/vendaai/index.html) linhas!"
