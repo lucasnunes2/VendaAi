@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>VendaAI — Gestão Inteligente para Pequenos Negócios</title>
+<meta name="theme-color" content="#1D9E75"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="VendaAI"/>
+<meta name="description" content="Gestão inteligente para pequenos negócios"/>
+<link rel="manifest" href="manifest.json"/>
+<title>VendaAI — Gestão Inteligente</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
 <style>
 :root{--bg:#0f0f0f;--bg2:#1a1a1a;--bg3:#242424;--border:#2e2e2e;--text:#f0f0f0;--text2:#a0a0a0;--text3:#666;--green:#1D9E75;--green2:#0F6E56;--green-bg:#0d2b22;--amber:#EF9F27;--red:#E24B4A;--blue:#378ADD;--radius:8px;--radius-lg:12px;}
@@ -25,6 +31,9 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 .auth-switch{text-align:center;font-size:13px;color:var(--text2);margin-top:16px}
 .auth-switch a{color:var(--green);cursor:pointer}
 .auth-err{background:#2d1515;border:1px solid #5a2020;border-radius:var(--radius);padding:10px 12px;font-size:13px;color:#f87171;margin-bottom:14px;display:none}
+.loading-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;flex-direction:column;gap:12px}
+.loading-dot{width:40px;height:40px;border-radius:50%;border:3px solid var(--green-bg);border-top-color:var(--green);animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 .topbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
 .logo{font-size:17px;font-weight:600;display:flex;align-items:center;gap:8px}
 .logo-dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
@@ -70,7 +79,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 .td-row:hover{background:var(--bg3)}
 .td{font-size:13px}.tdm{font-size:13px;color:var(--text2)}
 .badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:500}
-.bg{background:#0d2b22;color:var(--green)}.ba{background:#2d1e00;color:var(--amber)}.br{background:#2d1010;color:#f87171}.bgr{background:var(--bg3);color:var(--text2)}.bb{background:#0d1e2d;color:var(--blue)}
+.bg{background:#0d2b22;color:var(--green)}.ba{background:#2d1e00;color:var(--amber)}.br{background:#2d1010;color:#f87171}.bgr{background:var(--bg3);color:var(--text2)}
 .sbar-w{height:5px;background:var(--bg);border-radius:999px;overflow:hidden;margin-top:3px}
 .sbar{height:100%;border-radius:999px}
 .abox{background:#1e1500;border:1px solid #3d2e00;border-radius:var(--radius);padding:11px 14px;margin-bottom:14px;display:flex;align-items:center;gap:9px}
@@ -90,27 +99,36 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 .ia-out{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-top:14px;min-height:80px}
 .ia-txt{font-size:13px;line-height:1.7;white-space:pre-wrap}
 .ia-ph{font-size:12px;color:var(--text3);font-style:italic}
-.ld{display:inline-flex;gap:4px}
-.ld span{width:6px;height:6px;border-radius:50%;background:var(--green);animation:bou 1.2s infinite}
-.ld span:nth-child(2){animation-delay:.2s}.ld span:nth-child(3){animation-delay:.4s}
-@keyframes bou{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
 .tcat{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .tcat-btn{padding:5px 12px;border-radius:999px;border:1px solid var(--border);background:none;color:var(--text2);font-size:11px;cursor:pointer;transition:all .15s}
 .tcat-btn.active{background:var(--green-bg);border-color:var(--green);color:var(--green);font-weight:500}
 .template-list{display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto}
 .template-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:12px;cursor:pointer;transition:border-color .15s}
 .template-item:hover{border-color:var(--green)}
-.template-item.active{border-color:var(--green);background:var(--green-bg)}
 .ti-tag{font-size:10px;color:var(--green);font-weight:600;text-transform:uppercase;margin-bottom:3px}
 .ti-title{font-size:12px;font-weight:500;margin-bottom:3px}
 .ti-prev{font-size:11px;color:var(--text2);line-height:1.4}
+.install-bar{background:var(--green-bg);border-bottom:1px solid var(--green2);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;font-size:13px}
 @media(max-width:900px){.grid4{grid-template-columns:repeat(2,1fr)}.kanban{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.nav .tab span{display:none}.plan-badge{display:none}}
 </style>
 </head>
 <body>
 
-<div id="auth-screen" class="auth-screen">
+<div id="install-bar" class="install-bar" style="display:none">
+  <span>📱 Instale o VendaAI no seu celular para acesso rápido!</span>
+  <div style="display:flex;gap:8px">
+    <button class="btn" id="btn-install" style="padding:6px 12px;font-size:12px">Instalar app</button>
+    <button onclick="document.getElementById('install-bar').style.display='none'" style="background:none;border:none;color:var(--green);cursor:pointer;font-size:18px">✕</button>
+  </div>
+</div>
+
+<div id="loading-screen" class="loading-screen">
+  <div class="loading-dot"></div>
+  <div style="font-size:13px;color:var(--text2)">Carregando VendaAI...</div>
+</div>
+
+<div id="auth-screen" class="auth-screen" style="display:none">
   <div class="auth-box">
     <div class="auth-logo"><div class="auth-logo-dot"></div><div class="auth-logo-text">VendaAI</div></div>
     <div id="auth-err" class="auth-err"></div>
@@ -152,17 +170,15 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
     </div>
   </div>
   <div class="content">
-
-    <!-- DASHBOARD -->
     <div class="sec active" id="sec-dashboard">
       <div class="stitle">Visão geral</div>
       <div class="ssub">Resumo do seu negócio hoje</div>
       <div id="dash-venc-alert"></div>
       <div class="grid4">
         <div class="mcard"><div class="mlabel">Receita total</div><div class="mval mup" id="d-receita">R$ 0,00</div><div class="msub mup"><i class="ti ti-trending-up" style="font-size:10px"></i> Vendas + fechamentos</div></div>
-        <div class="mcard"><div class="mlabel">Clientes no pipeline</div><div class="mval" id="d-leads">0</div><div class="msub"><i class="ti ti-users" style="font-size:10px"></i> Em andamento</div></div>
-        <div class="mcard"><div class="mlabel">Produtos em falta</div><div class="mval mdn" id="d-falta">0</div><div class="msub mdn"><i class="ti ti-alert-circle" style="font-size:10px"></i> Precisam reposição</div></div>
-        <div class="mcard"><div class="mlabel">A receber</div><div class="mval" style="color:var(--amber)" id="d-receber">R$ 0,00</div><div class="msub" style="color:var(--amber)"><i class="ti ti-cash" style="font-size:10px"></i> Pendente</div></div>
+        <div class="mcard"><div class="mlabel">Clientes no pipeline</div><div class="mval" id="d-leads">0</div></div>
+        <div class="mcard"><div class="mlabel">Produtos em falta</div><div class="mval mdn" id="d-falta">0</div></div>
+        <div class="mcard"><div class="mlabel">A receber</div><div class="mval" style="color:var(--amber)" id="d-receber">R$ 0,00</div></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
         <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px">
@@ -175,23 +191,19 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
         </div>
       </div>
     </div>
-
-    <!-- PIPELINE -->
     <div class="sec" id="sec-pipeline">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-        <div><div class="stitle">Pipeline de vendas</div><div class="ssub">Gerencie seus clientes por etapa</div></div>
+        <div><div class="stitle">Pipeline</div><div class="ssub">Gerencie seus clientes por etapa</div></div>
         <button class="btn" onclick="abrirModalLead(-1)"><i class="ti ti-plus"></i> Novo cliente</button>
       </div>
       <div class="kanban" id="kanban"></div>
     </div>
-
-    <!-- VENDAS DIRETAS -->
     <div class="sec" id="sec-vendas">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-        <div><div class="stitle">Vendas diretas</div><div class="ssub">Registre vendas da loja física — tudo entra no seu saldo</div></div>
+        <div><div class="stitle">Vendas diretas</div><div class="ssub">Registre vendas da loja física</div></div>
         <button class="btn" onclick="abrirModalVenda()"><i class="ti ti-plus"></i> Nova venda</button>
       </div>
-      <div class="grid4" style="margin-bottom:20px">
+      <div class="grid4">
         <div class="mcard"><div class="mlabel">Total do dia</div><div class="mval mup" id="v-dia">R$ 0,00</div></div>
         <div class="mcard"><div class="mlabel">Total do mês</div><div class="mval mup" id="v-mes">R$ 0,00</div></div>
         <div class="mcard"><div class="mlabel">Nº de vendas</div><div class="mval" id="v-qtd">0</div></div>
@@ -204,20 +216,18 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
         <div id="vendas-list"></div>
       </div>
     </div>
-
-    <!-- MENSAGENS IA -->
     <div class="sec" id="sec-ia">
       <div class="stitle">Central de Mensagens</div>
-      <div class="ssub">200+ templates prontos + IA para personalizar</div>
+      <div class="ssub">50+ templates prontos para WhatsApp</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
         <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px">
-          <div style="font-size:13px;font-weight:600;margin-bottom:12px">Personalizar mensagem</div>
+          <div style="font-size:13px;font-weight:600;margin-bottom:12px">Personalizar</div>
           <div class="fg"><label class="fl">Nome do cliente</label><input class="fi" id="ia-nome" placeholder="Ex: João Silva"/></div>
           <div class="fr2">
-            <div class="fg"><label class="fl">Valor (opcional)</label><input class="fi" id="ia-valor" placeholder="Ex: 150,00"/></div>
-            <div class="fg"><label class="fl">Produto (opcional)</label><input class="fi" id="ia-prod" placeholder="Ex: bolo, roupa..."/></div>
+            <div class="fg"><label class="fl">Valor</label><input class="fi" id="ia-valor" placeholder="Ex: 150,00"/></div>
+            <div class="fg"><label class="fl">Produto</label><input class="fi" id="ia-prod" placeholder="Ex: bolo..."/></div>
           </div>
-          <div class="ia-out" id="ia-out"><div class="ia-ph">Selecione um template ao lado para gerar a mensagem...</div></div>
+          <div class="ia-out" id="ia-out"><div class="ia-ph">Selecione um template ao lado...</div></div>
           <div style="display:flex;gap:8px;margin-top:10px" id="ia-acts" style="display:none">
             <button class="bsec" onclick="copiarMsg()"><i class="ti ti-copy" style="font-size:13px"></i> Copiar</button>
             <button class="bsec" onclick="limparMsg()"><i class="ti ti-refresh" style="font-size:13px"></i> Limpar</button>
@@ -230,26 +240,21 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
         </div>
       </div>
     </div>
-
-    <!-- ESTOQUE -->
     <div class="sec" id="sec-estoque">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-        <div><div class="stitle">Controle de estoque</div><div class="ssub">Gerencie produtos e receba alertas automáticos</div></div>
+        <div><div class="stitle">Estoque</div><div class="ssub">Controle de produtos</div></div>
         <button class="btn" onclick="abrirModalProd(-1)"><i class="ti ti-plus"></i> Novo produto</button>
       </div>
-      <div style="margin-bottom:14px">
-        <div class="seg-select">
-          <button class="seg-btn active" onclick="setSegmento('todos',this)">Todos</button>
-          <button class="seg-btn" onclick="setSegmento('Roupas',this)"><i class="ti ti-shirt"></i> Roupas</button>
-          <button class="seg-btn" onclick="setSegmento('Alimentos',this)"><i class="ti ti-salad"></i> Alimentos</button>
-          <button class="seg-btn" onclick="setSegmento('Calçados',this)"><i class="ti ti-shoe"></i> Calçados</button>
-          <button class="seg-btn" onclick="setSegmento('Serviços',this)"><i class="ti ti-tool"></i> Serviços</button>
-          <button class="seg-btn" onclick="setSegmento('Acessórios',this)"><i class="ti ti-tag"></i> Acessórios</button>
-          <button class="seg-btn" onclick="setSegmento('Outros',this)">Outros</button>
-        </div>
+      <div class="seg-select">
+        <button class="seg-btn active" onclick="setSegmento('todos',this)">Todos</button>
+        <button class="seg-btn" onclick="setSegmento('Roupas',this)">Roupas</button>
+        <button class="seg-btn" onclick="setSegmento('Alimentos',this)">Alimentos</button>
+        <button class="seg-btn" onclick="setSegmento('Calçados',this)">Calçados</button>
+        <button class="seg-btn" onclick="setSegmento('Serviços',this)">Serviços</button>
+        <button class="seg-btn" onclick="setSegmento('Acessórios',this)">Acessórios</button>
       </div>
       <div class="grid4">
-        <div class="mcard"><div class="mlabel">Total produtos</div><div class="mval" id="st-tot">0</div></div>
+        <div class="mcard"><div class="mlabel">Total</div><div class="mval" id="st-tot">0</div></div>
         <div class="mcard"><div class="mlabel">Estoque baixo</div><div class="mval mdn" id="st-bx">0</div></div>
         <div class="mcard"><div class="mlabel">Sem estoque</div><div class="mval mdn" id="st-z">0</div></div>
         <div class="mcard"><div class="mlabel">Valor total</div><div class="mval" id="st-v">R$ 0,00</div></div>
@@ -262,11 +267,9 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
         <div id="est-list"></div>
       </div>
     </div>
-
-    <!-- CLIENTES -->
     <div class="sec" id="sec-clientes">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-        <div><div class="stitle">Clientes</div><div class="ssub">Todos os seus clientes em um só lugar</div></div>
+        <div><div class="stitle">Clientes</div><div class="ssub">Todos os seus clientes</div></div>
         <button class="btn" onclick="abrirModalLead(-1)"><i class="ti ti-plus"></i> Novo cliente</button>
       </div>
       <div class="tbl">
@@ -276,11 +279,9 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
         <div id="cli-list"></div>
       </div>
     </div>
-
-    <!-- CONTAS A RECEBER -->
     <div class="sec" id="sec-receber">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-        <div><div class="stitle">Contas a Receber</div><div class="ssub">Controle de pagamentos pendentes</div></div>
+        <div><div class="stitle">Contas a Receber</div><div class="ssub">Pagamentos pendentes</div></div>
         <button class="btn" onclick="abrirModalReceber()"><i class="ti ti-plus"></i> Nova conta</button>
       </div>
       <div class="grid4">
@@ -297,223 +298,204 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
         <div id="receber-list"></div>
       </div>
     </div>
-
   </div>
 </div>
 
-<!-- MODAL PRODUTO -->
+<!-- MODAIS -->
 <div class="modal-ov" id="modal-prod" style="display:none" onclick="fecharModal('modal-prod',event)">
   <div class="modal" onclick="event.stopPropagation()">
-    <div class="mtitle" id="mprod-title">Adicionar produto</div>
-    <div class="fg"><label class="fl">Nome do produto</label><input class="fi" id="mp-nome" placeholder="Ex: Camiseta M azul"/></div>
+    <div class="mtitle" id="mprod-title">Produto</div>
+    <div class="fg"><label class="fl">Nome</label><input class="fi" id="mp-nome" placeholder="Ex: Camiseta M azul"/></div>
     <div class="fr2">
-      <div class="fg"><label class="fl">Categoria</label>
-        <select class="fi" id="mp-cat">
-          <option>Roupas</option><option>Alimentos</option><option>Calçados</option><option>Serviços</option><option>Acessórios</option><option>Outros</option>
-        </select>
-      </div>
+      <div class="fg"><label class="fl">Categoria</label><select class="fi" id="mp-cat"><option>Roupas</option><option>Alimentos</option><option>Calçados</option><option>Serviços</option><option>Acessórios</option><option>Outros</option></select></div>
       <div class="fg"><label class="fl">Preço (R$)</label><input class="fi" id="mp-preco" type="number" step="0.01" min="0" placeholder="0,00"/></div>
     </div>
     <div class="fr2">
       <div class="fg"><label class="fl">Quantidade</label><input class="fi" id="mp-qtd" type="number" min="0" placeholder="0"/></div>
       <div class="fg"><label class="fl">Estoque mínimo</label><input class="fi" id="mp-min" type="number" min="0" placeholder="5"/></div>
     </div>
-    <div class="mact">
-      <button class="bsec" onclick="fecharModal('modal-prod')">Cancelar</button>
-      <button class="btn" onclick="salvarProd()"><i class="ti ti-check"></i> Salvar</button>
-    </div>
+    <div class="mact"><button class="bsec" onclick="fecharModal('modal-prod')">Cancelar</button><button class="btn" onclick="salvarProd()"><i class="ti ti-check"></i> Salvar</button></div>
   </div>
 </div>
 
-<!-- MODAL CLIENTE -->
 <div class="modal-ov" id="modal-lead" style="display:none" onclick="fecharModal('modal-lead',event)">
   <div class="modal" onclick="event.stopPropagation()">
-    <div class="mtitle" id="mlead-title">Novo cliente</div>
-    <div class="fg"><label class="fl">Nome do cliente</label><input class="fi" id="ml-nome" placeholder="Ex: João Silva"/></div>
-    <div class="fg"><label class="fl">Tipo de negócio / produto interesse</label><input class="fi" id="ml-biz" placeholder="Ex: loja de roupas, quer bolo..."/></div>
+    <div class="mtitle" id="mlead-title">Cliente</div>
+    <div class="fg"><label class="fl">Nome</label><input class="fi" id="ml-nome" placeholder="Ex: João Silva"/></div>
+    <div class="fg"><label class="fl">Negócio / produto interesse</label><input class="fi" id="ml-biz" placeholder="Ex: loja de roupas..."/></div>
     <div class="fr2">
-      <div class="fg"><label class="fl">Valor da venda (R$)</label><input class="fi" id="ml-val" type="number" step="0.01" min="0" placeholder="0,00"/></div>
-      <div class="fg"><label class="fl">Etapa</label>
-        <select class="fi" id="ml-stage">
-          <option value="contato">Primeiro contato</option>
-          <option value="proposta">Proposta enviada</option>
-          <option value="negociando">Negociando</option>
-          <option value="fechando">Fechado ✓</option>
-        </select>
-      </div>
+      <div class="fg"><label class="fl">Valor (R$)</label><input class="fi" id="ml-val" type="number" step="0.01" min="0" placeholder="0,00"/></div>
+      <div class="fg"><label class="fl">Etapa</label><select class="fi" id="ml-stage"><option value="contato">Primeiro contato</option><option value="proposta">Proposta enviada</option><option value="negociando">Negociando</option><option value="fechando">Fechado ✓</option></select></div>
     </div>
-    <div class="fg"><label class="fl">Observação (opcional)</label><input class="fi" id="ml-obs" placeholder="Ex: prefere pagamento no pix..."/></div>
-    <div class="mact">
-      <button class="bsec" onclick="fecharModal('modal-lead')">Cancelar</button>
-      <button class="btn" onclick="salvarLead()"><i class="ti ti-check"></i> Salvar</button>
-    </div>
+    <div class="fg"><label class="fl">Observação</label><input class="fi" id="ml-obs" placeholder="Ex: prefere pix..."/></div>
+    <div class="mact"><button class="bsec" onclick="fecharModal('modal-lead')">Cancelar</button><button class="btn" onclick="salvarLead()"><i class="ti ti-check"></i> Salvar</button></div>
   </div>
 </div>
 
-<!-- MODAL VENDA DIRETA -->
 <div class="modal-ov" id="modal-venda" style="display:none" onclick="fecharModal('modal-venda',event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="mtitle">Registrar venda</div>
-    <div class="fg"><label class="fl">Produto ou serviço vendido</label><input class="fi" id="mv-prod" placeholder="Ex: Bolo de chocolate, Camiseta P..."/></div>
-    <div class="fg"><label class="fl">Cliente (opcional)</label><input class="fi" id="mv-cliente" placeholder="Ex: Maria, cliente da esquina..."/></div>
+    <div class="fg"><label class="fl">Produto ou serviço</label><input class="fi" id="mv-prod" placeholder="Ex: Bolo de chocolate..."/></div>
+    <div class="fg"><label class="fl">Cliente (opcional)</label><input class="fi" id="mv-cliente" placeholder="Ex: Maria..."/></div>
     <div class="fr2">
       <div class="fg"><label class="fl">Valor (R$)</label><input class="fi" id="mv-val" type="number" step="0.01" min="0" placeholder="0,00"/></div>
       <div class="fg"><label class="fl">Data</label><input class="fi" id="mv-data" type="date"/></div>
     </div>
-    <div class="fg"><label class="fl">Forma de pagamento</label>
-      <select class="fi" id="mv-forma">
-        <option value="Pix">Pix</option>
-        <option value="Dinheiro">Dinheiro</option>
-        <option value="Cartão débito">Cartão débito</option>
-        <option value="Cartão crédito">Cartão crédito</option>
-        <option value="Boleto">Boleto</option>
-      </select>
-    </div>
-    <div class="mact">
-      <button class="bsec" onclick="fecharModal('modal-venda')">Cancelar</button>
-      <button class="btn" onclick="salvarVenda()"><i class="ti ti-check"></i> Registrar</button>
-    </div>
+    <div class="fg"><label class="fl">Forma de pagamento</label><select class="fi" id="mv-forma"><option>Pix</option><option>Dinheiro</option><option>Cartão débito</option><option>Cartão crédito</option><option>Boleto</option></select></div>
+    <div class="mact"><button class="bsec" onclick="fecharModal('modal-venda')">Cancelar</button><button class="btn" onclick="salvarVenda()"><i class="ti ti-check"></i> Registrar</button></div>
   </div>
 </div>
 
-<!-- MODAL CONTAS A RECEBER -->
 <div class="modal-ov" id="modal-receber" style="display:none" onclick="fecharModal('modal-receber',event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="mtitle">Nova conta a receber</div>
     <div class="fg"><label class="fl">Nome do cliente</label><input class="fi" id="mr-nome" placeholder="Ex: Maria Silva"/></div>
-    <div class="fg"><label class="fl">Descrição</label><input class="fi" id="mr-desc" placeholder="Ex: Bolo encomendado, roupa no fiado..."/></div>
+    <div class="fg"><label class="fl">Descrição</label><input class="fi" id="mr-desc" placeholder="Ex: Bolo encomendado..."/></div>
     <div class="fr2">
       <div class="fg"><label class="fl">Valor (R$)</label><input class="fi" id="mr-val" type="number" step="0.01" min="0" placeholder="0,00"/></div>
-      <div class="fg"><label class="fl">Data de vencimento</label><input class="fi" id="mr-data" type="date"/></div>
+      <div class="fg"><label class="fl">Vencimento</label><input class="fi" id="mr-data" type="date"/></div>
     </div>
-    <div class="fg"><label class="fl">Observação (opcional)</label><input class="fi" id="mr-obs" placeholder="Ex: 3x de R$50, combinou pagar sexta..."/></div>
-    <div class="mact">
-      <button class="bsec" onclick="fecharModal('modal-receber')">Cancelar</button>
-      <button class="btn" onclick="salvarReceber()"><i class="ti ti-check"></i> Salvar</button>
-    </div>
+    <div class="fg"><label class="fl">Observação</label><input class="fi" id="mr-obs" placeholder="Ex: 3x de R$50..."/></div>
+    <div class="mact"><button class="bsec" onclick="fecharModal('modal-receber')">Cancelar</button><button class="btn" onclick="salvarReceber()"><i class="ti ti-check"></i> Salvar</button></div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+const SUPA_URL='https://nouyivisxqffmzfcbukn.supabase.co';
+const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vdXlpdmlzeHFmZm16ZmNidWtuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNDQwMjQsImV4cCI6MjA5NDcyMDAyNH0.aUpkk4L_jOt8DnnQuzUvB2nd47F5Tc_NYnO6Boy6ZeQ';
+const supa=supabase.createClient(SUPA_URL,SUPA_KEY);
+
 let user=null,leads=[],prods=[],contas=[],vendas=[],segFiltro='todos',editLeadIdx=-1,editProdIdx=-1,tcatAtivo='Todos';
+let deferredPrompt=null;
 
 const stgs=[{k:"contato",l:"Primeiro contato"},{k:"proposta",l:"Proposta enviada"},{k:"negociando",l:"Negociando"},{k:"fechando",l:"Fechado ✓"}];
 
 const templates=[
-  // PRIMEIRO CONTATO
-  {cat:"Primeiro contato",title:"Apresentação simples",msg:"Olá, {nome}! Tudo bem? 😊 Meu nome é [SEU NOME] e queria te apresentar algo que pode ajudar muito o seu negócio. Posso te contar mais? Prometo ser rápido!"},
-  {cat:"Primeiro contato",title:"Indicação de amigo",msg:"Oi, {nome}! Tudo bem? Recebi seu contato através de [NOME DO AMIGO] que me falou muito bem de você. Queria bater um papo rápido sobre como posso te ajudar. Tem um minutinho?"},
-  {cat:"Primeiro contato",title:"Instagram / redes sociais",msg:"Olá, {nome}! Vi seu perfil no Instagram e adorei o que você faz! 👏 Acredito que tenho algo que pode complementar muito bem o seu negócio. Posso te apresentar?"},
-  {cat:"Primeiro contato",title:"Após evento / feira",msg:"Oi, {nome}! Foi um prazer te conhecer hoje! Como combinamos, aqui estou para te passar mais informações. Quando seria um bom horário para conversarmos melhor?"},
-  {cat:"Primeiro contato",title:"Abordagem direta",msg:"Olá, {nome}! Tudo certo? Trabalho com [SEU PRODUTO/SERVIÇO] e acredito que pode fazer muito sentido para você. Posso te mostrar rapidamente como funciona?"},
-
-  // FOLLOW-UP
-  {cat:"Follow-up",title:"Retorno gentil",msg:"Oi, {nome}! 😊 Passando para saber se você teve a chance de pensar na nossa conversa. Fico à disposição para tirar qualquer dúvida. Quando podemos falar?"},
+  {cat:"Primeiro contato",title:"Apresentação simples",msg:"Olá, {nome}! Tudo bem? 😊 Meu nome é [SEU NOME] e queria te apresentar algo que pode ajudar muito o seu negócio. Posso te contar mais?"},
+  {cat:"Primeiro contato",title:"Indicação de amigo",msg:"Oi, {nome}! Recebi seu contato através de [NOME] que me falou muito bem de você. Queria bater um papo rápido. Tem um minutinho?"},
+  {cat:"Primeiro contato",title:"Redes sociais",msg:"Olá, {nome}! Vi seu perfil e adorei o que você faz! 👏 Acredito que tenho algo que pode complementar o seu negócio. Posso te apresentar?"},
+  {cat:"Primeiro contato",title:"Abordagem direta",msg:"Olá, {nome}! Trabalho com [PRODUTO/SERVIÇO] e acredito que pode fazer muito sentido para você. Posso te mostrar rapidamente como funciona?"},
+  {cat:"Primeiro contato",title:"Após evento",msg:"Oi, {nome}! Foi um prazer te conhecer hoje! Como combinamos, aqui estou para te passar mais informações. Quando seria um bom horário para conversarmos?"},
+  {cat:"Follow-up",title:"Retorno gentil",msg:"Oi, {nome}! 😊 Passando para saber se você teve a chance de pensar na nossa conversa. Fico à disposição para tirar qualquer dúvida!"},
   {cat:"Follow-up",title:"Proposta enviada",msg:"Olá, {nome}! Conforme combinamos, segue a proposta. Qualquer dúvida pode me chamar. Quando você consegue dar uma olhada? 📋"},
   {cat:"Follow-up",title:"Sem resposta 3 dias",msg:"Oi, {nome}! Tudo bem por aí? Imagino que você deve estar muito ocupado. Quando tiver um momento, adoraria continuar nossa conversa. 😊"},
-  {cat:"Follow-up",title:"Sem resposta 1 semana",msg:"Olá, {nome}! Sei que a rotina é corrida, mas não queria deixar nossa conversa em aberto. Tem 5 minutinhos para bater um papo? Tenho certeza que vai valer!"},
+  {cat:"Follow-up",title:"Sem resposta 1 semana",msg:"Olá, {nome}! Sei que a rotina é corrida, mas não queria deixar nossa conversa em aberto. Tem 5 minutinhos para bater um papo?"},
   {cat:"Follow-up",title:"Última tentativa",msg:"Oi, {nome}! Vou ser direto: esse será meu último contato para não te incomodar. Se quiser retomar nossa conversa, estarei por aqui. Abraços! 🤝"},
-  {cat:"Follow-up",title:"Retorno após silêncio longo",msg:"Olá, {nome}! Faz um tempo que não nos falamos. 😊 Surgiu uma novidade que acho que pode ser muito relevante para você. Posso te contar?"},
-
-  // NEGOCIAÇÃO
   {cat:"Negociação",title:"Condição especial",msg:"Oi, {nome}! Tenho uma condição especial disponível por tempo limitado que acho que faz muito sentido para você. Posso te apresentar agora? 🎯"},
-  {cat:"Negociação",title:"Resposta à objeção de preço",msg:"Entendo sua preocupação com o investimento, {nome}. Posso te mostrar exatamente quanto isso vai gerar de retorno para você? Os números são bem interessantes! 📊"},
-  {cat:"Negociação",title:"Facilitar pagamento",msg:"Oi, {nome}! Para facilitar, posso oferecer parcelamento no cartão ou Pix. Qual opção funciona melhor para você? Quero muito que isso dê certo! 💳"},
-  {cat:"Negociação",title:"Bônus exclusivo",msg:"Olá, {nome}! Para fecharmos hoje, posso incluir [BÔNUS] sem custo adicional. Isso resolve a sua hesitação? 🎁"},
-  {cat:"Negociação",title:"Urgência real",msg:"Oi, {nome}! Preciso te avisar que essa condição especial encerra [DATA]. Não quero que você perca essa oportunidade. O que precisa para decidir agora?"},
-
-  // FECHAMENTO
+  {cat:"Negociação",title:"Objeção de preço",msg:"Entendo sua preocupação com o investimento, {nome}. Posso te mostrar exatamente quanto isso vai gerar de retorno? Os números são bem interessantes! 📊"},
+  {cat:"Negociação",title:"Facilitar pagamento",msg:"Oi, {nome}! Para facilitar, posso oferecer parcelamento no cartão ou Pix. Qual opção funciona melhor para você? 💳"},
+  {cat:"Negociação",title:"Bônus exclusivo",msg:"Olá, {nome}! Para fecharmos hoje, posso incluir [BÔNUS] sem custo adicional. Isso resolve? 🎁"},
+  {cat:"Negociação",title:"Urgência",msg:"Oi, {nome}! Preciso te avisar que essa condição especial encerra [DATA]. Não quero que você perca essa oportunidade!"},
   {cat:"Fechamento",title:"Hora de fechar",msg:"Olá, {nome}! 🤝 Baseado em tudo que conversamos, acredito que estamos alinhados. O que falta para fecharmos hoje?"},
   {cat:"Fechamento",title:"Resumo e CTA",msg:"Oi, {nome}! Resumindo: você terá [BENEFÍCIO 1] e [BENEFÍCIO 2] por apenas {valor}. Vamos dar andamento? Como prefere pagar?"},
-  {cat:"Fechamento",title:"Confirmação de pedido",msg:"Perfeito, {nome}! Confirmo seu pedido de [PRODUTO]. Vou separar agora. 😊 O pagamento será por Pix ou dinheiro?"},
+  {cat:"Fechamento",title:"Confirmar pedido",msg:"Perfeito, {nome}! Confirmo seu pedido de {produto}. Vou separar agora. 😊 O pagamento será por Pix ou dinheiro?"},
+  {cat:"Fechamento",title:"Fechar no pix",msg:"Oi, {nome}! Para confirmar, basta me fazer o pix de {valor} para [CHAVE PIX]. Assim que confirmar, já providencio tudo! 💚"},
   {cat:"Fechamento",title:"Após aprovação",msg:"Ótima escolha, {nome}! 🎉 Estou super feliz em ter você como cliente. Vou te passar todos os próximos passos agora mesmo!"},
-  {cat:"Fechamento",title:"Fechar no pix",msg:"Oi, {nome}! Para confirmar, basta me fazer o pix de {valor} para [CHAVE PIX]. Assim que confirmar o pagamento, já providencio tudo! 💚"},
-
-  // COBRANÇA
-  {cat:"Cobrança",title:"Lembrete amigável",msg:"Olá, {nome}! Tudo bem? 😊 Passando para lembrar que temos um valor de {valor} em aberto. Quando consegue resolver? Qualquer dúvida estou aqui!"},
-  {cat:"Cobrança",title:"Vencimento hoje",msg:"Oi, {nome}! Lembrete rápido: o pagamento de {valor} vence hoje. Para facilitar, pode ser no Pix! Qualquer dúvida me avisa. 😊"},
-  {cat:"Cobrança",title:"Pagamento atrasado",msg:"Olá, {nome}! Notei que o pagamento de {valor} ainda está em aberto. Pode me avisar quando consegue regularizar? Estou à disposição para ajudar! 🙏"},
+  {cat:"Cobrança",title:"Lembrete amigável",msg:"Olá, {nome}! Tudo bem? 😊 Passando para lembrar que temos um valor de {valor} em aberto. Quando consegue resolver?"},
+  {cat:"Cobrança",title:"Vencimento hoje",msg:"Oi, {nome}! Lembrete rápido: o pagamento de {valor} vence hoje. Para facilitar, pode ser no Pix! 😊"},
+  {cat:"Cobrança",title:"Pagamento atrasado",msg:"Olá, {nome}! Notei que o pagamento de {valor} ainda está em aberto. Pode me avisar quando consegue regularizar? 🙏"},
   {cat:"Cobrança",title:"Segunda cobrança",msg:"Oi, {nome}! Já entrei em contato antes sobre o valor de {valor}. Preciso que você me dê uma posição. Quando consegue pagar?"},
-  {cat:"Cobrança",title:"Acordo de pagamento",msg:"Olá, {nome}! Entendo que pode estar passando por um momento difícil. Podemos negociar uma forma de pagamento que funcione para você? Me conta a situação. 🤝"},
-  {cat:"Cobrança",title:"Parcelamento",msg:"Oi, {nome}! Para facilitar, posso dividir o valor de {valor} em parcelas menores. Isso te ajudaria a quitar? Me fala o que é possível para você!"},
-  {cat:"Cobrança",title:"Última cobrança",msg:"Olá, {nome}! Esse é meu último contato sobre o valor de {valor}. Preciso de uma resposta para saber como prosseguir. Me responde por favor!"},
-
-  // PÓS-VENDA
-  {cat:"Pós-venda",title:"Agradecimento",msg:"Oi, {nome}! Muito obrigado pela sua compra! 🙏 Espero que fique muito satisfeito. Qualquer dúvida ou problema, pode me chamar!"},
-  {cat:"Pós-venda",title:"Verificar satisfação",msg:"Olá, {nome}! Como está sendo sua experiência com [PRODUTO/SERVIÇO]? Seu feedback é muito importante para mim! 🌟"},
+  {cat:"Cobrança",title:"Acordo de pagamento",msg:"Olá, {nome}! Podemos negociar uma forma de pagamento que funcione para você? Me conta a situação. 🤝"},
+  {cat:"Cobrança",title:"Parcelamento",msg:"Oi, {nome}! Para facilitar, posso dividir o valor de {valor} em parcelas menores. Isso te ajudaria?"},
+  {cat:"Cobrança",title:"Última cobrança",msg:"Olá, {nome}! Esse é meu último contato sobre o valor de {valor}. Preciso de uma resposta para saber como prosseguir."},
+  {cat:"Pós-venda",title:"Agradecimento",msg:"Oi, {nome}! Muito obrigado pela sua compra! 🙏 Qualquer dúvida ou problema, pode me chamar!"},
+  {cat:"Pós-venda",title:"Verificar satisfação",msg:"Olá, {nome}! Como está sendo sua experiência com {produto}? Seu feedback é muito importante! 🌟"},
   {cat:"Pós-venda",title:"Pedir indicação",msg:"Oi, {nome}! Fico feliz que gostou! 😊 Você conhece alguém que também poderia se beneficiar? Se indicar, tenho uma condição especial para você!"},
-  {cat:"Pós-venda",title:"Upsell",msg:"Olá, {nome}! Clientes que compraram [PRODUTO] também adoraram [OUTRO PRODUTO]. Posso te apresentar? Tenho uma condição especial para clientes como você! 🎯"},
-  {cat:"Pós-venda",title:"Recompra",msg:"Oi, {nome}! Faz um tempo que não nos falamos. Seu estoque de [PRODUTO] deve estar acabando. Posso já separar mais para você? 😊"},
-
-  // PROMOÇÃO
-  {cat:"Promoção",title:"Oferta relâmpago",msg:"🔥 OFERTA RELÂMPAGO, {nome}! Por hoje apenas, estou com [PRODUTO] por apenas {valor}. Só tenho [QTD] unidades. Garante o seu agora?"},
-  {cat:"Promoção",title:"Liquidação",msg:"Oi, {nome}! Grande liquidação aqui na loja! Até [%] de desconto em vários produtos. Passa aqui ou me fala o que você precisa? 🛍️"},
-  {cat:"Promoção",title:"Novo produto",msg:"Olá, {nome}! 🎉 Acabou de chegar [NOVO PRODUTO] aqui na loja! Lembrei de você porque [MOTIVO]. Quer dar uma olhada?"},
-  {cat:"Promoção",title:"Data especial",msg:"Feliz [DATA ESPECIAL], {nome}! 🎊 Para celebrar, preparei uma condição especial para você. Quer saber qual é?"},
-  {cat:"Promoção",title:"Black Friday",msg:"🖤 BLACK FRIDAY, {nome}! Ofertas imperdíveis por tempo limitado. [PRODUTO] saindo por {valor}. Aproveita enquanto tem estoque!"},
-  {cat:"Promoção",title:"Lançamento exclusivo",msg:"Oi, {nome}! Você é um dos primeiros a saber: estou lançando [PRODUTO/SERVIÇO] em breve. Quer garantir condição de lançamento? 🚀"},
-
-  // CONFIRMAÇÕES
-  {cat:"Confirmações",title:"Confirmar pedido",msg:"Olá, {nome}! Confirmo seu pedido: [DESCRIÇÃO]. Valor total: {valor}. Entrega/retirada: [DATA]. Qualquer dúvida estou aqui! ✅"},
+  {cat:"Pós-venda",title:"Recompra",msg:"Oi, {nome}! Seu estoque de {produto} deve estar acabando. Posso já separar mais para você? 😊"},
+  {cat:"Promoção",title:"Oferta relâmpago",msg:"🔥 OFERTA RELÂMPAGO, {nome}! Por hoje apenas, estou com {produto} por apenas {valor}. Garante o seu agora?"},
+  {cat:"Promoção",title:"Liquidação",msg:"Oi, {nome}! Grande liquidação aqui na loja! Grandes descontos em vários produtos. Passa lá ou me fala o que você precisa? 🛍️"},
+  {cat:"Promoção",title:"Novo produto",msg:"Olá, {nome}! 🎉 Acabou de chegar {produto} aqui! Lembrei de você porque [MOTIVO]. Quer dar uma olhada?"},
+  {cat:"Promoção",title:"Black Friday",msg:"🖤 BLACK FRIDAY, {nome}! Ofertas imperdíveis por tempo limitado. {produto} saindo por {valor}. Aproveita enquanto tem estoque!"},
+  {cat:"Confirmações",title:"Confirmar pedido",msg:"Olá, {nome}! Confirmo seu pedido: {produto}. Valor total: {valor}. Qualquer dúvida estou aqui! ✅"},
   {cat:"Confirmações",title:"Confirmar agendamento",msg:"Oi, {nome}! Confirmo seu agendamento para [DIA] às [HORA]. Lembrando o endereço: [ENDEREÇO]. Qualquer imprevisto me avisa! 📅"},
-  {cat:"Confirmações",title:"Pagamento recebido",msg:"Pagamento confirmado, {nome}! 💚 Obrigado! Já estou providenciando [PRODUTO/SERVIÇO]. Te aviso assim que estiver pronto!"},
-  {cat:"Confirmações",title:"Pedido pronto",msg:"Oi, {nome}! Seu pedido está pronto! 🎉 Pode retirar quando quiser. Qualquer dúvida me chama!"},
-  {cat:"Confirmações",title:"Cancelamento",msg:"Olá, {nome}. Registrei o cancelamento conforme solicitado. Se mudar de ideia ou precisar de algo, estou à disposição! 😊"},
-
-  // REENGAJAMENTO
-  {cat:"Reengajamento",title:"Cliente sumido",msg:"Oi, {nome}! Saudades! 😊 Faz um tempo que não te vejo por aqui. Tem novidades que acho que você vai adorar. Passa lá ou me chama?"},
-  {cat:"Reengajamento",title:"Novidade para cliente antigo",msg:"Olá, {nome}! Aqui é [SEU NOME]. Lembrei de você porque chegou algo novo que combina muito com o que você gosta. Posso te mostrar?"},
-  {cat:"Reengajamento",title:"Oferta para retorno",msg:"Oi, {nome}! Preparei uma surpresa especial para clientes que faz tempo não aparecem. Curiosidade? 😊 Me responde para eu te contar!"},
-
-  // SUPORTE
-  {cat:"Suporte",title:"Resolver problema",msg:"Oi, {nome}! Lamento pelo inconveniente. Vou resolver isso para você agora mesmo. Pode me contar melhor o que aconteceu? Minha prioridade é sua satisfação! 🙏"},
-  {cat:"Suporte",title:"Troca ou devolução",msg:"Olá, {nome}! Claro, vamos resolver a troca sem problema. Pode trazer [PRODUTO] que te ajudo imediatamente! Desculpe pelo transtorno. 😊"},
-  {cat:"Suporte",title:"Entrega atrasada",msg:"Oi, {nome}! Lamento pelo atraso. [MOTIVO DO ATRASO]. Seu pedido chegará em [NOVA DATA]. Obrigado pela paciência! 🙏"},
+  {cat:"Confirmações",title:"Pagamento recebido",msg:"Pagamento confirmado, {nome}! 💚 Obrigado! Já estou providenciando {produto}. Te aviso assim que estiver pronto!"},
+  {cat:"Confirmações",title:"Pedido pronto",msg:"Oi, {nome}! Seu pedido está pronto! 🎉 Pode retirar quando quiser!"},
+  {cat:"Reengajamento",title:"Cliente sumido",msg:"Oi, {nome}! Saudades! 😊 Faz um tempo que não te vejo. Tem novidades que acho que você vai adorar. Passa lá?"},
+  {cat:"Reengajamento",title:"Oferta para retorno",msg:"Oi, {nome}! Preparei uma surpresa especial para clientes que faz tempo não aparecem. Curiosidade? Me responde! 😊"},
+  {cat:"Suporte",title:"Resolver problema",msg:"Oi, {nome}! Lamento pelo inconveniente. Vou resolver isso para você agora mesmo. Pode me contar melhor o que aconteceu? 🙏"},
+  {cat:"Suporte",title:"Troca ou devolução",msg:"Olá, {nome}! Claro, vamos resolver a troca sem problema. Pode trazer {produto} que te ajudo imediatamente! 😊"},
+  {cat:"Suporte",title:"Entrega atrasada",msg:"Oi, {nome}! Lamento pelo atraso. Seu pedido chegará em [NOVA DATA]. Obrigado pela paciência! 🙏"},
 ];
 
-function toggleAuth(t){document.getElementById('login-form').style.display=t==='login'?'block':'none';document.getElementById('register-form').style.display=t==='register'?'block':'none';document.getElementById('auth-err').style.display='none';}
+// PWA Install
+window.addEventListener('beforeinstallprompt',(e)=>{
+  e.preventDefault();deferredPrompt=e;
+  document.getElementById('install-bar').style.display='flex';
+});
+document.getElementById('btn-install').addEventListener('click',async()=>{
+  if(!deferredPrompt)return;
+  deferredPrompt.prompt();
+  const{outcome}=await deferredPrompt.userChoice;
+  if(outcome==='accepted')document.getElementById('install-bar').style.display='none';
+  deferredPrompt=null;
+});
 
-function fazerLogin(){
-  const email=document.getElementById('l-email').value.trim(),senha=document.getElementById('l-senha').value;
-  if(!email||!senha){showAuthErr('Preencha todos os campos');return;}
-  const users=JSON.parse(localStorage.getItem('vai_users')||'[]');
-  const u=users.find(x=>x.email===email&&x.senha===senha);
-  if(!u){showAuthErr('E-mail ou senha incorretos');return;}
-  user=u;entrarApp();
+// AUTH
+async function init(){
+  const{data:{session}}=await supa.auth.getSession();
+  if(session){user=session.user;await entrarApp();}
+  else{document.getElementById('loading-screen').style.display='none';document.getElementById('auth-screen').style.display='flex';}
 }
 
-function fazerRegistro(){
-  const nome=document.getElementById('r-nome').value.trim(),email=document.getElementById('r-email').value.trim(),senha=document.getElementById('r-senha').value;
+function toggleAuth(t){
+  document.getElementById('login-form').style.display=t==='login'?'block':'none';
+  document.getElementById('register-form').style.display=t==='register'?'block':'none';
+  document.getElementById('auth-err').style.display='none';
+}
+
+async function fazerLogin(){
+  const email=document.getElementById('l-email').value.trim();
+  const senha=document.getElementById('l-senha').value;
+  if(!email||!senha){showAuthErr('Preencha todos os campos');return;}
+  const{data,error}=await supa.auth.signInWithPassword({email,password:senha});
+  if(error){showAuthErr('E-mail ou senha incorretos');return;}
+  user=data.user;await entrarApp();
+}
+
+async function fazerRegistro(){
+  const nome=document.getElementById('r-nome').value.trim();
+  const email=document.getElementById('r-email').value.trim();
+  const senha=document.getElementById('r-senha').value;
   if(!nome||!email||!senha){showAuthErr('Preencha todos os campos');return;}
   if(senha.length<6){showAuthErr('Senha mínimo 6 caracteres');return;}
-  const users=JSON.parse(localStorage.getItem('vai_users')||'[]');
-  if(users.find(x=>x.email===email)){showAuthErr('E-mail já cadastrado');return;}
-  const u={id:Date.now(),nome,email,senha};
-  users.push(u);localStorage.setItem('vai_users',JSON.stringify(users));
-  user=u;entrarApp();
+  const{data,error}=await supa.auth.signUp({email,password:senha,options:{data:{nome}}});
+  if(error){showAuthErr(error.message);return;}
+  user=data.user;await entrarApp();
 }
 
 function showAuthErr(msg){const el=document.getElementById('auth-err');el.textContent=msg;el.style.display='block';}
 
-function entrarApp(){
+async function entrarApp(){
+  document.getElementById('loading-screen').style.display='none';
   document.getElementById('auth-screen').style.display='none';
   document.getElementById('app-screen').style.display='block';
-  document.getElementById('user-initials').textContent=user.nome.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
-  leads=JSON.parse(localStorage.getItem('vai_leads_'+user.id)||'[]');
-  prods=JSON.parse(localStorage.getItem('vai_prods_'+user.id)||'[]');
-  contas=JSON.parse(localStorage.getItem('vai_contas_'+user.id)||'[]');
-  vendas=JSON.parse(localStorage.getItem('vai_vendas_'+user.id)||'[]');
-  buildAll();verificarVencimentos();
+  const nome=user.user_metadata?.nome||user.email||'U';
+  document.getElementById('user-initials').textContent=nome.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+  await carregarDados();buildAll();verificarVencimentos();
 }
 
-function sair(){if(!confirm('Sair da conta?'))return;user=null;document.getElementById('app-screen').style.display='none';document.getElementById('auth-screen').style.display='flex';}
+async function sair(){
+  if(!confirm('Sair da conta?'))return;
+  await supa.auth.signOut();
+  user=null;leads=[];prods=[];contas=[];vendas=[];
+  document.getElementById('app-screen').style.display='none';
+  document.getElementById('auth-screen').style.display='flex';
+}
 
-function saveLeads(){localStorage.setItem('vai_leads_'+user.id,JSON.stringify(leads));}
-function saveProds(){localStorage.setItem('vai_prods_'+user.id,JSON.stringify(prods));}
-function saveContas(){localStorage.setItem('vai_contas_'+user.id,JSON.stringify(contas));}
-function saveVendas(){localStorage.setItem('vai_vendas_'+user.id,JSON.stringify(vendas));}
+// SUPABASE DATA
+async function carregarDados(){
+  const uid=user.id;
+  const[l,p,c,v]=await Promise.all([
+    supa.from('leads').select('*').eq('user_id',uid).order('created_at',{ascending:false}),
+    supa.from('produtos').select('*').eq('user_id',uid).order('created_at',{ascending:false}),
+    supa.from('contas').select('*').eq('user_id',uid).order('created_at',{ascending:false}),
+    supa.from('vendas').select('*').eq('user_id',uid).order('created_at',{ascending:false}),
+  ]);
+  leads=l.data||[];prods=p.data||[];contas=c.data||[];vendas=v.data||[];
+}
 
 function show(id,el){
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
@@ -533,9 +515,9 @@ function fmtMoeda(v){return'R$ '+(parseFloat(v)||0).toLocaleString('pt-BR',{mini
 function buildAll(){buildDash();buildKanban();buildVendas();buildEstoque();buildClients();buildReceber();buildTemplates();}
 
 function buildDash(){
-  const receitaLeads=leads.filter(l=>l.stage==='fechando').reduce((s,l)=>s+(parseFloat(l.val)||0),0);
-  const receitaVendas=vendas.reduce((s,v)=>s+(parseFloat(v.val)||0),0);
-  document.getElementById('d-receita').textContent=fmtMoeda(receitaLeads+receitaVendas);
+  const recLeads=leads.filter(l=>l.stage==='fechando').reduce((s,l)=>s+(parseFloat(l.val)||0),0);
+  const recVendas=vendas.reduce((s,v)=>s+(parseFloat(v.val)||0),0);
+  document.getElementById('d-receita').textContent=fmtMoeda(recLeads+recVendas);
   document.getElementById('d-leads').textContent=leads.length;
   document.getElementById('d-falta').textContent=prods.filter(p=>p.qtd<=p.min).length;
   document.getElementById('d-receber').textContent=fmtMoeda(contas.filter(c=>c.status!=='pago').reduce((s,c)=>s+(parseFloat(c.val)||0),0));
@@ -543,7 +525,7 @@ function buildDash(){
   const cores=["#9FE1CB","#5DCAA5","#1D9E75","#0F6E56"];
   const d=[{l:"Total clientes",v:leads.length},{l:"Proposta enviada",v:leads.filter(x=>['proposta','negociando','fechando'].includes(x.stage)).length},{l:"Negociando",v:leads.filter(x=>['negociando','fechando'].includes(x.stage)).length},{l:"Fechados",v:leads.filter(x=>x.stage==='fechando').length}];
   document.getElementById('funnel').innerHTML=d.map((x,i)=>`<div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:2px"><span>${x.l}</span><span style="font-weight:600;color:var(--text)">${x.v}</span></div><div style="height:6px;background:var(--bg3);border-radius:999px;overflow:hidden"><div style="height:100%;width:${Math.round(x.v/max*100)}%;background:${cores[i]};border-radius:999px"></div></div></div>`).join('');
-  const ults=vendas.slice(-4).reverse();
+  const ults=vendas.slice(0,4);
   document.getElementById('dash-vendas').innerHTML=ults.length?ults.map(v=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)"><div><div style="font-size:12px;font-weight:500">${v.prod}</div><div style="font-size:10px;color:var(--text2)">${v.cliente||'—'} • ${v.forma}</div></div><span style="font-size:12px;font-weight:600;color:var(--green)">${fmtMoeda(v.val)}</span></div>`).join(''):'<div style="font-size:12px;color:var(--text3)">Nenhuma venda ainda</div>';
 }
 
@@ -555,9 +537,8 @@ function buildKanban(){
     col.innerHTML=`<div class="ch"><span class="ct">${st.l}</span><span class="cc">${sl.length}</span></div>`;
     if(!sl.length)col.innerHTML+=`<div style="font-size:12px;color:var(--text3);text-align:center;padding:20px 0">Nenhum cliente</div>`;
     sl.forEach(l=>{
-      const idx=leads.indexOf(l);
       const c=document.createElement('div');c.className='lcard';
-      c.innerHTML=`<div class="lname">${l.nome}</div><div class="lbiz">${l.biz||'—'}</div><div class="lfoot"><span class="lval">${fmtMoeda(l.val)}</span><div style="display:flex;gap:4px"><button onclick="abrirModalLead(${idx})" style="background:none;border:none;color:var(--amber);cursor:pointer;font-size:13px" title="Editar">✎</button><button onclick="removerLead(${idx})" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px" title="Remover">✕</button></div></div>${l.obs?`<div style="font-size:10px;color:var(--text3);margin-top:5px">${l.obs}</div>`:''}`;
+      c.innerHTML=`<div class="lname">${l.nome}</div><div class="lbiz">${l.biz||'—'}</div><div class="lfoot"><span class="lval">${fmtMoeda(l.val)}</span><div style="display:flex;gap:4px"><button onclick="abrirModalLead('${l.id}')" style="background:none;border:none;color:var(--amber);cursor:pointer;font-size:13px" title="Editar">✎</button><button onclick="removerLead('${l.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>${l.obs?`<div style="font-size:10px;color:var(--text3);margin-top:5px">${l.obs}</div>`:''}`;
       col.appendChild(c);
     });
     b.appendChild(col);
@@ -573,16 +554,7 @@ function buildVendas(){
   document.getElementById('v-mes').textContent=fmtMoeda(vMes);
   document.getElementById('v-qtd').textContent=vendas.length;
   document.getElementById('v-ticket').textContent=vendas.length?fmtMoeda(vendas.reduce((s,v)=>s+(parseFloat(v.val)||0),0)/vendas.length):fmtMoeda(0);
-  document.getElementById('vendas-list').innerHTML=vendas.length?[...vendas].reverse().map((v,i)=>{
-    const idx=vendas.length-1-i;
-    return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 60px">
-      <div class="td"><div style="font-weight:500">${v.prod}</div><div style="font-size:10px;color:var(--text2)">${v.forma}</div></div>
-      <div class="tdm">${v.cliente||'—'}</div>
-      <div class="td" style="color:var(--green);font-weight:600">${fmtMoeda(v.val)}</div>
-      <div class="tdm">${v.data?new Date(v.data+'T00:00:00').toLocaleDateString('pt-BR'):'—'}</div>
-      <div><button onclick="removerVenda(${idx})" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div>
-    </div>`;
-  }).join(''):'<div style="padding:24px;text-align:center;font-size:13px;color:var(--text3)">Nenhuma venda registrada ainda.</div>';
+  document.getElementById('vendas-list').innerHTML=vendas.length?vendas.map(v=>`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 60px"><div class="td"><div style="font-weight:500">${v.prod}</div><div style="font-size:10px;color:var(--text2)">${v.forma}</div></div><div class="tdm">${v.cliente||'—'}</div><div class="td" style="color:var(--green);font-weight:600">${fmtMoeda(v.val)}</div><div class="tdm">${v.data?new Date(v.data+'T00:00:00').toLocaleDateString('pt-BR'):'—'}</div><div><button onclick="removerVenda('${v.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>`).join(''):'<div style="padding:24px;text-align:center;font-size:13px;color:var(--text3)">Nenhuma venda registrada ainda.</div>';
 }
 
 function buildEstoque(){
@@ -596,43 +568,18 @@ function buildEstoque(){
   if(al.length){ab.style.display='flex';document.getElementById('alert-txt').textContent=`${al.length} produto(s) precisam de reposição`;}
   else ab.style.display='none';
   document.getElementById('est-list').innerHTML=filtrado.length?filtrado.map(p=>{
-    const idx=prods.indexOf(p);
     const pct=p.min>0?Math.min(100,Math.round(p.qtd/(p.min*3)*100)):100;
     const cor=p.qtd===0?'#E24B4A':p.qtd<=p.min?'#EF9F27':'#1D9E75';
     const st=p.qtd===0?'br':p.qtd<=p.min?'ba':'bg';
     const lb=p.qtd===0?'Sem estoque':p.qtd<=p.min?'Baixo':'Normal';
-    return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 130px">
-      <div class="td">${p.nome}</div><div class="tdm">${p.cat}</div>
-      <div class="td"><span style="font-weight:600">${p.qtd}</span><div class="sbar-w"><div class="sbar" style="width:${pct}%;background:${cor}"></div></div></div>
-      <div class="tdm">${p.min}</div>
-      <div class="td" style="color:var(--green);font-weight:600">${fmtMoeda(p.preco)}</div>
-      <div style="display:flex;gap:5px;align-items:center">
-        <button class="bwarn" onclick="abrirModalProd(${idx})" style="font-size:11px;padding:4px 8px" title="Editar"><i class="ti ti-edit" style="font-size:12px"></i></button>
-        <span class="badge ${st}">${lb}</span>
-        <button onclick="removerProd(${idx})" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px" title="Remover">✕</button>
-      </div>
-    </div>`;
+    return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 130px"><div class="td">${p.nome}</div><div class="tdm">${p.cat}</div><div class="td"><span style="font-weight:600">${p.qtd}</span><div class="sbar-w"><div class="sbar" style="width:${pct}%;background:${cor}"></div></div></div><div class="tdm">${p.min}</div><div class="td" style="color:var(--green);font-weight:600">${fmtMoeda(p.preco)}</div><div style="display:flex;gap:5px;align-items:center"><button class="bwarn" onclick="abrirModalProd('${p.id}')" style="font-size:11px;padding:4px 8px"><i class="ti ti-edit" style="font-size:12px"></i></button><span class="badge ${st}">${lb}</span><button onclick="removerProd('${p.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>`;
   }).join(''):'<div style="padding:24px;text-align:center;font-size:13px;color:var(--text3)">Nenhum produto cadastrado.</div>';
 }
 
 function buildClients(){
   const colors=['#0d2b22','#0d1e2d','#2d1e00','#2d1010','#1a1040','#1a2d0a'];
   const tcols=['#1D9E75','#378ADD','#EF9F27','#f87171','#8b7cf6','#5dbd3a'];
-  document.getElementById('cli-list').innerHTML=leads.length?leads.map((l,i)=>`
-    <div class="td-row" style="grid-template-columns:2fr 1.5fr 1fr 1fr 110px">
-      <div class="td" style="display:flex;align-items:center;gap:9px">
-        <div style="width:28px;height:28px;border-radius:50%;background:${colors[i%6]};color:${tcols[i%6]};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;border:1px solid ${tcols[i%6]}44">${l.nome.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()}</div>
-        <div><div>${l.nome}</div>${l.obs?`<div style="font-size:10px;color:var(--text3)">${l.obs}</div>`:''}</div>
-      </div>
-      <div class="tdm">${l.biz||'—'}</div>
-      <div class="td" style="color:var(--green);font-weight:600">${fmtMoeda(l.val)}</div>
-      <div><span class="badge ${l.stage==='fechando'?'bg':l.stage==='negociando'?'ba':'bgr'}">${stgs.find(s=>s.k===l.stage)?.l||l.stage}</span></div>
-      <div style="display:flex;gap:5px">
-        <button class="bwarn" onclick="abrirModalLead(${i})" style="font-size:11px;padding:4px 8px" title="Editar"><i class="ti ti-edit" style="font-size:12px"></i></button>
-        <button class="bsec" onclick="preencherIA('${l.nome.replace(/'/g,"\\'")}','${fmtMoeda(l.val)}')" style="font-size:11px;padding:4px 8px">MSG</button>
-        <button onclick="removerLead(${i})" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px" title="Remover">✕</button>
-      </div>
-    </div>`).join(''):'<div style="padding:24px;text-align:center;font-size:13px;color:var(--text3)">Nenhum cliente cadastrado.</div>';
+  document.getElementById('cli-list').innerHTML=leads.length?leads.map((l,i)=>`<div class="td-row" style="grid-template-columns:2fr 1.5fr 1fr 1fr 110px"><div class="td" style="display:flex;align-items:center;gap:9px"><div style="width:28px;height:28px;border-radius:50%;background:${colors[i%6]};color:${tcols[i%6]};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;border:1px solid ${tcols[i%6]}44">${l.nome.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()}</div><div><div>${l.nome}</div>${l.obs?`<div style="font-size:10px;color:var(--text3)">${l.obs}</div>`:''}</div></div><div class="tdm">${l.biz||'—'}</div><div class="td" style="color:var(--green);font-weight:600">${fmtMoeda(l.val)}</div><div><span class="badge ${l.stage==='fechando'?'bg':l.stage==='negociando'?'ba':'bgr'}">${stgs.find(s=>s.k===l.stage)?.l||l.stage}</span></div><div style="display:flex;gap:5px"><button class="bwarn" onclick="abrirModalLead('${l.id}')" style="font-size:11px;padding:4px 8px"><i class="ti ti-edit" style="font-size:12px"></i></button><button class="bsec" onclick="preencherIA('${l.nome.replace(/'/g,"\\'")}','${fmtMoeda(l.val)}')" style="font-size:11px;padding:4px 8px">MSG</button><button onclick="removerLead('${l.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>`).join(''):'<div style="padding:24px;text-align:center;font-size:13px;color:var(--text3)">Nenhum cliente cadastrado.</div>';
 }
 
 function buildReceber(){
@@ -646,23 +593,13 @@ function buildReceber(){
   const ra=document.getElementById('receber-alert');
   if(atrasados.length){ra.style.display='flex';document.getElementById('receber-alert-txt').textContent=`${atrasados.length} conta(s) vencida(s) ou vencendo hoje: ${atrasados.map(c=>c.nome).join(', ')}`;}
   else ra.style.display='none';
-  document.getElementById('receber-list').innerHTML=contas.length?contas.map((c,i)=>{
+  document.getElementById('receber-list').innerHTML=contas.length?contas.map(c=>{
     const d=new Date(c.data+'T00:00:00');
     const atrasado=c.status!=='pago'&&d<hoje;
     const venceHoje=c.status!=='pago'&&d.getTime()===hoje.getTime();
     const st=c.status==='pago'?'bg':atrasado?'br':venceHoje?'ba':'bgr';
     const lb=c.status==='pago'?'Pago':atrasado?'Atrasado':venceHoje?'Vence hoje':'A vencer';
-    return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 120px">
-      <div class="td"><div style="font-weight:500">${c.nome}</div>${c.obs?`<div style="font-size:10px;color:var(--text3)">${c.obs}</div>`:''}</div>
-      <div class="tdm">${c.desc||'—'}</div>
-      <div class="td" style="color:var(--amber);font-weight:600">${fmtMoeda(c.val)}</div>
-      <div class="tdm">${new Date(c.data+'T00:00:00').toLocaleDateString('pt-BR')}</div>
-      <div><span class="badge ${st}">${lb}</span></div>
-      <div style="display:flex;gap:5px;align-items:center">
-        ${c.status!=='pago'?`<button class="bgreen" onclick="marcarPago(${i})" style="font-size:11px;padding:4px 8px"><i class="ti ti-check" style="font-size:12px"></i> Pago</button>`:'<span style="font-size:11px;color:var(--green)">✓ Recebido</span>'}
-        <button onclick="removerConta(${i})" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button>
-      </div>
-    </div>`;
+    return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 120px"><div class="td"><div style="font-weight:500">${c.nome}</div>${c.obs?`<div style="font-size:10px;color:var(--text3)">${c.obs}</div>`:''}</div><div class="tdm">${c.desc||'—'}</div><div class="td" style="color:var(--amber);font-weight:600">${fmtMoeda(c.val)}</div><div class="tdm">${new Date(c.data+'T00:00:00').toLocaleDateString('pt-BR')}</div><div><span class="badge ${st}">${lb}</span></div><div style="display:flex;gap:5px;align-items:center">${c.status!=='pago'?`<button class="bgreen" onclick="marcarPago('${c.id}')" style="font-size:11px;padding:4px 8px"><i class="ti ti-check" style="font-size:12px"></i> Pago</button>`:'<span style="font-size:11px;color:var(--green)">✓</span>'}<button onclick="removerConta('${c.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>`;
   }).join(''):'<div style="padding:24px;text-align:center;font-size:13px;color:var(--text3)">Nenhuma conta cadastrada.</div>';
 }
 
@@ -670,20 +607,10 @@ function buildTemplates(){
   const cats=['Todos',...new Set(templates.map(t=>t.cat))];
   document.getElementById('tcat').innerHTML=cats.map(c=>`<button class="tcat-btn${c===tcatAtivo?' active':''}" onclick="setTcat('${c}',this)">${c}</button>`).join('');
   const filtrados=tcatAtivo==='Todos'?templates:templates.filter(t=>t.cat===tcatAtivo);
-  document.getElementById('template-list').innerHTML=filtrados.map((t,i)=>`
-    <div class="template-item" onclick="usarTemplate(${templates.indexOf(t)})">
-      <div class="ti-tag">${t.cat}</div>
-      <div class="ti-title">${t.title}</div>
-      <div class="ti-prev">${t.msg.substring(0,70)}...</div>
-    </div>`).join('');
+  document.getElementById('template-list').innerHTML=filtrados.map((t,i)=>`<div class="template-item" onclick="usarTemplate(${templates.indexOf(t)})"><div class="ti-tag">${t.cat}</div><div class="ti-title">${t.title}</div><div class="ti-prev">${t.msg.substring(0,70)}...</div></div>`).join('');
 }
 
-function setTcat(cat,el){
-  tcatAtivo=cat;
-  document.querySelectorAll('.tcat-btn').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-  buildTemplates();
-}
+function setTcat(cat,el){tcatAtivo=cat;document.querySelectorAll('.tcat-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');buildTemplates();}
 
 function usarTemplate(i){
   const nome=document.getElementById('ia-nome').value||'{nome}';
@@ -694,87 +621,67 @@ function usarTemplate(i){
   document.getElementById('ia-acts').style.display='flex';
 }
 
-function copiarMsg(){
-  const t=document.querySelector('.ia-txt');
-  if(t){navigator.clipboard.writeText(t.innerText);toast('Mensagem copiada! 📋');}
-}
-
-function limparMsg(){document.getElementById('ia-out').innerHTML='<div class="ia-ph">Selecione um template ao lado para gerar a mensagem...</div>';document.getElementById('ia-acts').style.display='none';}
-
-function preencherIA(nome,valor){
-  document.getElementById('ia-nome').value=nome;
-  document.getElementById('ia-valor').value=valor;
-  show('ia',document.querySelectorAll('.tab')[3]);
-}
+function copiarMsg(){const t=document.querySelector('.ia-txt');if(t){navigator.clipboard.writeText(t.innerText);toast('Mensagem copiada! 📋');}}
+function limparMsg(){document.getElementById('ia-out').innerHTML='<div class="ia-ph">Selecione um template ao lado...</div>';document.getElementById('ia-acts').style.display='none';}
+function preencherIA(nome,valor){document.getElementById('ia-nome').value=nome;document.getElementById('ia-valor').value=valor;show('ia',document.querySelectorAll('.tab')[3]);}
 
 function verificarVencimentos(){
   const hoje=new Date();hoje.setHours(0,0,0,0);
   const urgentes=contas.filter(c=>c.status!=='pago'&&new Date(c.data+'T00:00:00')<=hoje);
   const el=document.getElementById('dash-venc-alert');
-  if(urgentes.length){
-    el.innerHTML=`<div class="rbox" style="margin-bottom:16px"><i class="ti ti-alert-circle" style="font-size:16px;color:#f87171;flex-shrink:0"></i><div class="rtxt">⚠️ ${urgentes.length} conta(s) a receber vencida(s) ou vencendo hoje! <a onclick="show('receber',document.querySelectorAll('.tab')[6])" style="color:#f87171;cursor:pointer;text-decoration:underline;font-weight:600">Ver agora →</a></div></div>`;
-  }else el.innerHTML='';
+  if(urgentes.length){el.innerHTML=`<div class="rbox" style="margin-bottom:16px"><i class="ti ti-alert-circle" style="font-size:16px;color:#f87171;flex-shrink:0"></i><div class="rtxt">⚠️ ${urgentes.length} conta(s) vencida(s) ou vencendo hoje! <a onclick="show('receber',document.querySelectorAll('.tab')[6])" style="color:#f87171;cursor:pointer;text-decoration:underline;font-weight:600">Ver agora →</a></div></div>`;}
+  else el.innerHTML='';
 }
 
 function fecharModal(id,e){if(!e||e.target===document.getElementById(id))document.getElementById(id).style.display='none';}
 
-function abrirModalProd(idx){
-  editProdIdx=idx;
-  if(idx>=0){
-    const p=prods[idx];
-    document.getElementById('mprod-title').textContent='Editar produto';
-    document.getElementById('mp-nome').value=p.nome;
-    document.getElementById('mp-cat').value=p.cat;
-    document.getElementById('mp-preco').value=p.preco;
-    document.getElementById('mp-qtd').value=p.qtd;
-    document.getElementById('mp-min').value=p.min;
-  }else{
-    document.getElementById('mprod-title').textContent='Adicionar produto';
-    ['mp-nome','mp-preco','mp-qtd','mp-min'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('mp-cat').value='Roupas';
-  }
+function abrirModalProd(id){
+  editProdIdx=id;
+  const p=id&&id!=-1?prods.find(x=>x.id===id):null;
+  document.getElementById('mprod-title').textContent=p?'Editar produto':'Adicionar produto';
+  document.getElementById('mp-nome').value=p?.nome||'';
+  document.getElementById('mp-cat').value=p?.cat||'Roupas';
+  document.getElementById('mp-preco').value=p?.preco||'';
+  document.getElementById('mp-qtd').value=p?.qtd||'';
+  document.getElementById('mp-min').value=p?.min||'';
   document.getElementById('modal-prod').style.display='flex';
 }
 
-function salvarProd(){
+async function salvarProd(){
   const nome=document.getElementById('mp-nome').value.trim();
   if(!nome){toast('Informe o nome','var(--red)');return;}
-  const prod={nome,cat:document.getElementById('mp-cat').value,qtd:parseInt(document.getElementById('mp-qtd').value)||0,min:parseInt(document.getElementById('mp-min').value)||5,preco:parseFloat(document.getElementById('mp-preco').value)||0};
-  if(editProdIdx>=0)prods[editProdIdx]=prod;else prods.push(prod);
-  saveProds();fecharModal('modal-prod');buildEstoque();buildDash();
-  toast(editProdIdx>=0?'Produto atualizado!':'Produto adicionado!');
+  const prod={nome,cat:document.getElementById('mp-cat').value,qtd:parseInt(document.getElementById('mp-qtd').value)||0,min:parseInt(document.getElementById('mp-min').value)||5,preco:parseFloat(document.getElementById('mp-preco').value)||0,user_id:user.id};
+  if(editProdIdx&&editProdIdx!=-1){await supa.from('produtos').update(prod).eq('id',editProdIdx);}
+  else{await supa.from('produtos').insert(prod);}
+  await carregarDados();fecharModal('modal-prod');buildEstoque();buildDash();
+  toast(editProdIdx&&editProdIdx!=-1?'Produto atualizado!':'Produto adicionado!');
 }
 
-function removerProd(i){if(confirm('Remover produto?')){prods.splice(i,1);saveProds();buildEstoque();buildDash();toast('Produto removido');}}
+async function removerProd(id){if(!confirm('Remover produto?'))return;await supa.from('produtos').delete().eq('id',id);await carregarDados();buildEstoque();buildDash();toast('Produto removido');}
 
-function abrirModalLead(idx){
-  editLeadIdx=idx;
-  if(idx>=0){
-    const l=leads[idx];
-    document.getElementById('mlead-title').textContent='Editar cliente';
-    document.getElementById('ml-nome').value=l.nome;
-    document.getElementById('ml-biz').value=l.biz||'';
-    document.getElementById('ml-val').value=l.val||'';
-    document.getElementById('ml-stage').value=l.stage;
-    document.getElementById('ml-obs').value=l.obs||'';
-  }else{
-    document.getElementById('mlead-title').textContent='Novo cliente';
-    ['ml-nome','ml-biz','ml-val','ml-obs'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('ml-stage').value='contato';
-  }
+function abrirModalLead(id){
+  editLeadIdx=id;
+  const l=id&&id!=-1?leads.find(x=>x.id===id):null;
+  document.getElementById('mlead-title').textContent=l?'Editar cliente':'Novo cliente';
+  document.getElementById('ml-nome').value=l?.nome||'';
+  document.getElementById('ml-biz').value=l?.biz||'';
+  document.getElementById('ml-val').value=l?.val||'';
+  document.getElementById('ml-stage').value=l?.stage||'contato';
+  document.getElementById('ml-obs').value=l?.obs||'';
   document.getElementById('modal-lead').style.display='flex';
 }
 
-function salvarLead(){
+async function salvarLead(){
   const nome=document.getElementById('ml-nome').value.trim();
   if(!nome){toast('Informe o nome','var(--red)');return;}
-  const lead={nome,biz:document.getElementById('ml-biz').value,val:parseFloat(document.getElementById('ml-val').value)||0,stage:document.getElementById('ml-stage').value,obs:document.getElementById('ml-obs').value};
-  if(editLeadIdx>=0)leads[editLeadIdx]=lead;else leads.push(lead);
-  saveLeads();fecharModal('modal-lead');buildAll();
-  toast(editLeadIdx>=0?'Cliente atualizado!':'Cliente adicionado!');
+  const lead={nome,biz:document.getElementById('ml-biz').value,val:parseFloat(document.getElementById('ml-val').value)||0,stage:document.getElementById('ml-stage').value,obs:document.getElementById('ml-obs').value,user_id:user.id};
+  if(editLeadIdx&&editLeadIdx!=-1){await supa.from('leads').update(lead).eq('id',editLeadIdx);}
+  else{await supa.from('leads').insert(lead);}
+  await carregarDados();fecharModal('modal-lead');buildAll();
+  toast(editLeadIdx&&editLeadIdx!=-1?'Cliente atualizado!':'Cliente adicionado!');
 }
 
-function removerLead(i){if(confirm('Remover cliente?')){leads.splice(i,1);saveLeads();buildAll();toast('Cliente removido');}}
+async function removerLead(id){if(!confirm('Remover cliente?'))return;await supa.from('leads').delete().eq('id',id);await carregarDados();buildAll();toast('Cliente removido');}
 
 function abrirModalVenda(){
   document.getElementById('mv-data').value=new Date().toISOString().split('T')[0];
@@ -782,17 +689,17 @@ function abrirModalVenda(){
   document.getElementById('modal-venda').style.display='flex';
 }
 
-function salvarVenda(){
+async function salvarVenda(){
   const prod=document.getElementById('mv-prod').value.trim();
   const val=parseFloat(document.getElementById('mv-val').value)||0;
   if(!prod){toast('Informe o produto','var(--red)');return;}
   if(!val){toast('Informe o valor','var(--red)');return;}
-  vendas.push({prod,cliente:document.getElementById('mv-cliente').value,val,data:document.getElementById('mv-data').value,forma:document.getElementById('mv-forma').value});
-  saveVendas();fecharModal('modal-venda');buildVendas();buildDash();
+  await supa.from('vendas').insert({prod,cliente:document.getElementById('mv-cliente').value,val,data:document.getElementById('mv-data').value,forma:document.getElementById('mv-forma').value,user_id:user.id});
+  await carregarDados();fecharModal('modal-venda');buildVendas();buildDash();
   toast('Venda registrada! 💰');
 }
 
-function removerVenda(i){if(confirm('Remover venda?')){vendas.splice(i,1);saveVendas();buildVendas();buildDash();toast('Venda removida');}}
+async function removerVenda(id){if(!confirm('Remover venda?'))return;await supa.from('vendas').delete().eq('id',id);await carregarDados();buildVendas();buildDash();toast('Venda removida');}
 
 function abrirModalReceber(){
   document.getElementById('mr-data').value=new Date().toISOString().split('T')[0];
@@ -800,23 +707,55 @@ function abrirModalReceber(){
   document.getElementById('modal-receber').style.display='flex';
 }
 
-function salvarReceber(){
+async function salvarReceber(){
   const nome=document.getElementById('mr-nome').value.trim();
   const val=parseFloat(document.getElementById('mr-val').value)||0;
   const data=document.getElementById('mr-data').value;
-  if(!nome){toast('Informe o nome','var(--red)');return;}
-  if(!val){toast('Informe o valor','var(--red)');return;}
-  if(!data){toast('Informe a data','var(--red)');return;}
-  contas.push({nome,desc:document.getElementById('mr-desc').value,val,data,obs:document.getElementById('mr-obs').value,status:'pendente'});
-  saveContas();fecharModal('modal-receber');buildReceber();buildDash();verificarVencimentos();
+  if(!nome||!val||!data){toast('Preencha todos os campos','var(--red)');return;}
+  await supa.from('contas').insert({nome,desc:document.getElementById('mr-desc').value,val,data,obs:document.getElementById('mr-obs').value,status:'pendente',user_id:user.id});
+  await carregarDados();fecharModal('modal-receber');buildReceber();buildDash();verificarVencimentos();
   toast('Conta adicionada!');
 }
 
-function marcarPago(i){contas[i].status='pago';saveContas();buildReceber();buildDash();verificarVencimentos();toast('Marcado como pago! ✓');}
-function removerConta(i){if(confirm('Remover conta?')){contas.splice(i,1);saveContas();buildReceber();buildDash();verificarVencimentos();toast('Conta removida');}}
+async function marcarPago(id){await supa.from('contas').update({status:'pago'}).eq('id',id);await carregarDados();buildReceber();buildDash();verificarVencimentos();toast('Marcado como pago! ✓');}
+async function removerConta(id){if(!confirm('Remover conta?'))return;await supa.from('contas').delete().eq('id',id);await carregarDados();buildReceber();buildDash();verificarVencimentos();toast('Conta removida');}
 function setSegmento(seg,el){segFiltro=seg;document.querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');buildEstoque();}
 
-buildAll();
+// PWA Service Worker
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js').catch(()=>{});
+  });
+}
+
+init();
 </script>
 </body>
 </html>
+{
+  "name": "VendaAI — Gestão Inteligente",
+  "short_name": "VendaAI",
+  "description": "Gestão inteligente para pequenos negócios",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f0f",
+  "theme_color": "#1D9E75",
+  "orientation": "portrait-primary",
+  "icons": [
+    {"src": "https://placehold.co/192x192/1D9E75/ffffff?text=V", "sizes": "192x192", "type": "image/png"},
+    {"src": "https://placehold.co/512x512/1D9E75/ffffff?text=V", "sizes": "512x512", "type": "image/png"}
+  ]
+}const CACHE = 'vendaai-v1';
+const ASSETS = ['/', '/index.html', '/manifest.json'];
+
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
+});
+
+self.addEventListener('fetch', e => {
+  e.respondWith(
+    fetch(e.request).catch(() => caches.match(e.request))
+  );
+});
+
+
