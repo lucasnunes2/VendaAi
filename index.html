@@ -530,6 +530,26 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
   </div>
 </div>
 
+<div class="modal-ov" id="modal-editar-conta" style="display:none" onclick="fecharModal('modal-editar-conta',event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="mtitle">Editar conta a receber</div>
+    <div class="fg"><label class="fl">Nome do cliente</label><input class="fi" id="ec-nome" placeholder="Ex: Maria Silva"/></div>
+    <div class="fg"><label class="fl">Descrição</label><input class="fi" id="ec-desc" placeholder="Ex: Bolo encomendado..."/></div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Valor (R$)</label><input class="fi" id="ec-val" type="number" step="0.01" min="0" placeholder="0,00"/></div>
+      <div class="fg"><label class="fl">Vencimento</label><input class="fi" id="ec-data" type="date"/></div>
+    </div>
+    <div class="fg"><label class="fl">Observação</label><input class="fi" id="ec-obs" placeholder="Ex: combinou pagar sexta..."/></div>
+    <div class="fg"><label class="fl">Status</label>
+      <select class="fi" id="ec-status">
+        <option value="pendente">Pendente</option>
+        <option value="pago">Pago / Quitado</option>
+      </select>
+    </div>
+    <div class="mact"><button class="bsec" onclick="fecharModal('modal-editar-conta')">Cancelar</button><button class="btn" onclick="salvarEditConta()"><i class="ti ti-check"></i> Salvar</button></div>
+  </div>
+</div>
+
 <div class="toast" id="toast"><i class="ti ti-check" style="font-size:15px"></i><span id="toast-msg"></span></div>
 
 
@@ -758,7 +778,7 @@ function buildReceber(){
     const lb=c.status==='pago'?'✓ Pago':at?'Atrasado':vh?'Vence hoje':'A vencer';
     const pagas=contas.filter(x=>x.nome===c.nome&&x.descricao===c.descricao&&x.total_parcelas===c.total_parcelas&&x.status==='pago').length;
     const parcInfo=c.total_parcelas>1?`<div style="font-size:11px;color:var(--primary);font-weight:600;margin-top:2px"><i class="ti ti-credit-card" style="font-size:10px"></i> Parcela ${c.parcela_atual||1} de ${c.total_parcelas}x · Pagas: ${pagas}</div>`:'';
-    return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 130px"><div class="td"><div style="font-weight:600">${c.nome}</div>${parcInfo}${c.obs?`<div style="font-size:11px;color:var(--text3)">${c.obs}</div>`:''}</div><div class="tdm">${c.descricao||'—'}</div><div class="td" style="color:var(--warning);font-weight:700">${R(c.val)}</div><div class="tdm">${new Date(c.data+'T00:00:00').toLocaleDateString('pt-BR')}</div><div><span class="badge ${st}">${lb}</span></div><div style="display:flex;gap:6px;align-items:center">${c.status!=='pago'&&c.total_parcelas>1?`<button class="bgreen" onclick="pagarParcela('${c.id}')" style="font-size:11px;padding:5px 10px"><i class="ti ti-check" style="font-size:12px"></i> Parcela paga</button>`:c.status!=='pago'?`<button class="bgreen" onclick="marcarPago('${c.id}')" style="font-size:11px;padding:5px 10px"><i class="ti ti-check" style="font-size:12px"></i> Pago</button>`:'<span style="font-size:11px;color:var(--success);font-weight:600">✓ Quitado</span>'}<button onclick="remConta('${c.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px">✕</button></div></div>`;
+    return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 130px"><div class="td"><div style="font-weight:600">${c.nome}</div>${parcInfo}${c.obs?`<div style="font-size:11px;color:var(--text3)">${c.obs}</div>`:''}</div><div class="tdm">${c.descricao||'—'}</div><div class="td" style="color:var(--warning);font-weight:700">${R(c.val)}</div><div class="tdm">${new Date(c.data+'T00:00:00').toLocaleDateString('pt-BR')}</div><div><span class="badge ${st}">${lb}</span></div><div style="display:flex;gap:6px;align-items:center">${c.status!=='pago'&&c.total_parcelas>1?`<button class="bgreen" onclick="pagarParcela('${c.id}')" style="font-size:11px;padding:5px 10px"><i class="ti ti-check" style="font-size:12px"></i> Parcela paga</button>`:c.status!=='pago'?`<button class="bgreen" onclick="marcarPago('${c.id}')" style="font-size:11px;padding:5px 10px"><i class="ti ti-check" style="font-size:12px"></i> Pago</button>`:'<span style="font-size:11px;color:var(--success);font-weight:600">✓ Quitado</span>'}<button class="bwarn" onclick="editarConta('${c.id}')" style="font-size:11px;padding:4px 8px" title="Editar"><i class="ti ti-edit" style="font-size:12px"></i></button><button onclick="remConta('${c.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px">✕</button></div></div>`;
   }).join(''):'<div style="padding:28px;text-align:center;font-size:13px;color:var(--text3)">Nenhuma conta cadastrada.</div>';
 }
 
@@ -983,6 +1003,38 @@ async function pagarParcela(id){
     toast('🎉 Última parcela paga! Conta totalmente quitada!');
   }
 }
+let editContaId=null;
+
+function editarConta(id){
+  editContaId=id;
+  const c=contas.find(x=>x.id===id);
+  if(!c)return;
+  document.getElementById('ec-nome').value=c.nome||'';
+  document.getElementById('ec-desc').value=c.descricao||'';
+  document.getElementById('ec-val').value=c.val||'';
+  document.getElementById('ec-data').value=c.data||'';
+  document.getElementById('ec-obs').value=c.obs||'';
+  document.getElementById('ec-status').value=c.status||'pendente';
+  document.getElementById('modal-editar-conta').style.display='flex';
+}
+
+async function salvarEditConta(){
+  const nome=document.getElementById('ec-nome').value.trim();
+  const val=parseFloat(document.getElementById('ec-val').value)||0;
+  const data=document.getElementById('ec-data').value;
+  if(!nome||!val||!data){toast('Preencha os campos obrigatórios','error');return;}
+  await sb.from('contas').update({
+    nome,
+    descricao:document.getElementById('ec-desc').value,
+    val,
+    data,
+    obs:document.getElementById('ec-obs').value,
+    status:document.getElementById('ec-status').value
+  }).eq('id',editContaId);
+  await carregarDados();fecharModal('modal-editar-conta');buildReceber();buildDash();verificarVenc();
+  toast('Conta atualizada!');
+}
+
 async function remConta(id){if(!confirm('Remover conta?'))return;await sb.from('contas').delete().eq('id',id);await carregarDados();buildReceber();buildDash();verificarVenc();toast('Conta removida');}
 function setSeg(s,el){seg=s;document.querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');buildEst();}
 
