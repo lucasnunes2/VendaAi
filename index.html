@@ -4,7 +4,6 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="theme-color" content="#2563EB"/>
-  
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-title" content="VendaAI"/>
 <title>VendaAI — Gestão Inteligente</title>
@@ -497,7 +496,11 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
       <div class="fg"><label class="fl">Valor (R$)</label><input class="fi" id="mv-val" type="number" step="0.01" min="0" placeholder="0,00"/></div>
       <div class="fg"><label class="fl">Data</label><input class="fi" id="mv-data" type="date"/></div>
     </div>
-    <div class="fg"><label class="fl">Forma de pagamento</label><select class="fi" id="mv-forma"><option>Pix</option><option>Dinheiro</option><option>Cartão débito</option><option>Cartão crédito</option><option>Boleto</option></select></div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Forma de pagamento</label><select class="fi" id="mv-forma" onchange="toggleParcelas()"><option value="Pix">Pix</option><option value="Dinheiro">Dinheiro</option><option value="Cartão débito">Cartão débito</option><option value="Cartão crédito">Cartão crédito</option><option value="Boleto">Boleto</option><option value="Crediário">Crediário</option></select></div>
+      <div class="fg" id="parcelas-field" style="display:none"><label class="fl">Número de parcelas</label><select class="fi" id="mv-parcelas"><option value="1">1x (à vista)</option><option value="2">2x</option><option value="3">3x</option><option value="4">4x</option><option value="5">5x</option><option value="6">6x</option><option value="8">8x</option><option value="10">10x</option><option value="12">12x</option></select></div>
+    </div>
+    <div class="fg" id="venc-field" style="display:none"><label class="fl">Data da 1ª parcela</label><input class="fi" id="mv-venc" type="date"/></div>
     <div class="mact"><button class="bsec" onclick="fecharModal('modal-venda')">Cancelar</button><button class="btn" onclick="salvarVenda()"><i class="ti ti-check"></i> Registrar venda</button></div>
   </div>
 </div>
@@ -508,10 +511,15 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
     <div class="fg"><label class="fl">Nome do cliente</label><input class="fi" id="mr-nome" placeholder="Ex: Maria Silva"/></div>
     <div class="fg"><label class="fl">Descrição</label><input class="fi" id="mr-desc" placeholder="Ex: Bolo encomendado, roupa no fiado..."/></div>
     <div class="fr2">
-      <div class="fg"><label class="fl">Valor (R$)</label><input class="fi" id="mr-val" type="number" step="0.01" min="0" placeholder="0,00"/></div>
-      <div class="fg"><label class="fl">Data de vencimento</label><input class="fi" id="mr-data" type="date"/></div>
+      <div class="fg"><label class="fl">Valor total (R$)</label><input class="fi" id="mr-val" type="number" step="0.01" min="0" placeholder="0,00"/></div>
+      <div class="fg"><label class="fl">Forma</label><select class="fi" id="mr-forma" onchange="toggleReceberParcelas()"><option value="À vista">À vista</option><option value="Cartão crédito">Cartão crédito</option><option value="Boleto">Boleto</option><option value="Crediário">Crediário</option></select></div>
     </div>
-    <div class="fg"><label class="fl">Observação (opcional)</label><input class="fi" id="mr-obs" placeholder="Ex: 3x de R$50, combinou pagar sexta..."/></div>
+    <div class="fr2" id="mr-parcelas-row" style="display:none">
+      <div class="fg"><label class="fl">Nº de parcelas</label><select class="fi" id="mr-parcelas"><option value="1">1x</option><option value="2">2x</option><option value="3">3x</option><option value="4">4x</option><option value="5">5x</option><option value="6">6x</option><option value="8">8x</option><option value="10">10x</option><option value="12">12x</option></select></div>
+      <div class="fg"><label class="fl">Data da 1ª parcela</label><input class="fi" id="mr-data" type="date"/></div>
+    </div>
+    <div class="fg" id="mr-data-vista" ><label class="fl">Data de vencimento</label><input class="fi" id="mr-data-unica" type="date"/></div>
+    <div class="fg"><label class="fl">Observação (opcional)</label><input class="fi" id="mr-obs" placeholder="Ex: cliente do bairro, crediário mensal..."/></div>
     <div class="mact"><button class="bsec" onclick="fecharModal('modal-receber')">Cancelar</button><button class="btn" onclick="salvarReceber()"><i class="ti ti-check"></i> Salvar</button></div>
   </div>
 </div>
@@ -742,7 +750,8 @@ function buildReceber(){
     const at=c.status!=='pago'&&d<hj,vh=c.status!=='pago'&&d.getTime()===hj.getTime();
     const st=c.status==='pago'?'bg':at?'br':vh?'ba':'bgr';
     const lb=c.status==='pago'?'✓ Pago':at?'Atrasado':vh?'Vence hoje':'A vencer';
-    return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 130px"><div class="td"><div style="font-weight:600">${c.nome}</div>${c.obs?`<div style="font-size:11px;color:var(--text3)">${c.obs}</div>`:''}</div><div class="tdm">${c.descricao||'—'}</div><div class="td" style="color:var(--warning);font-weight:700">${R(c.val)}</div><div class="tdm">${new Date(c.data+'T00:00:00').toLocaleDateString('pt-BR')}</div><div><span class="badge ${st}">${lb}</span></div><div style="display:flex;gap:6px;align-items:center">${c.status!=='pago'?`<button class="bgreen" onclick="marcarPago('${c.id}')" style="font-size:11px;padding:5px 10px"><i class="ti ti-check" style="font-size:12px"></i> Pago</button>`:'<span style="font-size:11px;color:var(--success);font-weight:600">✓ Recebido</span>'}<button onclick="remConta('${c.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px">✕</button></div></div>`;
+    const parcInfo=c.total_parcelas>1?`<div style="font-size:11px;color:var(--primary);font-weight:600;margin-top:2px">${c.parcela_atual||1}ª de ${c.total_parcelas}x · R$ ${R(c.val/c.total_parcelas)}</div>`:'';
+    return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 130px"><div class="td"><div style="font-weight:600">${c.nome}</div>${parcInfo}${c.obs?`<div style="font-size:11px;color:var(--text3)">${c.obs}</div>`:''}</div><div class="tdm">${c.descricao||'—'}</div><div class="td" style="color:var(--warning);font-weight:700">${R(c.val)}</div><div class="tdm">${new Date(c.data+'T00:00:00').toLocaleDateString('pt-BR')}</div><div><span class="badge ${st}">${lb}</span></div><div style="display:flex;gap:6px;align-items:center">${c.status!=='pago'&&c.total_parcelas>1?`<button class="bgreen" onclick="pagarParcela('${c.id}')" style="font-size:11px;padding:5px 10px"><i class="ti ti-check" style="font-size:12px"></i> Parcela paga</button>`:c.status!=='pago'?`<button class="bgreen" onclick="marcarPago('${c.id}')" style="font-size:11px;padding:5px 10px"><i class="ti ti-check" style="font-size:12px"></i> Pago</button>`:'<span style="font-size:11px;color:var(--success);font-weight:600">✓ Quitado</span>'}<button onclick="remConta('${c.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px">✕</button></div></div>`;
   }).join(''):'<div style="padding:28px;text-align:center;font-size:13px;color:var(--text3)">Nenhuma conta cadastrada.</div>';
 }
 
@@ -830,31 +839,121 @@ function abrirModalVenda(){
   document.getElementById('modal-venda').style.display='flex';
 }
 
+function toggleParcelas(){
+  const forma=document.getElementById('mv-forma').value;
+  const show=['Cartão crédito','Boleto','Crediário'].includes(forma);
+  document.getElementById('parcelas-field').style.display=show?'block':'none';
+  document.getElementById('venc-field').style.display=show?'block':'none';
+}
+
 async function salvarVenda(){
   const prod=document.getElementById('mv-prod').value.trim(),val=parseFloat(document.getElementById('mv-val').value)||0;
+  const forma=document.getElementById('mv-forma').value;
   if(!prod||!val){toast('Preencha produto e valor','error');return;}
-  await sb.from('vendas').insert({prod,cliente:document.getElementById('mv-cliente').value,val,data:document.getElementById('mv-data').value,forma:document.getElementById('mv-forma').value,user_id:user.id});
-  await carregarDados();fecharModal('modal-venda');buildVendas();buildDash();
-  toast('Venda registrada! 💰');
+  await sb.from('vendas').insert({prod,cliente:document.getElementById('mv-cliente').value,val,data:document.getElementById('mv-data').value,forma,user_id:user.id});
+  // Se parcelado, criar contas a receber
+  const parcShow=['Cartão crédito','Boleto','Crediário'].includes(forma);
+  if(parcShow){
+    const nParcelas=parseInt(document.getElementById('mv-parcelas').value)||1;
+    const cliente=document.getElementById('mv-cliente').value||prod;
+    const vencBase=document.getElementById('mv-venc').value||new Date().toISOString().split('T')[0];
+    if(nParcelas>1&&vencBase){
+      const valParcela=val; // valor total fica na conta, parcelas controladas por campo
+      const d=new Date(vencBase+'T00:00:00');
+      for(let i=0;i<nParcelas;i++){
+        const dataVenc=new Date(d);
+        dataVenc.setMonth(dataVenc.getMonth()+i);
+        await sb.from('contas').insert({
+          nome:cliente,
+          descricao:`${prod} - ${forma}`,
+          val:valParcela,
+          data:dataVenc.toISOString().split('T')[0],
+          obs:`Parcela ${i+1} de ${nParcelas}`,
+          status:'pendente',
+          total_parcelas:nParcelas,
+          parcela_atual:i+1,
+          user_id:user.id
+        });
+      }
+      toast(`Venda registrada! ${nParcelas}x criadas em Contas a Receber 💰`);
+    } else {
+      toast('Venda registrada! 💰');
+    }
+  } else {
+    toast('Venda registrada! 💰');
+  }
+  await carregarDados();fecharModal('modal-venda');buildVendas();buildDash();buildReceber();
 }
 
 async function remVenda(id){if(!confirm('Remover venda?'))return;await sb.from('vendas').delete().eq('id',id);await carregarDados();buildVendas();buildDash();toast('Venda removida');}
 
 function abrirModalReceber(){
-  document.getElementById('mr-data').value=new Date().toISOString().split('T')[0];
+  const hoje=new Date().toISOString().split('T')[0];
+  document.getElementById('mr-data').value=hoje;
+  document.getElementById('mr-data-unica').value=hoje;
   ['mr-nome','mr-desc','mr-val','mr-obs'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('mr-forma').value='À vista';
+  document.getElementById('mr-parcelas-row').style.display='none';
+  document.getElementById('mr-data-vista').style.display='block';
   document.getElementById('modal-receber').style.display='flex';
 }
 
+function toggleReceberParcelas(){
+  const forma=document.getElementById('mr-forma').value;
+  const show=['Cartão crédito','Boleto','Crediário'].includes(forma);
+  document.getElementById('mr-parcelas-row').style.display=show?'grid':'none';
+  document.getElementById('mr-data-vista').style.display=show?'none':'block';
+}
+
 async function salvarReceber(){
-  const nome=document.getElementById('mr-nome').value.trim(),val=parseFloat(document.getElementById('mr-val').value)||0,data=document.getElementById('mr-data').value;
-  if(!nome||!val||!data){toast('Preencha os campos obrigatórios','error');return;}
-  await sb.from('contas').insert({nome,descricao:document.getElementById('mr-desc').value,val,data,obs:document.getElementById('mr-obs').value,status:'pendente',user_id:user.id});
+  const nome=document.getElementById('mr-nome').value.trim();
+  const val=parseFloat(document.getElementById('mr-val').value)||0;
+  const forma=document.getElementById('mr-forma').value;
+  if(!nome||!val){toast('Preencha os campos obrigatórios','error');return;}
+  const isParc=['Cartão crédito','Boleto','Crediário'].includes(forma);
+  if(isParc){
+    const nParcelas=parseInt(document.getElementById('mr-parcelas').value)||1;
+    const dataBase=document.getElementById('mr-data').value;
+    if(!dataBase){toast('Informe a data da 1ª parcela','error');return;}
+    const valTotal=val;
+    const valParc=parseFloat((valTotal/nParcelas).toFixed(2));
+    for(let i=0;i<nParcelas;i++){
+      const d=new Date(dataBase+'T00:00:00');
+      d.setMonth(d.getMonth()+i);
+      await sb.from('contas').insert({
+        nome,
+        descricao:document.getElementById('mr-desc').value,
+        val:valTotal,
+        data:d.toISOString().split('T')[0],
+        obs:`Parcela ${i+1} de ${nParcelas} · ${forma}${document.getElementById('mr-obs').value?' · '+document.getElementById('mr-obs').value:''}`,
+        status:'pendente',
+        total_parcelas:nParcelas,
+        parcela_atual:i+1,
+        user_id:user.id
+      });
+    }
+    toast(`${nParcelas} parcelas criadas!`);
+  } else {
+    const data=document.getElementById('mr-data-unica').value;
+    if(!data){toast('Informe a data de vencimento','error');return;}
+    await sb.from('contas').insert({nome,descricao:document.getElementById('mr-desc').value,val,data,obs:document.getElementById('mr-obs').value,status:'pendente',total_parcelas:1,parcela_atual:1,user_id:user.id});
+    toast('Conta adicionada!');
+  }
   await carregarDados();fecharModal('modal-receber');buildReceber();buildDash();verificarVenc();
-  toast('Conta adicionada!');
 }
 
 async function marcarPago(id){await sb.from('contas').update({status:'pago'}).eq('id',id);await carregarDados();buildReceber();buildDash();verificarVenc();toast('Marcado como pago! ✓');}
+
+async function pagarParcela(id){
+  const conta=contas.find(c=>c.id===id);
+  if(!conta)return;
+  const restantes=contas.filter(c=>c.nome===conta.nome&&c.descricao===conta.descricao&&c.status!=='pago'&&c.total_parcelas>1);
+  await sb.from('contas').update({status:'pago'}).eq('id',id);
+  await carregarDados();buildReceber();buildDash();verificarVenc();
+  const restam=restantes.length-1;
+  if(restam>0){toast(`Parcela paga! Faltam ${restam} parcela(s) ✓`);}
+  else{toast('Última parcela paga! Conta quitada! 🎉');}
+}
 async function remConta(id){if(!confirm('Remover conta?'))return;await sb.from('contas').delete().eq('id',id);await carregarDados();buildReceber();buildDash();verificarVenc();toast('Conta removida');}
 function setSeg(s,el){seg=s;document.querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');buildEst();}
 
@@ -870,4 +969,7 @@ function showMobile(id,el){
 init();
 </script>
 </body>
-</html>
+</html> 
+
+alter table contas add column if not exists total_parcelas int default 1;
+alter table contas add column if not exists parcela_atual int default 1;
