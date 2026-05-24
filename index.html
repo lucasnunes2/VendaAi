@@ -861,3 +861,25 @@ init();
 </script>
 </body>
 </html>
+bash
+
+grep -n "mobile-nav\|showMobile\|mobile-nav-item" /home/claude/vendaai/index.html | head -30
+Saída
+
+176:.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);z-index:50;padding:8px 0 12px;box-shadow:0 -4px 12px rgba(0,0,0,.08)}
+177:.mobile-nav-items{display:flex;justify-content:space-around;align-items:center}
+178:.mobile-nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 10px;border-radius:var(--radius);border:none;background:none;color:var(--text3);font-size:10px;font-weight:500;transition:all .15s;min-width:48px}
+179:.mobile-nav-item.active{color:var(--primary)}
+180:.mobile-nav-item.active i{color:var(--primary)}
+181:.mobile-nav-item i{font-size:20px;color:var(--text3)}
+190:  .mobile-nav{display:block}
+521:<div class="mobile-nav">
+522:  <div class="mobile-nav-items">
+523:    <button class="mobile-nav-item active" onclick="showMobile('dashboard',this)"><i class="ti ti-layout-dashboard"></i>Dashboard</button>
+524:    <button class="mobile-nav-item" onclick="showMobile('pipeline',this)"><i class="ti ti-layout-kanban"></i>Pipeline</button>
+525:    <button class="mobile-nav-item" onclick="showMobile('vendas',this)"><i class="ti ti-shopping-cart"></i>Vendas</button>
+526:    <button class="mobile-nav-item" onclick="showMobile('estoque',this)"><i class="ti ti-package"></i>Estoque</button>
+527:    <button class="mobile-nav-item" onclick="showMobile('receber',this)"><i class="ti ti-cash"></i>Receber</button>
+528:    <button class="mobile-nav-item" onclick="showMobile('ia',this)"><i class="ti ti-message-bolt"></i>MSG</button>
+854:function showMobile(id,el){
+856:  document.querySelectorAll('.mobile-nav-item').forEach(t=>t.classList.remove('active'));
