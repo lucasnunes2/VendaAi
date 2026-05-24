@@ -173,7 +173,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 @media(max-width:1024px){.grid4{grid-template-columns:repeat(2,1fr)}.kanban{grid-template-columns:1fr 1fr}.sidebar{width:200px}.main{margin-left:200px}}
 
 /* MOBILE NAV */
-.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);z-index:50;padding:8px 0 12px;box-shadow:0 -4px 12px rgba(0,0,0,.08)}
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);z-index:50;padding:8px 0 env(safe-area-inset-bottom,12px);box-shadow:0 -4px 12px rgba(0,0,0,.08)}
 .mobile-nav-items{display:flex;justify-content:space-around;align-items:center}
 .mobile-nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 10px;border-radius:var(--radius);border:none;background:none;color:var(--text3);font-size:10px;font-weight:500;transition:all .15s;min-width:48px}
 .mobile-nav-item.active{color:var(--primary)}
@@ -184,6 +184,9 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 .sec-badge{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:#065F46}
 .auth-security{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:24px;flex-wrap:wrap}
 .auth-sec-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);font-weight:500}
+@media(min-width:769px){
+  .mobile-nav{display:none !important}
+}
 @media(max-width:768px){
   .sidebar{display:none}
   .main{margin-left:0;padding-bottom:72px}
@@ -491,7 +494,10 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
   <div class="modal" onclick="event.stopPropagation()">
     <div class="mtitle">Registrar venda</div>
     <div class="fg"><label class="fl">Produto ou serviço vendido</label><input class="fi" id="mv-prod" placeholder="Ex: Bolo de chocolate, Camiseta P..."/></div>
-    <div class="fg"><label class="fl">Cliente (opcional)</label><input class="fi" id="mv-cliente" placeholder="Ex: Maria..."/></div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Cliente (opcional)</label><input class="fi" id="mv-cliente" placeholder="Ex: Maria..."/></div>
+      <div class="fg"><label class="fl">Quantidade vendida</label><input class="fi" id="mv-qtd-venda" type="number" min="1" value="1" placeholder="1"/></div>
+    </div>
     <div class="fr2">
       <div class="fg"><label class="fl">Valor (R$)</label><input class="fi" id="mv-val" type="number" step="0.01" min="0" placeholder="0,00"/></div>
       <div class="fg"><label class="fl">Data</label><input class="fi" id="mv-data" type="date"/></div>
@@ -750,7 +756,8 @@ function buildReceber(){
     const at=c.status!=='pago'&&d<hj,vh=c.status!=='pago'&&d.getTime()===hj.getTime();
     const st=c.status==='pago'?'bg':at?'br':vh?'ba':'bgr';
     const lb=c.status==='pago'?'✓ Pago':at?'Atrasado':vh?'Vence hoje':'A vencer';
-    const parcInfo=c.total_parcelas>1?`<div style="font-size:11px;color:var(--primary);font-weight:600;margin-top:2px">${c.parcela_atual||1}ª de ${c.total_parcelas}x · R$ ${R(c.val/c.total_parcelas)}</div>`:'';
+    const pagas=contas.filter(x=>x.nome===c.nome&&x.descricao===c.descricao&&x.total_parcelas===c.total_parcelas&&x.status==='pago').length;
+    const parcInfo=c.total_parcelas>1?`<div style="font-size:11px;color:var(--primary);font-weight:600;margin-top:2px"><i class="ti ti-credit-card" style="font-size:10px"></i> Parcela ${c.parcela_atual||1} de ${c.total_parcelas}x · Pagas: ${pagas}</div>`:'';
     return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 130px"><div class="td"><div style="font-weight:600">${c.nome}</div>${parcInfo}${c.obs?`<div style="font-size:11px;color:var(--text3)">${c.obs}</div>`:''}</div><div class="tdm">${c.descricao||'—'}</div><div class="td" style="color:var(--warning);font-weight:700">${R(c.val)}</div><div class="tdm">${new Date(c.data+'T00:00:00').toLocaleDateString('pt-BR')}</div><div><span class="badge ${st}">${lb}</span></div><div style="display:flex;gap:6px;align-items:center">${c.status!=='pago'&&c.total_parcelas>1?`<button class="bgreen" onclick="pagarParcela('${c.id}')" style="font-size:11px;padding:5px 10px"><i class="ti ti-check" style="font-size:12px"></i> Parcela paga</button>`:c.status!=='pago'?`<button class="bgreen" onclick="marcarPago('${c.id}')" style="font-size:11px;padding:5px 10px"><i class="ti ti-check" style="font-size:12px"></i> Pago</button>`:'<span style="font-size:11px;color:var(--success);font-weight:600">✓ Quitado</span>'}<button onclick="remConta('${c.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px">✕</button></div></div>`;
   }).join(''):'<div style="padding:28px;text-align:center;font-size:13px;color:var(--text3)">Nenhuma conta cadastrada.</div>';
 }
@@ -882,7 +889,18 @@ async function salvarVenda(){
   } else {
     toast('Venda registrada! 💰');
   }
-  await carregarDados();fecharModal('modal-venda');buildVendas();buildDash();buildReceber();
+  // Auto deduct from stock if product name matches
+  const prodNome=prod.toLowerCase().trim();
+  const matchProd=prods.find(p=>p.nome.toLowerCase().includes(prodNome)||prodNome.includes(p.nome.toLowerCase()));
+  if(matchProd&&matchProd.qtd>0){
+    const qtdVendida=parseInt(document.getElementById('mv-qtd-venda').value)||1;
+    const novaQtd=Math.max(0,matchProd.qtd-qtdVendida);
+    await sb.from('produtos').update({qtd:novaQtd}).eq('id',matchProd.id);
+    if(novaQtd<=matchProd.min){
+      setTimeout(()=>toast(`⚠️ Estoque baixo: ${matchProd.nome} (${novaQtd} restantes)`,'error'),2500);
+    }
+  }
+  await carregarDados();fecharModal('modal-venda');buildVendas();buildDash();buildReceber();buildEst();
 }
 
 async function remVenda(id){if(!confirm('Remover venda?'))return;await sb.from('vendas').delete().eq('id',id);await carregarDados();buildVendas();buildDash();toast('Venda removida');}
@@ -947,12 +965,23 @@ async function marcarPago(id){await sb.from('contas').update({status:'pago'}).eq
 async function pagarParcela(id){
   const conta=contas.find(c=>c.id===id);
   if(!conta)return;
-  const restantes=contas.filter(c=>c.nome===conta.nome&&c.descricao===conta.descricao&&c.status!=='pago'&&c.total_parcelas>1);
+  // Mark this parcela as paid
   await sb.from('contas').update({status:'pago'}).eq('id',id);
-  await carregarDados();buildReceber();buildDash();verificarVenc();
-  const restam=restantes.length-1;
-  if(restam>0){toast(`Parcela paga! Faltam ${restam} parcela(s) ✓`);}
-  else{toast('Última parcela paga! Conta quitada! 🎉');}
+  await carregarDados();
+  // Count remaining unpaid parcelas from same group
+  const restantes=contas.filter(c=>
+    c.nome===conta.nome&&
+    c.descricao===conta.descricao&&
+    c.total_parcelas===conta.total_parcelas&&
+    c.status!=='pago'&&
+    c.id!==id
+  );
+  buildReceber();buildDash();verificarVenc();
+  if(restantes.length>0){
+    toast(`Parcela ${conta.parcela_atual}/${conta.total_parcelas} paga! Faltam ${restantes.length} ✓`);
+  } else {
+    toast('🎉 Última parcela paga! Conta totalmente quitada!');
+  }
 }
 async function remConta(id){if(!confirm('Remover conta?'))return;await sb.from('contas').delete().eq('id',id);await carregarDados();buildReceber();buildDash();verificarVenc();toast('Conta removida');}
 function setSeg(s,el){seg=s;document.querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');buildEst();}
@@ -969,7 +998,4 @@ function showMobile(id,el){
 init();
 </script>
 </body>
-</html> 
-
-alter table contas add column if not exists total_parcelas int default 1;
-alter table contas add column if not exists parcela_atual int default 1;
+</html>
