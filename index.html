@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="theme-color" content="#2563EB"/>
+  
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-title" content="VendaAI"/>
 <title>VendaAI — Gestão Inteligente</title>
@@ -518,7 +519,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 <div class="toast" id="toast"><i class="ti ti-check" style="font-size:15px"></i><span id="toast-msg"></span></div>
 
 
-<div class="mobile-nav">
+<div class="mobile-nav" id="mobile-nav" style="display:none">
   <div class="mobile-nav-items">
     <button class="mobile-nav-item active" onclick="showMobile('dashboard',this)"><i class="ti ti-layout-dashboard"></i>Dashboard</button>
     <button class="mobile-nav-item" onclick="showMobile('pipeline',this)"><i class="ti ti-layout-kanban"></i>Pipeline</button>
@@ -609,6 +610,7 @@ async function entrarApp(){
   document.getElementById('loading-screen').style.display='none';
   document.getElementById('auth-screen').style.display='none';
   document.getElementById('app-screen').style.display='flex';
+  document.getElementById('mobile-nav').style.display='block';
   const nome=user.user_metadata?.nome||user.email||'Usuário';
   document.getElementById('user-avatar').textContent=nome.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
   document.getElementById('user-name').textContent=nome.split(' ')[0];
@@ -618,7 +620,7 @@ async function entrarApp(){
 async function sair(){
   if(!confirm('Sair da conta?'))return;
   await sb.auth.signOut();
-  user=null;document.getElementById('app-screen').style.display='none';document.getElementById('auth-screen').style.display='flex';
+  user=null;document.getElementById('app-screen').style.display='none';document.getElementById('auth-screen').style.display='flex';document.getElementById('mobile-nav').style.display='none';
 }
 
 async function carregarDados(){
