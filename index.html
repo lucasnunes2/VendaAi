@@ -634,10 +634,16 @@ async function carregarDados(){
 
 function show(id,el){
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(t=>t.classList.remove('active'));
   document.getElementById('sec-'+id).classList.add('active');
-  el.classList.add('active');
   document.getElementById('page-title').textContent=pageTitles[id]||'VendaAI';
+  if(el){
+    if(el.classList.contains('mobile-nav-item')){
+      document.querySelectorAll('.mobile-nav-item').forEach(t=>t.classList.remove('active'));
+    } else {
+      document.querySelectorAll('.nav-item').forEach(t=>t.classList.remove('active'));
+    }
+    el.classList.add('active');
+  }
 }
 
 function toast(msg,tipo){
@@ -852,7 +858,9 @@ function setSeg(s,el){seg=s;document.querySelectorAll('.seg-btn').forEach(b=>b.c
 
 
 function showMobile(id,el){
-  show(id,el);
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  document.getElementById('page-title').textContent=pageTitles[id]||'VendaAI';
   document.querySelectorAll('.mobile-nav-item').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
 }
