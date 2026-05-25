@@ -16,7 +16,7 @@
   --text:#0F172A;--text2:#475569;--text3:#94A3B8;
   --border:#E2E8F0;--bg:#F8FAFC;--radius:12px;--radius-lg:20px;
 }
-body{background:white;color:var(--text);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{background:white;color:var(--text);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;scroll-behavior: smooth;}
 a{text-decoration:none;color:inherit}
 
 /* NAV */
@@ -172,7 +172,6 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
 </head>
 <body>
 
-<!-- ✅ EDITE: troque 55SEUNUMERO pelo seu WhatsApp com DDD ex: 5517991234567 -->
 <div class="wpp-float" onclick="window.open('https://wa.me/5517996704054?text=Olá!%20Tenho%20interesse%20no%20VendaAI','_blank')">
   <i class="ti ti-brand-whatsapp" style="font-size:26px;color:white"></i>
 </div>
@@ -182,19 +181,15 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
     <div class="nav-logo-icon"><i class="ti ti-chart-dots-3" style="font-size:16px;color:white"></i></div>
     VendaAI
   </div>
-  <!-- ✅ EDITE: troque LINK_KIWIFY pelo link da sua página no Kiwify -->
-  <button class="nav-cta" onclick="window.open(https:// pay.kiwify.com.br/JdytH3G)">Assinar por R$47/mês</button>
+  <button class="nav-cta" onclick="document.getElementById('pricing').scrollIntoView({behavior: 'smooth'})">Assinar por R$47/mês</button>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-badge"><i class="ti ti-sparkles" style="font-size:12px"></i> Novo no mercado — seja um dos primeiros</div>
   <h1>Organize seu negócio e<br><span>nunca perca uma cobrança</span></h1>
   <p class="hero-sub">Pipeline de vendas, controle de estoque, crediário com parcelas e mensagens prontas para WhatsApp. Tudo num app simples feito para o empreendedor brasileiro.</p>
   <div class="hero-btns">
-    <!-- ✅ EDITE: troque LINK_KIWIFY pelo link da sua página no Kiwify -->
-    <button class="btn-primary" onclick="window.open(https:// pay.kiwify.com.br/JdytH3G"><i class="ti ti-rocket"></i> Começar agora — R$47/mês</button>
-    <!-- ✅ EDITE: troque 55SEUNUMERO pelo seu WhatsApp -->
+    <button class="btn-primary" onclick="window.open('https://pay.kiwify.com.br/JdytH3G', '_blank')"><i class="ti ti-rocket"></i> Começar agora — R$47/mês</button>
     <button class="btn-wpp" onclick="window.open('https://wa.me/5517996704054?text=Olá!%20Quero%20saber%20mais%20sobre%20o%20VendaAI','_blank')"><i class="ti ti-brand-whatsapp"></i> Falar no WhatsApp</button>
   </div>
   <div class="hero-trust">
@@ -205,7 +200,6 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
   </div>
 </section>
 
-<!-- SECURITY STRIP -->
 <div class="security-strip">
   <div class="sec-item"><i class="ti ti-lock" style="font-size:14px"></i>SSL 256-bit</div>
   <div class="sec-item"><i class="ti ti-shield-check" style="font-size:14px"></i>Dados criptografados</div>
@@ -214,7 +208,6 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
   <div class="sec-item"><i class="ti ti-device-mobile" style="font-size:14px"></i>Qualquer dispositivo</div>
 </div>
 
-<!-- PREVIEW -->
 <div class="preview">
   <div class="preview-wrap">
     <div class="preview-inner">
@@ -252,7 +245,6 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
   </div>
 </div>
 
-<!-- PROBLEMS -->
 <section class="section" style="background:var(--bg)">
   <div class="section-badge" style="background:#FEF2F2;color:#DC2626">😰 Você se identifica?</div>
   <div class="section-title">Os problemas que travam<br>o crescimento do seu negócio</div>
@@ -267,7 +259,6 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
   </div>
 </section>
 
-<!-- FEATURES -->
 <section class="section">
   <div class="section-center">
     <div class="section-badge" style="background:#EFF6FF;color:var(--primary)">✨ Solução completa</div>
@@ -328,7 +319,7 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
     <div class="feat-card">
       <div class="feat-icon" style="background:#EFF6FF"><i class="ti ti-chart-bar" style="color:var(--primary);font-size:22px"></i></div>
       <div class="feat-title">Dashboard Completo</div>
-      <div class="feat-desc">Tudo que importa em uma tela. Receita, clientes, estoque e cobranças.</div>
+      <div class="feat-desc">Tudo que importa em uma tela. Receita, clientes, estoque and cobranças.</div>
       <div class="feat-list">
         <div class="feat-item"><i class="ti ti-check"></i>Funil de vendas visual</div>
         <div class="feat-item"><i class="ti ti-check"></i>Alertas em tempo real</div>
@@ -338,7 +329,6 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
   </div>
 </section>
 
-<!-- FOR WHO -->
 <section class="section" style="background:linear-gradient(135deg,#EFF6FF,#F0FDF4)">
   <div class="section-center">
     <div class="section-badge" style="background:white;color:var(--primary);border:1px solid #BFDBFE">🎯 Para quem é?</div>
@@ -356,8 +346,7 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
   </div>
 </section>
 
-<!-- PRICING -->
-<section class="section section-center">
+<section class="section section-center" id="pricing">
   <div class="section-badge" style="background:#EFF6FF;color:var(--primary)">💰 Plano</div>
   <div class="section-title">Simples assim — um plano,<br>tudo incluso</div>
   <div style="font-size:15px;color:var(--text2);margin-top:8px">Sem surpresas. Sem taxas escondidas. Cancele quando quiser.</div>
@@ -365,9 +354,9 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
     <div class="price-card">
       <div class="price-badge-top">🔥 Oferta de Fundador</div>
       <div class="price-name">Plano Completo</div>
-      <div class="price-val">R$<span>47</span></div>
-      <div class="price-period">por mês · cancele quando quiser</div>
-      <div class="price-daily">= R$1,56 por dia</div>
+      <div class="price-val">R$47<span>/mês</span></div>
+      <div class="price-period">cancele quando quiser</div>
+      <div class="price-daily">= Apenas R$1,56 por dia</div>
       <div class="price-features">
         <div class="price-feat"><i class="ti ti-check"></i>Clientes e vendas ilimitados</div>
         <div class="price-feat"><i class="ti ti-check"></i>Controle de estoque completo</div>
@@ -380,8 +369,7 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
         <div class="price-feat"><i class="ti ti-check"></i>Acesso imediato após pagamento</div>
         <div class="price-feat"><i class="ti ti-check"></i>Suporte via WhatsApp</div>
       </div>
-      <!-- ✅ EDITE: troque LINK_KIWIFY pelo link da sua página no Kiwify -->
-      <button class="price-cta" onclick="window.open( https:// https://pay.kiwify.com.br/JdytH3G)">Assinar agora por R$47/mês →</button>
+      <button class="price-cta" onclick="window.open('https://pay.kiwify.com.br/JdytH3G', '_blank')">Assinar agora por R$47/mês →</button>
     </div>
   </div>
   <div class="founder-box">
@@ -390,7 +378,6 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
 <section class="section" style="background:var(--bg)">
   <div class="section-center">
     <div class="section-badge" style="background:white;color:var(--success);border:1px solid #BBF7D0">⭐ Depoimentos</div>
@@ -415,69 +402,37 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
     </div>
     <div class="test-card">
       <div class="test-stars">★★★★★</div>
-      <div class="test-text">"O controle de crediário é exatamente o que eu precisava. Sei quem deve, quanto deve e quando vence. Acabou o esquecimento e acabou o prejuízo."</div>
+      <div class="test-text">"O painel de controle de estoque e devedores é sensacional. O sistema já se pagou no primeiro dia recuperando duas contas de clientes esquecidos."</div>
       <div class="test-author">
-        <div class="test-avatar" style="background:linear-gradient(135deg,#7C3AED,#2563EB)">AL</div>
-        <div><div class="test-name">Ana L.</div><div class="test-role">Confeiteira · Belo Horizonte</div></div>
+        <div class="test-avatar" style="background:linear-gradient(135deg,#D97706,#E11D48)">RB</div>
+        <div><div class="test-name">Ricardo B.</div><div class="test-role">Dono de Mercadinho · Minas Gerais</div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FAQ -->
-<section class="section">
-  <div class="section-center">
-    <div class="section-badge" style="background:#EFF6FF;color:var(--primary)">❓ Dúvidas</div>
-    <div class="section-title">Perguntas frequentes</div>
-  </div>
-  <div class="faq-list">
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Como acesso depois de pagar?<i class="ti ti-chevron-down"></i></div><div class="faq-a">Após o pagamento você recebe um e-mail com o link de acesso. É só entrar, criar sua conta e já começar a usar. Acesso imediato, sem espera.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Se eu limpar o cache do celular, perco meus dados?<i class="ti ti-chevron-down"></i></div><div class="faq-a">Não! Todos os seus dados ficam salvos na nuvem com segurança total. Mesmo que troque de celular ou limpe o cache, é só fazer login e tudo estará lá.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Funciona no celular?<i class="ti ti-chevron-down"></i></div><div class="faq-a">Sim! Funciona perfeitamente no celular, tablet e computador. Você pode acessar de qualquer dispositivo e seus dados sempre estarão sincronizados.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Precisa instalar alguma coisa?<i class="ti ti-chevron-down"></i></div><div class="faq-a">Não precisa instalar nada. Funciona direto no navegador. No celular você pode adicionar à tela inicial para acesso rápido como um app nativo.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Posso cancelar quando quiser?<i class="ti ti-chevron-down"></i></div><div class="faq-a">Sim, sem complicação. Cancele a qualquer momento diretamente na plataforma, sem multas e sem fidelidade obrigatória.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">O que é a garantia do Fundador?<i class="ti ti-chevron-down"></i></div><div class="faq-a">Quem assinar durante o lançamento garante o preço de R$47/mês para sempre. Quando a versão 2.0 chegar com mais recursos, você continua pagando o mesmo valor sem nenhum reajuste.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Meus dados ficam seguros?<i class="ti ti-chevron-down"></i></div><div class="faq-a">Totalmente. Usamos criptografia SSL 256-bit com backup automático. Seus dados são 100% privados e jamais são compartilhados com terceiros.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Tem suporte se eu tiver dúvidas?<i class="ti ti-chevron-down"></i></div>
-    <!-- ✅ EDITE: troque 55SEUNUMERO pelo seu WhatsApp -->
-    <div class="faq-a">Sim! Suporte via WhatsApp. Clique no botão verde no canto da tela ou <a href="https://wa.me/https://goo.su/t93k722 https://goo.su/t93k722target="_blank" style="color:var(--primary);font-weight:600">clique aqui</a> para falar conosco.</div></div>
-  </div>
-</section>
-
-<!-- CTA FINAL -->
 <section class="cta-final">
-  <h2>Comece agora e transforme<br>seu negócio</h2>
-  <p>Junte-se a empreendedores que já vendem mais, organizam melhor e nunca mais perdem uma cobrança.</p>
+  <h2>Pronto para profissionalizar seu negócio?</h2>
+  <p>Deixe o caderninho no passado. Tenha o controle total do seu estoque, das suas vendas e evite o calote hoje mesmo.</p>
   <div class="cta-btns">
-    <!-- ✅ EDITE: troque LINK_KIWIFY pelo link da sua página no Kiwify -->
-    <button class="btn-white" onclick="window.open(https:// (https://pay.kiwify.com.br/JdytH3G)"><i class="ti ti-rocket" style="color:var(--primary)"></i> Assinar por R$47/mês</button>
-    <!-- ✅ EDITE: troque 55SEUNUMERO pelo seu WhatsApp -->
-    <button class="btn-wpp-final" onclick="window.open('https://wa.me/5517996704054?text=Olá!%20Quero%20assinar%20o%20VendaAI','_blank')"><i class="ti ti-brand-whatsapp"></i> Tirar dúvidas no WhatsApp</button>
+    <button class="btn-white" onclick="window.open('https://pay.kiwify.com.br/JdytH3G', '_blank')"><i class="ti ti-rocket" style="color:var(--primary)"></i> Começar agora por R$47/mês</button>
+    <button class="btn-wpp-final" onclick="window.open('https://wa.me/5517996704054?text=Olá!%20Quero%20tirar%20dúvidas%20sobre%20o%20VendaAI','_blank')"><i class="ti ti-brand-whatsapp"></i> Tirar dúvidas no WhatsApp</button>
   </div>
   <div class="cta-trust">
-    <div class="cta-trust-item"><i class="ti ti-lock"></i>SSL Seguro</div>
-    <div class="cta-trust-item"><i class="ti ti-check"></i>Acesso imediato</div>
-    <div class="cta-trust-item"><i class="ti ti-x"></i>Sem fidelidade</div>
-    <div class="cta-trust-item"><i class="ti ti-heart"></i>Suporte em português</div>
+    <div class="cta-trust-item"><i class="ti ti-lock"></i> SSL Seguro</div>
+    <div class="cta-trust-item"><i class="ti ti-shield"></i> Garantia de Reembolso</div>
+    <div class="cta-trust-item"><i class="ti ti-x"></i> Sem Fidelidade</div>
+    <div class="cta-trust-item"><i class="ti ti-heart"></i> Suporte humanizado</div>
   </div>
 </section>
 
 <footer>
   <div class="footer-logo">
-    <div style="width:28px;height:28px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center"><i class="ti ti-chart-dots-3" style="font-size:14px;color:white"></i></div>
+    <div style="width:28px;height:28px;background:linear-gradient(135deg,var(--primary),#0891B2);border-radius:8px;display:flex;align-items:center;justify-content:center"><i class="ti ti-chart-dots-3" style="font-size:14px;color:white"></i></div>
     VendaAI
   </div>
   <div class="footer-copy">© 2026 VendaAI · Todos os direitos reservados</div>
 </footer>
 
-<script>
-function toggleFaq(el){
-  const ans=el.nextElementSibling;
-  const icon=el.querySelector('i');
-  ans.classList.toggle('open');
-  icon.style.transform=ans.classList.contains('open')?'rotate(180deg)':'';
-  icon.style.transition='transform .2s';
-}
-</script>
 </body>
 </html>
