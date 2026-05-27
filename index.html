@@ -626,16 +626,22 @@ async function fazerLogin(){
   if(!email||!senha){showErr('Preencha todos os campos');return;}
   const{data,error}=await sb.auth.signInWithPassword({email,password:senha});
   if(error){showErr('E-mail ou senha incorretos');return;}
+  const{data:acesso}=await sb.from('acessos').select('*').eq('email',email).single();
+  if(!acesso){showErr('Acesso não liberado. Adquira o VendaAI em usevendaai.com.br');return;}
   user=data.user;await entrarApp();
+}
 }
 
 async function fazerRegistro(){
   const nome=document.getElementById('r-nome').value.trim(),email=document.getElementById('r-email').value.trim(),senha=document.getElementById('r-senha').value;
   if(!nome||!email||!senha){showErr('Preencha todos os campos');return;}
   if(senha.length<6){showErr('Senha mínimo 6 caracteres');return;}
+  const{data:acesso}=await sb.from('acessos').select('*').eq('email',email).single();
+  if(!acesso){showErr('E-mail não autorizado. Adquira o VendaAI em usevendaai.com.br');return;}
   const{data,error}=await sb.auth.signUp({email,password:senha,options:{data:{nome}}});
   if(error){showErr(error.message);return;}
   user=data.user;await entrarApp();
+}
 }
 
 function showErr(msg){const el=document.getElementById('auth-err');el.textContent=msg;el.style.display='block';}
