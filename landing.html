@@ -1,166 +1,190 @@
-bash
-
-cat > /home/claude/vendaai/landing.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="VendaAI — Gestão inteligente para pequenos negócios. Pipeline, estoque, parcelas e mensagens prontas."/>
+<meta name="description" content="VendaAI — Gestão inteligente para pequenos negócios. Pipeline de vendas, estoque, contas a receber e mensagens prontas. Tudo por R$47/mês."/>
 <title>VendaAI — Gestão Inteligente para Pequenos Negócios</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{--primary:#2563EB;--primary-dark:#1D4ED8;--primary-light:#EFF6FF;--success:#059669;--success-light:#ECFDF5;--text:#0F172A;--text2:#475569;--text3:#94A3B8;--border:#E2E8F0;--bg:#F8FAFC;--radius:12px}
-body{background:white;color:var(--text);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 6%;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-.nav-logo{display:flex;align-items:center;gap:9px;font-size:18px;font-weight:800;letter-spacing:-.4px}
-.nav-logo-icon{width:34px;height:34px;background:var(--primary);border-radius:9px;display:flex;align-items:center;justify-content:center}
-.nav-cta{background:var(--primary);color:white;padding:9px 22px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',system-ui,sans-serif}
+:root{--primary:#2563EB;--primary-dark:#1D4ED8;--success:#059669;--text:#0F172A;--text2:#475569;--text3:#94A3B8;--border:#E2E8F0;--bg:#F8FAFC;--radius:12px}
+body{background:white;color:var(--text)}
+a{text-decoration:none;color:inherit}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 5%;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;color:var(--text)}
+.nav-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),#0891B2);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.nav-cta{background:var(--primary);color:white;padding:9px 20px;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s}
 .nav-cta:hover{background:var(--primary-dark);transform:translateY(-1px)}
-.hero{padding:130px 6% 90px;text-align:center;background:linear-gradient(175deg,#EFF6FF 0%,#F8FAFC 50%,white 100%)}
-.hero-badge{display:inline-flex;align-items:center;gap:7px;background:white;color:var(--primary);border:1px solid #BFDBFE;border-radius:999px;padding:7px 18px;font-size:13px;font-weight:600;margin-bottom:28px;box-shadow:0 1px 4px rgba(37,99,235,.1)}
-.hero h1{font-size:clamp(34px,5.5vw,64px);font-weight:800;line-height:1.05;letter-spacing:-1.5px;color:var(--text);margin-bottom:22px;max-width:860px;margin-left:auto;margin-right:auto}
-.hero h1 span{background:linear-gradient(135deg,var(--primary),#0EA5E9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:clamp(16px,2vw,19px);color:var(--text2);max-width:560px;margin:0 auto 44px;line-height:1.65}
-.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:36px}
-.btn-primary{background:var(--primary);color:white;padding:15px 34px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(37,99,235,.35)}
-.btn-primary:hover{background:var(--primary-dark);transform:translateY(-2px)}
-.btn-wpp{background:#22C55E;color:white;padding:15px 34px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
-.btn-wpp:hover{background:#16A34A;transform:translateY(-2px)}
+
+/* HERO */
+.hero{padding:120px 5% 80px;text-align:center;background:linear-gradient(180deg,#EFF6FF 0%,white 100%)}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:#DBEAFE;color:var(--primary);border-radius:999px;padding:6px 16px;font-size:13px;font-weight:600;margin-bottom:24px}
+.hero h1{font-size:clamp(32px,5vw,58px);font-weight:800;line-height:1.1;color:var(--text);margin-bottom:20px;max-width:800px;margin-left:auto;margin-right:auto}
+.hero h1 span{background:linear-gradient(135deg,var(--primary),#0891B2);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:clamp(16px,2vw,20px);color:var(--text2);max-width:600px;margin:0 auto 40px;line-height:1.6}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:60px}
+.btn-primary{background:var(--primary);color:white;padding:14px 32px;border-radius:var(--radius);font-size:16px;font-weight:700;cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 14px rgba(37,99,235,.3)}
+.btn-primary:hover{background:var(--primary-dark);transform:translateY(-2px);box-shadow:0 6px 20px rgba(37,99,235,.4)}
+.btn-sec{background:white;color:var(--text);padding:14px 32px;border-radius:var(--radius);font-size:16px;font-weight:600;cursor:pointer;border:2px solid var(--border);transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-sec:hover{border-color:var(--primary);color:var(--primary)}
 .hero-trust{display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap}
 .trust-item{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text3);font-weight:500}
-.security-strip{background:#F0FDF4;border-top:1px solid #BBF7D0;border-bottom:1px solid #BBF7D0;padding:13px 6%;display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap}
-.sec-item{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:#065F46}
-.preview{padding:48px 6% 88px;display:flex;justify-content:center}
-.preview-wrap{background:linear-gradient(135deg,#1E3A8A,#2563EB,#0EA5E9);border-radius:22px;padding:3px;box-shadow:0 28px 70px rgba(37,99,235,.22);max-width:920px;width:100%}
-.preview-inner{background:white;border-radius:20px;overflow:hidden}
+
+/* APP PREVIEW */
+.preview{padding:0 5% 80px;display:flex;justify-content:center}
+.preview-wrap{background:linear-gradient(135deg,#1E3A8A,#2563EB,#0891B2);border-radius:20px;padding:3px;box-shadow:0 24px 60px rgba(37,99,235,.25);max-width:900px;width:100%}
+.preview-inner{background:white;border-radius:18px;overflow:hidden}
 .preview-bar{background:#F1F5F9;padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
-.preview-dot{width:11px;height:11px;border-radius:50%}
+.preview-dot{width:12px;height:12px;border-radius:50%}
 .preview-url{background:white;border-radius:6px;padding:4px 12px;font-size:12px;color:var(--text3);flex:1;text-align:center;border:1px solid var(--border)}
-.preview-screen{padding:22px;background:#F8FAFC}
-.preview-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.preview-screen{padding:20px;background:#F8FAFC}
+.preview-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
 .prev-card{background:white;border-radius:10px;padding:14px;border:1px solid var(--border)}
-.prev-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:7px;font-weight:600}
-.prev-val{font-size:19px;font-weight:700;color:var(--text)}
-.section{padding:88px 6%}
-.section-center{text-align:center}
-.section-badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 16px;font-size:12px;font-weight:600;margin-bottom:18px}
-.section-title{font-size:clamp(26px,3.5vw,40px);font-weight:800;color:var(--text);margin-bottom:14px;line-height:1.15;letter-spacing:-.8px}
-.section-sub{font-size:16px;color:var(--text2);line-height:1.65;max-width:580px}
-.problems-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:52px}
-.problem-card{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:26px;transition:all .25s}
-.problem-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.07)}
-.problem-icon{font-size:30px;margin-bottom:14px}
-.problem-title{font-size:15px;font-weight:700;margin-bottom:8px}
-.problem-desc{font-size:13px;color:var(--text2);line-height:1.65}
-.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px}
-.feat-card{padding:28px;border-radius:var(--radius);border:1px solid var(--border);background:white;transition:all .25s}
-.feat-card:hover{border-color:var(--primary);box-shadow:0 8px 28px rgba(37,99,235,.1);transform:translateY(-4px)}
-.feat-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
-.feat-title{font-size:16px;font-weight:700;margin-bottom:8px}
-.feat-desc{font-size:13px;color:var(--text2);line-height:1.65}
-.feat-list{margin-top:14px;display:flex;flex-direction:column;gap:7px}
+.prev-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.prev-val{font-size:18px;font-weight:700;color:var(--text)}
+
+/* PROBLEMS */
+.problems{padding:80px 5%;background:var(--bg)}
+.section-badge{display:inline-block;background:#FEF2F2;color:#DC2626;border-radius:999px;padding:5px 14px;font-size:12px;font-weight:600;margin-bottom:16px}
+.section-title{font-size:clamp(24px,3vw,36px);font-weight:800;color:var(--text);margin-bottom:12px}
+.section-sub{font-size:16px;color:var(--text2);max-width:600px;line-height:1.6}
+.problems-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.problem-card{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+.problem-icon{width:44px;height:44px;background:#FEF2F2;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:20px}
+.problem-title{font-size:16px;font-weight:700;margin-bottom:8px}
+.problem-desc{font-size:14px;color:var(--text2);line-height:1.6}
+
+/* FEATURES */
+.features{padding:80px 5%}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.feat-card{padding:28px;border-radius:var(--radius);border:1px solid var(--border);background:white;transition:all .2s}
+.feat-card:hover{border-color:var(--primary);box-shadow:0 8px 24px rgba(37,99,235,.1);transform:translateY(-3px)}
+.feat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:22px}
+.feat-title{font-size:17px;font-weight:700;margin-bottom:8px}
+.feat-desc{font-size:14px;color:var(--text2);line-height:1.6}
+.feat-list{margin-top:12px;display:flex;flex-direction:column;gap:6px}
 .feat-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2)}
-.forwho-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:52px}
-.who-card{background:white;border-radius:var(--radius);padding:24px;text-align:center;border:1px solid var(--border);transition:all .25s}
-.who-card:hover{transform:translateY(-5px);box-shadow:0 14px 36px rgba(0,0,0,.08)}
-.who-emoji{font-size:34px;margin-bottom:12px}
-.who-title{font-size:14px;font-weight:700;margin-bottom:6px}
-.who-desc{font-size:12px;color:var(--text2);line-height:1.55}
+
+/* FOR WHO */
+.forwho{padding:80px 5%;background:linear-gradient(135deg,#EFF6FF,#F0FDF4)}
+.forwho-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px}
+.who-card{background:white;border-radius:var(--radius);padding:24px;text-align:center;border:1px solid var(--border);transition:all .2s}
+.who-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.08)}
+.who-emoji{font-size:36px;margin-bottom:12px}
+.who-title{font-size:15px;font-weight:700;margin-bottom:6px}
+.who-desc{font-size:13px;color:var(--text2)}
+
 /* PRICING */
-.pricing-grid{display:flex;justify-content:center;gap:24px;margin-top:52px;flex-wrap:wrap;align-items:stretch}
-.price-card{background:white;border:2px solid var(--border);border-radius:20px;padding:36px;width:340px;position:relative;display:flex;flex-direction:column}
-.price-card.featured-blue{border-color:var(--primary);box-shadow:0 12px 48px rgba(37,99,235,.15)}
-.price-card.featured-gold{border-color:#F59E0B;box-shadow:0 12px 48px rgba(245,158,11,.18)}
-.price-badge-top{position:absolute;top:-15px;left:50%;transform:translateX(-50%);border-radius:999px;padding:5px 18px;font-size:12px;font-weight:700;white-space:nowrap}
-.price-name{font-size:17px;font-weight:700;margin-bottom:6px}
-.price-val{font-size:52px;font-weight:800;margin:18px 0 2px;line-height:1;letter-spacing:-2px}
-.price-period{font-size:14px;color:var(--text3);margin-bottom:8px}
-.price-daily{font-size:13px;font-weight:600;margin-bottom:24px;padding:7px 14px;border-radius:999px;display:inline-block}
-.price-features{display:flex;flex-direction:column;gap:13px;margin-bottom:28px;text-align:left;flex:1}
+.pricing{padding:80px 5%;text-align:center}
+.pricing-wrap{display:flex;justify-content:center;gap:24px;margin-top:48px;flex-wrap:wrap}
+.price-card{background:white;border:2px solid var(--border);border-radius:20px;padding:36px;width:320px;transition:all .2s;position:relative}
+.price-card.featured{border-color:var(--primary);box-shadow:0 8px 40px rgba(37,99,235,.15)}
+.price-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--primary);color:white;border-radius:999px;padding:4px 16px;font-size:12px;font-weight:700;white-space:nowrap}
+.price-name{font-size:18px;font-weight:700;margin-bottom:8px}
+.price-val{font-size:48px;font-weight:800;color:var(--primary);margin:16px 0 4px}
+.price-val span{font-size:18px;font-weight:500;color:var(--text3)}
+.price-period{font-size:14px;color:var(--text3);margin-bottom:24px}
+.price-features{display:flex;flex-direction:column;gap:12px;margin-bottom:28px;text-align:left}
 .price-feat{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text2)}
-.price-feat i{font-size:16px;flex-shrink:0}
-.price-cta{width:100%;padding:15px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;border:none;transition:all .2s;margin-top:auto}
-.price-cta:hover{transform:translateY(-1px)}
-.founder-box{background:linear-gradient(135deg,#FFFBEB,#FEF3C7);border:1.5px solid #FCD34D;border-radius:16px;padding:22px 28px;max-width:600px;margin:28px auto 0;text-align:center}
-.founder-title{font-size:15px;font-weight:700;color:#92400E;margin-bottom:7px}
-.founder-desc{font-size:13px;color:#92400E;line-height:1.65}
-.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:52px}
-.test-card{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:26px;transition:all .2s}
-.test-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.07);transform:translateY(-2px)}
-.test-stars{color:#F59E0B;font-size:15px;margin-bottom:14px;letter-spacing:2px}
-.test-text{font-size:14px;color:var(--text2);line-height:1.75;margin-bottom:18px;font-style:italic}
+.price-feat i{color:var(--success);font-size:16px;flex-shrink:0}
+.price-cta{width:100%;padding:13px;border-radius:var(--radius);font-size:15px;font-weight:700;cursor:pointer;border:none;transition:all .2s}
+.price-cta.primary{background:var(--primary);color:white}
+.price-cta.primary:hover{background:var(--primary-dark);transform:translateY(-1px)}
+.price-cta.sec{background:var(--bg);color:var(--text);border:2px solid var(--border)}
+.founder-tag{background:#FFFBEB;border:1px solid #FCD34D;border-radius:10px;padding:16px 20px;max-width:500px;margin:24px auto 0;font-size:14px;color:#92400E;font-weight:500}
+
+/* TESTIMONIALS */
+.testimonials{padding:80px 5%;background:var(--bg)}
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.test-card{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+.test-stars{color:#F59E0B;font-size:14px;margin-bottom:12px}
+.test-text{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;font-style:italic}
 .test-author{display:flex;align-items:center;gap:10px}
-.test-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0}
-.test-name{font-size:13px;font-weight:700}
-.test-role{font-size:12px;color:var(--text3);margin-top:1px}
-.faq-list{max-width:680px;margin:52px auto 0;display:flex;flex-direction:column;gap:8px}
+.test-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white}
+.test-name{font-size:13px;font-weight:600}
+.test-role{font-size:12px;color:var(--text3)}
+
+/* FAQ */
+.faq{padding:80px 5%}
+.faq-list{max-width:700px;margin:48px auto 0;display:flex;flex-direction:column;gap:12px}
 .faq-item{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
-.faq-q{padding:18px 22px;font-size:15px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:white;transition:background .15s;gap:12px}
+.faq-q{padding:18px 20px;font-size:15px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:white;transition:background .15s}
 .faq-q:hover{background:var(--bg)}
-.faq-q i{flex-shrink:0;color:var(--text3)}
-.faq-a{padding:0 22px 18px;font-size:14px;color:var(--text2);line-height:1.75;display:none}
+.faq-a{padding:0 20px 18px;font-size:14px;color:var(--text2);line-height:1.7;display:none}
 .faq-a.open{display:block}
-.cta-final{padding:96px 6%;background:linear-gradient(135deg,#1E3A8A 0%,#2563EB 55%,#0EA5E9 100%);text-align:center}
-.cta-final h2{font-size:clamp(28px,4vw,46px);font-weight:800;color:white;margin-bottom:16px;letter-spacing:-1px}
-.cta-final p{font-size:17px;color:rgba(255,255,255,.75);margin-bottom:44px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.6}
-.btn-white{background:white;color:var(--primary);padding:15px 34px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
-.btn-white:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.25)}
-.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
-.btn-wpp-final{background:#22C55E;color:white;padding:15px 34px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
-.btn-wpp-final:hover{background:#16A34A;transform:translateY(-2px)}
-.cta-trust{display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap}
-.cta-trust-item{display:flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,.65);font-weight:500}
-.wpp-float{position:fixed;bottom:24px;right:24px;width:54px;height:54px;background:#22C55E;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(34,197,94,.45);cursor:pointer;z-index:999;transition:all .2s}
-.wpp-float:hover{transform:scale(1.1)}
-footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
-.footer-logo{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:800}
+
+/* CTA FINAL */
+.cta-final{padding:80px 5%;background:linear-gradient(135deg,#1E3A8A 0%,#2563EB 60%,#0891B2 100%);text-align:center}
+.cta-final h2{font-size:clamp(28px,4vw,44px);font-weight:800;color:white;margin-bottom:16px}
+.cta-final p{font-size:18px;color:rgba(255,255,255,.8);margin-bottom:40px;max-width:500px;margin-left:auto;margin-right:auto}
+.btn-white{background:white;color:var(--primary);padding:14px 36px;border-radius:var(--radius);font-size:16px;font-weight:700;cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.cta-trust{display:flex;align-items:center;justify-content:center;gap:20px;margin-top:24px;flex-wrap:wrap}
+.cta-trust-item{display:flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,.7)}
+
+/* FOOTER */
+footer{padding:40px 5%;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-logo{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700}
+.footer-links{display:flex;gap:20px}
+.footer-link{font-size:13px;color:var(--text3);cursor:pointer}
+.footer-link:hover{color:var(--text)}
 .footer-copy{font-size:13px;color:var(--text3)}
-@media(max-width:900px){.problems-grid,.features-grid,.test-grid{grid-template-columns:1fr 1fr}.forwho-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:640px){.problems-grid,.features-grid,.test-grid{grid-template-columns:1fr}.price-card{width:100%;max-width:380px}.preview-metrics{grid-template-columns:repeat(2,1fr)}footer{flex-direction:column;text-align:center}.hero-btns,.cta-btns{flex-direction:column;align-items:center}.pricing-grid{flex-direction:column;align-items:center}}
+
+/* SECURITY STRIP */
+.security-strip{background:#F0FDF4;border-top:1px solid #BBF7D0;border-bottom:1px solid #BBF7D0;padding:12px 5%;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap}
+.sec-item{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#065F46}
+
+@media(max-width:768px){
+  .problems-grid,.features-grid,.forwho-grid,.test-grid{grid-template-columns:1fr}
+  .pricing-wrap{flex-direction:column;align-items:center}
+  .price-card{width:100%;max-width:360px}
+  .preview-metrics{grid-template-columns:repeat(2,1fr)}
+  footer{flex-direction:column;text-align:center}
+  .hero-btns{flex-direction:column;align-items:center}
+  .hero-trust{flex-direction:column;gap:10px}
+}
 </style>
 </head>
 <body>
 
-<div class="wpp-float" onclick="window.open('https://wa.me/5517996704054?text=Olá!%20Tenho%20interesse%20no%20VendaAI','_blank')">
-  <i class="ti ti-brand-whatsapp" style="font-size:26px;color:white"></i>
-</div>
-
 <nav>
   <div class="nav-logo">
-    <div class="nav-logo-icon"><i class="ti ti-chart-dots-3" style="font-size:16px;color:white"></i></div>
+    <div class="nav-logo-icon"><i class="ti ti-chart-dots-3" style="font-size:18px;color:white"></i></div>
     VendaAI
   </div>
-  <button class="nav-cta" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Assinar por R$47/mês</button>
+  <button class="nav-cta" onclick="scrollTo('#pricing')">Começar agora — R$47/mês</button>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
-  <div class="hero-badge"><i class="ti ti-sparkles" style="font-size:12px"></i> Gestão completa para pequenos negócios</div>
-  <h1>Organize seu negócio e<br><span>nunca perca uma cobrança</span></h1>
-  <p class="hero-sub">Pipeline de vendas, controle de estoque, crediário com parcelas e mensagens prontas para WhatsApp. Tudo num app simples feito para o empreendedor brasileiro.</p>
+  <div class="hero-badge"><i class="ti ti-sparkles" style="font-size:13px"></i> Gestão inteligente para pequenos negócios</div>
+  <h1>Pare de perder vendas por<br><span>falta de organização</span></h1>
+  <p class="hero-sub">Pipeline de vendas, controle de estoque, contas a receber com parcelas e mensagens prontas para WhatsApp — tudo em um só lugar por menos do que um almoço por semana.</p>
   <div class="hero-btns">
-    <button class="btn-primary" onclick="window.open('https://pay.kiwify.com.br/JdytH3G','_blank')"><i class="ti ti-rocket"></i> Começar agora — R$47/mês</button>
-    <button class="btn-wpp" onclick="window.open('https://wa.me/5517996704054?text=Olá!%20Quero%20saber%20mais%20sobre%20o%20VendaAI','_blank')"><i class="ti ti-brand-whatsapp"></i> Falar no WhatsApp</button>
+    <button class="btn-primary" onclick="window.open('https://venda-ai-jade.vercel.app','_blank')"><i class="ti ti-rocket"></i> Experimentar grátis agora</button>
+    <button class="btn-sec" onclick="scrollTo('#features')"><i class="ti ti-play"></i> Ver como funciona</button>
   </div>
   <div class="hero-trust">
-    <div class="trust-item"><i class="ti ti-check" style="color:var(--success)"></i>Acesso imediato após pagamento</div>
+    <div class="trust-item"><i class="ti ti-check" style="color:var(--success)"></i>Sem cartão de crédito</div>
     <div class="trust-item"><i class="ti ti-check" style="color:var(--success)"></i>Cancele quando quiser</div>
-    <div class="trust-item"><i class="ti ti-check" style="color:var(--success)"></i>Dados salvos na nuvem</div>
+    <div class="trust-item"><i class="ti ti-check" style="color:var(--success)"></i>Dados 100% seguros</div>
     <div class="trust-item"><i class="ti ti-check" style="color:var(--success)"></i>Funciona no celular</div>
   </div>
 </section>
 
+<!-- SECURITY STRIP -->
 <div class="security-strip">
   <div class="sec-item"><i class="ti ti-lock" style="font-size:14px"></i>SSL 256-bit</div>
   <div class="sec-item"><i class="ti ti-shield-check" style="font-size:14px"></i>Dados criptografados</div>
   <div class="sec-item"><i class="ti ti-database" style="font-size:14px"></i>Backup automático</div>
   <div class="sec-item"><i class="ti ti-eye-off" style="font-size:14px"></i>Privacidade garantida</div>
-  <div class="sec-item"><i class="ti ti-device-mobile" style="font-size:14px"></i>Qualquer dispositivo</div>
+  <div class="sec-item"><i class="ti ti-device-mobile" style="font-size:14px"></i>Funciona em qualquer dispositivo</div>
 </div>
 
+<!-- APP PREVIEW -->
 <div class="preview">
   <div class="preview-wrap">
     <div class="preview-inner">
@@ -168,28 +192,29 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
         <div class="preview-dot" style="background:#FF5F57"></div>
         <div class="preview-dot" style="background:#FFBD2E"></div>
         <div class="preview-dot" style="background:#28C840"></div>
-        <div class="preview-url">usevendaai.com.br</div>
+        <div class="preview-url">venda-ai-jade.vercel.app</div>
       </div>
       <div class="preview-screen">
-        <div style="font-size:13px;font-weight:700;color:#0F172A;margin-bottom:14px">📊 Dashboard — Visão geral</div>
+        <div style="font-size:13px;font-weight:700;color:#0F172A;margin-bottom:12px">📊 Visão geral do negócio</div>
         <div class="preview-metrics">
-          <div class="prev-card"><div class="prev-label">Receita total</div><div class="prev-val" style="color:#059669">R$ 8.453</div></div>
-          <div class="prev-card"><div class="prev-label">Clientes ativos</div><div class="prev-val">47</div></div>
-          <div class="prev-card"><div class="prev-label">Produtos em falta</div><div class="prev-val" style="color:#DC2626">3</div></div>
-          <div class="prev-card"><div class="prev-label">A receber</div><div class="prev-val" style="color:#D97706">R$ 1.240</div></div>
+          <div class="prev-card"><div class="prev-label">Receita total</div><div class="prev-val" style="color:#059669">R$ 4.280</div></div>
+          <div class="prev-card"><div class="prev-label">Clientes ativos</div><div class="prev-val">23</div></div>
+          <div class="prev-card"><div class="prev-label">Produtos em falta</div><div class="prev-val" style="color:#DC2626">2</div></div>
+          <div class="prev-card"><div class="prev-label">A receber</div><div class="prev-val" style="color:#D97706">R$ 890</div></div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
           <div style="background:white;border-radius:10px;padding:14px;border:1px solid #E2E8F0">
-            <div style="font-size:10px;font-weight:700;color:#94A3B8;margin-bottom:12px;letter-spacing:.5px">FUNIL DE VENDAS</div>
-            <div style="margin-bottom:8px"><div style="font-size:11px;color:#475569;margin-bottom:4px;display:flex;justify-content:space-between"><span>Total clientes</span><span style="font-weight:600">47</span></div><div style="height:5px;background:#BFDBFE;border-radius:999px"></div></div>
-            <div style="margin-bottom:8px"><div style="font-size:11px;color:#475569;margin-bottom:4px;display:flex;justify-content:space-between"><span>Negociando</span><span style="font-weight:600">23</span></div><div style="height:5px;background:#3B82F6;border-radius:999px;width:70%"></div></div>
-            <div><div style="font-size:11px;color:#475569;margin-bottom:4px;display:flex;justify-content:space-between"><span>Fechados</span><span style="font-weight:600">31</span></div><div style="height:5px;background:#1D4ED8;border-radius:999px;width:45%"></div></div>
+            <div style="font-size:11px;font-weight:700;color:#94A3B8;margin-bottom:10px">FUNIL DE VENDAS</div>
+            <div style="height:6px;background:#BFDBFE;border-radius:999px;margin-bottom:6px"></div>
+            <div style="height:6px;background:#93C5FD;border-radius:999px;margin-bottom:6px;width:70%"></div>
+            <div style="height:6px;background:#3B82F6;border-radius:999px;margin-bottom:6px;width:45%"></div>
+            <div style="height:6px;background:#1D4ED8;border-radius:999px;width:25%"></div>
           </div>
           <div style="background:white;border-radius:10px;padding:14px;border:1px solid #E2E8F0">
-            <div style="font-size:10px;font-weight:700;color:#94A3B8;margin-bottom:12px;letter-spacing:.5px">ÚLTIMAS VENDAS</div>
-            <div style="font-size:12px;color:#475569;padding:6px 0;border-bottom:1px solid #F1F5F9;display:flex;justify-content:space-between"><span>Camiseta M azul</span><span style="color:#059669;font-weight:600">R$ 89</span></div>
-            <div style="font-size:12px;color:#475569;padding:6px 0;border-bottom:1px solid #F1F5F9;display:flex;justify-content:space-between"><span>Bolo chocolate</span><span style="color:#059669;font-weight:600">R$ 120</span></div>
-            <div style="font-size:12px;color:#475569;padding:6px 0;display:flex;justify-content:space-between"><span>Corte de cabelo</span><span style="color:#059669;font-weight:600">R$ 45</span></div>
+            <div style="font-size:11px;font-weight:700;color:#94A3B8;margin-bottom:10px">ÚLTIMAS VENDAS</div>
+            <div style="font-size:12px;color:#475569;padding:4px 0;border-bottom:1px solid #F1F5F9">Camiseta M azul · <span style="color:#059669;font-weight:600">R$ 89</span></div>
+            <div style="font-size:12px;color:#475569;padding:4px 0;border-bottom:1px solid #F1F5F9">Bolo chocolate · <span style="color:#059669;font-weight:600">R$ 120</span></div>
+            <div style="font-size:12px;color:#475569;padding:4px 0">Serviço corte · <span style="color:#059669;font-weight:600">R$ 45</span></div>
           </div>
         </div>
       </div>
@@ -197,25 +222,52 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
   </div>
 </div>
 
-<section class="section" style="background:var(--bg)">
-  <div class="section-badge" style="background:#FEF2F2;color:#DC2626">😰 Você se identifica?</div>
-  <div class="section-title">Os problemas que travam o crescimento do seu negócio</div>
-  <div class="section-sub">Se você ainda gerencia tudo no caderninho ou na cabeça, está perdendo dinheiro todo dia sem perceber.</div>
+<!-- PROBLEMS -->
+<section class="problems" id="problems">
+  <div style="max-width:700px">
+    <div class="section-badge">😰 Você se identifica?</div>
+    <div class="section-title">Os problemas que travam o crescimento do seu negócio</div>
+    <div class="section-sub">Se você ainda gerencia tudo no caderninho ou na cabeça, está perdendo dinheiro todo dia sem perceber.</div>
+  </div>
   <div class="problems-grid">
-    <div class="problem-card"><div class="problem-icon">😤</div><div class="problem-title">Perde clientes por falta de retorno</div><div class="problem-desc">Você conversa, manda proposta e esquece. O cliente vai embora e você nem sabe que perdeu a venda.</div></div>
-    <div class="problem-card"><div class="problem-icon">📦</div><div class="problem-title">Não sabe o que tem em estoque</div><div class="problem-desc">Vende algo que não tem ou descobre que acabou na hora que o cliente pediu. Prejuízo garantido.</div></div>
-    <div class="problem-card"><div class="problem-icon">💸</div><div class="problem-title">Esquece de cobrar no fiado</div><div class="problem-desc">Cliente parcelou, você anotou no caderno e nunca mais cobrou. Dinheiro que simplesmente some.</div></div>
-    <div class="problem-card"><div class="problem-icon">📱</div><div class="problem-title">Perde horas escrevendo mensagens</div><div class="problem-desc">Escreve a mesma coisa 20 vezes por dia no WhatsApp. Tempo que poderia ser usado pra vender.</div></div>
-    <div class="problem-card"><div class="problem-icon">📊</div><div class="problem-title">Não sabe quanto faturou</div><div class="problem-desc">No fim do mês você não sabe ao certo quanto entrou, quanto saiu e quanto ainda tem a receber.</div></div>
-    <div class="problem-card"><div class="problem-icon">🤯</div><div class="problem-title">Informação espalhada em todo lugar</div><div class="problem-desc">Cliente no WhatsApp, estoque no papel, contas na cabeça. Impossível crescer assim.</div></div>
+    <div class="problem-card">
+      <div class="problem-icon">😤</div>
+      <div class="problem-title">Perde clientes por falta de follow-up</div>
+      <div class="problem-desc">Você conversa com o cliente, manda proposta e... esquece de dar retorno. O cliente vai embora e você nem sabe.</div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">📦</div>
+      <div class="problem-title">Não sabe o que tem em estoque</div>
+      <div class="problem-desc">Vende algo que não tem, ou descobre que acabou na hora que o cliente pediu. Prejuízo na certa.</div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">💸</div>
+      <div class="problem-title">Esquecer de cobrar no fiado</div>
+      <div class="problem-desc">Cliente comprou parcelado, você anotou no caderno, mas esqueceu de cobrar. Dinheiro perdido.</div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">📱</div>
+      <div class="problem-title">Perde tempo escrevendo mensagens</div>
+      <div class="problem-desc">Escreve a mesma mensagem 20 vezes por dia no WhatsApp. Tempo desperdiçado que poderia ser vendendo.</div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">📊</div>
+      <div class="problem-title">Não sabe quanto faturou no mês</div>
+      <div class="problem-desc">No fim do mês você não sabe ao certo quanto entrou, quanto saiu e quanto ainda tem a receber.</div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">🤯</div>
+      <div class="problem-title">Informação espalhada em todo lugar</div>
+      <div class="problem-desc">Cliente no WhatsApp, estoque no papel, contas na cabeça. Impossível crescer assim.</div>
+    </div>
   </div>
 </section>
 
-<section class="section">
-  <div class="section-center">
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div style="text-align:center;max-width:700px;margin:0 auto">
     <div class="section-badge" style="background:#EFF6FF;color:var(--primary)">✨ Solução completa</div>
-    <div class="section-title">Tudo que você precisa num só lugar</div>
-    <div class="section-sub" style="margin:0 auto">Desenvolvido para o empreendedor brasileiro que quer crescer sem complicação.</div>
+    <div class="section-title">Tudo que você precisa para vender mais e organizar seu negócio</div>
   </div>
   <div class="features-grid">
     <div class="feat-card">
@@ -223,9 +275,9 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
       <div class="feat-title">Pipeline de Vendas Visual</div>
       <div class="feat-desc">Acompanhe cada cliente em tempo real, do primeiro contato até o fechamento.</div>
       <div class="feat-list">
-        <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Visualize todos os clientes de uma vez</div>
+        <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Arraste clientes entre etapas</div>
         <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Edite dados a qualquer momento</div>
-        <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Saiba o valor de cada negócio</div>
+        <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Valor de cada negócio visível</div>
       </div>
     </div>
     <div class="feat-card">
@@ -235,7 +287,7 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
       <div class="feat-list">
         <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Alertas automáticos de estoque baixo</div>
         <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Abate automático ao registrar venda</div>
-        <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Filtro por categoria de produto</div>
+        <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Filtro por categoria</div>
       </div>
     </div>
     <div class="feat-card">
@@ -244,8 +296,8 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
       <div class="feat-desc">Nunca mais esqueça de cobrar. Controle parcelamentos, crediário e fiado.</div>
       <div class="feat-list">
         <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Parcelamento em até 12x</div>
-        <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Alerta de vencimento no dashboard</div>
-        <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Crediário, boleto e cartão</div>
+        <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Alerta de vencimento automático</div>
+        <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Crediário e boleto</div>
       </div>
     </div>
     <div class="feat-card">
@@ -253,17 +305,17 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
       <div class="feat-title">Central de Mensagens</div>
       <div class="feat-desc">50+ templates prontos para WhatsApp. Personalize com nome e valor em segundos.</div>
       <div class="feat-list">
-        <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Follow-up, cobrança e promoção</div>
+        <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Follow-up, cobrança, promoção</div>
         <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Personalize com 1 clique</div>
-        <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Copie e cole direto no WhatsApp</div>
+        <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Copie e cole no WhatsApp</div>
       </div>
     </div>
     <div class="feat-card">
       <div class="feat-icon" style="background:#FFF1F2"><i class="ti ti-shopping-cart" style="color:#E11D48;font-size:22px"></i></div>
       <div class="feat-title">Vendas Diretas</div>
-      <div class="feat-desc">Registre vendas da loja física em segundos. Totais do dia, mês e ticket médio.</div>
+      <div class="feat-desc">Registre vendas da loja física em segundos. Total do dia, mês e ticket médio na tela.</div>
       <div class="feat-list">
-        <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Pix, dinheiro, cartão e boleto</div>
+        <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Pix, dinheiro, cartão, boleto</div>
         <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Relatório diário e mensal</div>
         <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Baixa no estoque automática</div>
       </div>
@@ -271,7 +323,7 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
     <div class="feat-card">
       <div class="feat-icon" style="background:#EFF6FF"><i class="ti ti-chart-bar" style="color:var(--primary);font-size:22px"></i></div>
       <div class="feat-title">Dashboard Completo</div>
-      <div class="feat-desc">Tudo que importa em uma tela. Receita, clientes, estoque e cobranças.</div>
+      <div class="feat-desc">Tudo que importa em uma tela só. Receita, clientes, estoque e cobranças.</div>
       <div class="feat-list">
         <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Funil de vendas visual</div>
         <div class="feat-item"><i class="ti ti-check" style="color:var(--success)"></i>Alertas em tempo real</div>
@@ -281,132 +333,165 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
   </div>
 </section>
 
-<section class="section" style="background:linear-gradient(135deg,#EFF6FF,#F0FDF4)">
-  <div class="section-center">
-    <div class="section-badge" style="background:white;color:var(--primary);border:1px solid #BFDBFE">🎯 Para quem é?</div>
+<!-- FOR WHO -->
+<section class="forwho">
+  <div style="text-align:center">
+    <div class="section-badge" style="background:#EFF6FF;color:var(--primary)">🎯 Para quem é o VendaAI?</div>
     <div class="section-title">Feito para quem vende de verdade</div>
   </div>
   <div class="forwho-grid">
-    <div class="who-card"><div class="who-emoji">👗</div><div class="who-title">Lojas de roupas</div><div class="who-desc">Controle estoque, vendas e clientes fiados com facilidade</div></div>
-    <div class="who-card"><div class="who-emoji">🍰</div><div class="who-title">Confeitarias</div><div class="who-desc">Gerencie encomendas, parcelas e clientes recorrentes</div></div>
-    <div class="who-card"><div class="who-emoji">💈</div><div class="who-title">Salões e barbearias</div><div class="who-desc">Acompanhe clientes e nunca perca um pagamento</div></div>
+    <div class="who-card"><div class="who-emoji">👗</div><div class="who-title">Lojas de roupas</div><div class="who-desc">Controle estoque, vendas e clientes fiados</div></div>
+    <div class="who-card"><div class="who-emoji">🍰</div><div class="who-title">Confeitarias e docerias</div><div class="who-desc">Gerencie encomendas e clientes recorrentes</div></div>
+    <div class="who-card"><div class="who-emoji">💈</div><div class="who-title">Salões e barbearias</div><div class="who-desc">Acompanhe clientes e controle agendamentos</div></div>
     <div class="who-card"><div class="who-emoji">🔧</div><div class="who-title">Prestadores de serviço</div><div class="who-desc">Orçamentos, follow-up e cobranças organizadas</div></div>
-    <div class="who-card"><div class="who-emoji">🛒</div><div class="who-title">Mercadinhos</div><div class="who-desc">Controle de fiado, estoque e vendas do dia</div></div>
-    <div class="who-card"><div class="who-emoji">🍔</div><div class="who-title">Lanchonetes</div><div class="who-desc">Registre vendas, controle estoque e gerencie pedidos</div></div>
-    <div class="who-card"><div class="who-emoji">💅</div><div class="who-title">Estética e beleza</div><div class="who-desc">Agendamentos, cobranças e controle de clientes</div></div>
-    <div class="who-card"><div class="who-emoji">🏠</div><div class="who-title">Qualquer pequeno negócio</div><div class="who-desc">Se você vende, o VendaAI é para você</div></div>
   </div>
 </section>
 
 <!-- PRICING -->
+<style>
+.pricing-grid-new{display:flex;justify-content:center;gap:24px;margin-top:52px;flex-wrap:wrap;align-items:stretch}
+.pcard{background:white;border:2px solid var(--border);border-radius:20px;padding:36px;width:340px;position:relative;display:flex;flex-direction:column}
+.pcard.blue{border-color:var(--primary);box-shadow:0 12px 48px rgba(37,99,235,.15)}
+.pcard.gold{border-color:#F59E0B;box-shadow:0 12px 48px rgba(245,158,11,.18)}
+.pbadge{position:absolute;top:-15px;left:50%;transform:translateX(-50%);border-radius:999px;padding:5px 18px;font-size:12px;font-weight:700;white-space:nowrap;color:white}
+.pfeat{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text2);margin-bottom:11px}
+.pcta{width:100%;padding:15px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;border:none;transition:all .2s;margin-top:auto}
+.pcta:hover{transform:translateY(-1px)}
+@media(max-width:640px){.pricing-grid-new{flex-direction:column;align-items:center}.pcard{width:100%;max-width:380px}}
+</style>
 <section class="section section-center" id="pricing">
   <div class="section-badge" style="background:#EFF6FF;color:var(--primary)">💰 Planos</div>
   <div class="section-title">Escolha o melhor para você</div>
   <div style="font-size:15px;color:var(--text2);margin-top:8px">Sem surpresas. Sem taxas escondidas.</div>
 
-  <div class="pricing-grid">
-    <!-- MENSAL -->
-    <div class="price-card featured-blue">
-      <div class="price-badge-top" style="background:var(--primary);color:white">🔥 Mais popular</div>
-      <div class="price-name">Plano Mensal</div>
-      <div class="price-val" style="color:var(--primary)">R$47<span style="font-size:20px;font-weight:500;color:var(--text3)">/mês</span></div>
-      <div class="price-period">cancele quando quiser</div>
-      <div class="price-daily" style="background:var(--primary-light);color:var(--primary)">= Apenas R$1,56 por dia</div>
-      <div class="price-features">
-        <div class="price-feat"><i class="ti ti-check" style="color:var(--success)"></i>Clientes e vendas ilimitados</div>
-        <div class="price-feat"><i class="ti ti-check" style="color:var(--success)"></i>Controle de estoque completo</div>
-        <div class="price-feat"><i class="ti ti-check" style="color:var(--success)"></i>Contas a receber + crediário</div>
-        <div class="price-feat"><i class="ti ti-check" style="color:var(--success)"></i>Parcelamento em até 12x</div>
-        <div class="price-feat"><i class="ti ti-check" style="color:var(--success)"></i>50+ templates de mensagem</div>
-        <div class="price-feat"><i class="ti ti-check" style="color:var(--success)"></i>Vendas diretas com relatório</div>
-        <div class="price-feat"><i class="ti ti-check" style="color:var(--success)"></i>Dados salvos na nuvem</div>
-        <div class="price-feat"><i class="ti ti-check" style="color:var(--success)"></i>Funciona no celular e PC</div>
-        <div class="price-feat"><i class="ti ti-check" style="color:var(--success)"></i>Acesso imediato após pagamento</div>
-        <div class="price-feat"><i class="ti ti-check" style="color:var(--success)"></i>Suporte via WhatsApp</div>
+  <div class="pricing-grid-new">
+    <div class="pcard blue">
+      <div class="pbadge" style="background:var(--primary)">🔥 Mais popular</div>
+      <div style="font-size:17px;font-weight:700;margin-bottom:6px">Plano Mensal</div>
+      <div style="font-size:52px;font-weight:800;color:var(--primary);margin:18px 0 2px;line-height:1;letter-spacing:-2px">R$47<span style="font-size:20px;font-weight:500;color:var(--text3)">/mês</span></div>
+      <div style="font-size:14px;color:var(--text3);margin-bottom:10px">cancele quando quiser</div>
+      <div style="font-size:13px;font-weight:600;color:var(--success);margin-bottom:24px;background:var(--success-light);padding:7px 14px;border-radius:999px;display:inline-block">= Apenas R$1,56 por dia</div>
+      <div style="text-align:left;margin-bottom:28px;flex:1">
+        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>Clientes e vendas ilimitados</div>
+        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>Controle de estoque completo</div>
+        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>Contas a receber + crediário</div>
+        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>Parcelamento em até 12x</div>
+        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>50+ templates de mensagem</div>
+        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>Vendas diretas com relatório</div>
+        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>Dados salvos na nuvem</div>
+        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>Funciona no celular e PC</div>
+        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>Acesso imediato após pagamento</div>
+        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>Suporte via WhatsApp</div>
       </div>
-      <button class="price-cta" style="background:var(--primary);color:white;box-shadow:0 4px 16px rgba(37,99,235,.35)" onclick="window.open('https://pay.kiwify.com.br/JdytH3G','_blank')">Assinar por R$47/mês →</button>
+      <button class="pcta" style="background:var(--primary);color:white;box-shadow:0 4px 16px rgba(37,99,235,.35)" onclick="window.open('https://pay.kiwify.com.br/JdytH3G','_blank')">Assinar por R$47/mês →</button>
     </div>
 
-    <!-- VITALÍCIO -->
-    <div class="price-card featured-gold">
-      <div class="price-badge-top" style="background:linear-gradient(135deg,#D97706,#F59E0B);color:white">⚡ Melhor custo-benefício</div>
-      <div class="price-name">Plano Vitalício</div>
-      <div class="price-val" style="color:#D97706">R$497<span style="font-size:20px;font-weight:500;color:var(--text3)">/único</span></div>
-      <div class="price-period">pague uma vez, use para sempre</div>
-      <div class="price-daily" style="background:#FFFBEB;color:#92400E">= Menos que 11 meses do plano mensal</div>
-      <div class="price-features">
-        <div class="price-feat"><i class="ti ti-check" style="color:var(--success)"></i>Tudo do plano mensal incluso</div>
-        <div class="price-feat"><i class="ti ti-check" style="color:#D97706"></i><strong>Nunca paga mensalidade</strong></div>
-        <div class="price-feat"><i class="ti ti-check" style="color:#D97706"></i><strong>Todas as atualizações futuras</strong></div>
-        <div class="price-feat"><i class="ti ti-check" style="color:#D97706"></i><strong>Novos recursos sem custo extra</strong></div>
-        <div class="price-feat"><i class="ti ti-check" style="color:#D97706"></i>Integração WhatsApp quando lançar</div>
-        <div class="price-feat"><i class="ti ti-check" style="color:#D97706"></i>Prioridade máxima no suporte</div>
-        <div class="price-feat"><i class="ti ti-check" style="color:#D97706"></i>Acesso antecipado a novidades</div>
-        <div class="price-feat"><i class="ti ti-check" style="color:#D97706"></i>Badge exclusivo de membro vitalício</div>
+    <div class="pcard gold">
+      <div class="pbadge" style="background:linear-gradient(135deg,#D97706,#F59E0B)">⚡ Melhor custo-benefício</div>
+      <div style="font-size:17px;font-weight:700;margin-bottom:6px">Acesso Permanente</div>
+      <div style="font-size:52px;font-weight:800;color:#D97706;margin:18px 0 2px;line-height:1;letter-spacing:-2px">R$497<span style="font-size:20px;font-weight:500;color:var(--text3)">/único</span></div>
+      <div style="font-size:14px;color:var(--text3);margin-bottom:10px">pague uma vez, use para sempre</div>
+      <div style="font-size:13px;font-weight:600;color:#92400E;margin-bottom:24px;background:#FFFBEB;padding:7px 14px;border-radius:999px;display:inline-block">Quem assinar agora garante R$497 para sempre</div>
+      <div style="text-align:left;margin-bottom:16px;flex:1">
+        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>Tudo do plano mensal incluso</div>
+        <div class="pfeat"><i class="ti ti-check" style="color:#D97706;font-size:16px;flex-shrink:0"></i><strong>Nunca paga mensalidade</strong></div>
+        <div class="pfeat"><i class="ti ti-check" style="color:#D97706;font-size:16px;flex-shrink:0"></i><strong>Todas as atualizações futuras grátis</strong></div>
+        <div class="pfeat"><i class="ti ti-check" style="color:#D97706;font-size:16px;flex-shrink:0"></i><strong>Versão 2.0 sem custo extra</strong></div>
+        <div class="pfeat"><i class="ti ti-check" style="color:#D97706;font-size:16px;flex-shrink:0"></i>Prioridade máxima no suporte</div>
+        <div class="pfeat"><i class="ti ti-check" style="color:#D97706;font-size:16px;flex-shrink:0"></i>Acesso antecipado a novidades</div>
+        <div class="pfeat"><i class="ti ti-check" style="color:#D97706;font-size:16px;flex-shrink:0"></i>Badge exclusivo de membro permanente</div>
       </div>
-      <button class="price-cta" style="background:linear-gradient(135deg,#D97706,#F59E0B);color:white;box-shadow:0 4px 16px rgba(217,119,6,.35)" onclick="window.open('https://pay.kiwify.com.br/Q9aKhlI','_blank')">Garantir acesso vitalício →</button>
-      <div style="text-align:center;font-size:12px;color:#92400E;margin-top:12px;font-weight:600">💡 Os primeiros 100 que assinarem garantem esse valor para sempre</div>
+      <div style="background:#FEF3C7;border-radius:10px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:#92400E;font-weight:600;text-align:center">
+        ⏳ Quando a versão 2.0 chegar com novos recursos,<br>o valor vai aumentar. Quem entrar agora fica no R$497.
+      </div>
+      <button class="pcta" style="background:linear-gradient(135deg,#D97706,#F59E0B);color:white;box-shadow:0 4px 16px rgba(217,119,6,.35)" onclick="window.open('https://pay.kiwify.com.br/Q9aKhlI','_blank')">Garantir acesso permanente →</button>
     </div>
   </div>
 
-  <div class="founder-box">
-    <div class="founder-title">🔒 Garantia do Fundador</div>
-    <div class="founder-desc">Quem assinar hoje <strong>trava o preço para sempre</strong>. Não importa quando o valor aumentar — você continua pagando o mesmo. Vagas limitadas!</div>
+  <div class="founder-box" style="background:linear-gradient(135deg,#FFFBEB,#FEF3C7);border:1.5px solid #FCD34D;border-radius:16px;padding:22px 28px;max-width:600px;margin:28px auto 0;text-align:center">
+    <div style="font-size:15px;font-weight:700;color:#92400E;margin-bottom:7px">🔒 Garantia do Fundador</div>
+    <div style="font-size:13px;color:#92400E;line-height:1.65">Quem assinar agora <strong>trava o preço para sempre</strong>. Quando a versão 2.0 chegar com ainda mais recursos, você continua pagando o mesmo. Vagas limitadas!</div>
   </div>
 </section>
 
-<section class="section" style="background:var(--bg)">
-  <div class="section-center">
-    <div class="section-badge" style="background:white;color:var(--success);border:1px solid #BBF7D0">⭐ Depoimentos</div>
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div style="text-align:center">
+    <div class="section-badge" style="background:#F0FDF4;color:var(--success)">⭐ Depoimentos</div>
     <div class="section-title">Quem já usa o VendaAI</div>
   </div>
   <div class="test-grid">
     <div class="test-card">
       <div class="test-stars">★★★★★</div>
       <div class="test-text">"Antes eu anotava tudo no caderno e vivia esquecendo de cobrar. Agora tenho tudo organizado e meu faturamento aumentou porque não perco mais cliente."</div>
-      <div class="test-author"><div class="test-avatar" style="background:linear-gradient(135deg,#2563EB,#0891B2)">MS</div><div><div class="test-name">Maria S.</div><div class="test-role">Dona de loja de roupas · São Paulo</div></div></div>
+      <div class="test-author">
+        <div class="test-avatar" style="background:linear-gradient(135deg,#2563EB,#0891B2)">MS</div>
+        <div><div class="test-name">Maria S.</div><div class="test-role">Dona de loja de roupas</div></div>
+      </div>
     </div>
     <div class="test-card">
       <div class="test-stars">★★★★★</div>
-      <div class="test-text">"Os templates de mensagem salvaram meu tempo. Antes ficava escrevendo a mesma coisa no WhatsApp 20 vezes por dia. Agora é tudo rápido e profissional."</div>
-      <div class="test-author"><div class="test-avatar" style="background:linear-gradient(135deg,#059669,#0891B2)">JC</div><div><div class="test-name">João C.</div><div class="test-role">Prestador de serviços · Rio de Janeiro</div></div></div>
+      <div class="test-text">"Os templates de mensagem salvaram meu tempo. Antes ficava escrevendo a mesma coisa no WhatsApp 20 vezes por dia. Agora é tudo automático."</div>
+      <div class="test-author">
+        <div class="test-avatar" style="background:linear-gradient(135deg,#059669,#0891B2)">JC</div>
+        <div><div class="test-name">João C.</div><div class="test-role">Prestador de serviços</div></div>
+      </div>
     </div>
     <div class="test-card">
       <div class="test-stars">★★★★★</div>
-      <div class="test-text">"O sistema já se pagou no primeiro dia recuperando duas contas de clientes esquecidos. O controle de crediário é exatamente o que eu precisava."</div>
-      <div class="test-author"><div class="test-avatar" style="background:linear-gradient(135deg,#D97706,#E11D48)">RB</div><div><div class="test-name">Ricardo B.</div><div class="test-role">Dono de Mercadinho · Minas Gerais</div></div></div>
+      <div class="test-text">"O controle de crediário é exatamente o que eu precisava. Sei exatamente quem deve, quanto deve e quando vence. Acabou o esquecimento."</div>
+      <div class="test-author">
+        <div class="test-avatar" style="background:linear-gradient(135deg,#7C3AED,#2563EB)">AL</div>
+        <div><div class="test-name">Ana L.</div><div class="test-role">Confeiteira</div></div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="section">
-  <div class="section-center">
-    <div class="section-badge" style="background:#EFF6FF;color:var(--primary)">❓ Dúvidas</div>
-    <div class="section-title">Perguntas frequentes</div>
+<!-- FAQ -->
+<section class="faq">
+  <div style="text-align:center">
+    <div class="section-badge" style="background:#EFF6FF;color:var(--primary)">❓ Dúvidas frequentes</div>
+    <div class="section-title">Perguntas e respostas</div>
   </div>
   <div class="faq-list">
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Como acesso depois de pagar? <i class="ti ti-chevron-down"></i></div><div class="faq-a">Imediatamente após o pagamento você recebe um email com o link de acesso. É só entrar, criar sua conta e começar a usar. Sem espera, sem burocracia.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Se eu limpar o cache do celular, perco meus dados? <i class="ti ti-chevron-down"></i></div><div class="faq-a">Não! Todos os seus dados ficam salvos na nuvem. Mesmo que troque de celular ou limpe o cache, é só fazer login e tudo estará lá.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Precisa instalar alguma coisa? <i class="ti ti-chevron-down"></i></div><div class="faq-a">Não precisa instalar nada. Funciona direto no navegador do celular ou computador. No celular você pode adicionar à tela inicial para acesso rápido.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Posso cancelar quando quiser? <i class="ti ti-chevron-down"></i></div><div class="faq-a">Sim, sem complicação. Cancele a qualquer momento, sem multas e sem fidelidade obrigatória.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Qual a diferença entre mensal e vitalício? <i class="ti ti-chevron-down"></i></div><div class="faq-a">No mensal você paga R$47 todo mês e pode cancelar quando quiser. No vitalício você paga R$497 uma única vez e nunca mais paga nada — além de receber todas as atualizações futuras gratuitamente.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Meus dados ficam seguros? <i class="ti ti-chevron-down"></i></div><div class="faq-a">Totalmente. Usamos criptografia SSL 256-bit e os dados ficam em servidores seguros com backup automático. Seus dados são 100% privados.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Tem suporte se eu tiver dúvidas? <i class="ti ti-chevron-down"></i></div><div class="faq-a">Sim! Nosso suporte é via WhatsApp. Clique no botão verde no canto da tela ou <a href="https://wa.me/5517996704054" target="_blank" style="color:var(--primary);font-weight:600">clique aqui</a> para falar conosco.</div></div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Se eu limpar o cache do celular, perco meus dados? <i class="ti ti-chevron-down"></i></div>
+      <div class="faq-a">Não! Todos os seus dados ficam salvos na nuvem com segurança. Mesmo que troque de celular ou limpe o cache, é só fazer login e tudo estará lá.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Funciona no celular? <i class="ti ti-chevron-down"></i></div>
+      <div class="faq-a">Sim! O VendaAI foi desenvolvido para funcionar perfeitamente no celular, tablet e computador. Você pode acessar de qualquer dispositivo.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Posso cancelar quando quiser? <i class="ti ti-chevron-down"></i></div>
+      <div class="faq-a">Sim, sem complicação. Você pode cancelar a qualquer momento diretamente pelo app, sem burocracias ou fidelidade obrigatória.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">O que é a oferta de Fundador? <i class="ti ti-chevron-down"></i></div>
+      <div class="faq-a">Quem assinar agora durante o lançamento garante o preço de R$47/mês para sempre. Quando o VendaAI crescer e o preço aumentar, você continua pagando o mesmo valor.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Precisa instalar alguma coisa? <i class="ti ti-chevron-down"></i></div>
+      <div class="faq-a">Não! O VendaAI funciona direto no navegador, sem instalação. No celular você pode adicionar à tela inicial para ter acesso rápido como um app.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Meus dados ficam seguros? <i class="ti ti-chevron-down"></i></div>
+      <div class="faq-a">Totalmente. Usamos criptografia SSL 256-bit, os mesmos padrões de segurança dos principais bancos do Brasil. Seus dados são 100% privados e protegidos.</div>
+    </div>
   </div>
 </section>
 
+<!-- CTA FINAL -->
 <section class="cta-final">
-  <h2>Pronto para profissionalizar seu negócio?</h2>
-  <p>Deixe o caderninho no passado. Tenha controle total das suas vendas, estoque e cobranças.</p>
-  <div class="cta-btns">
-    <button class="btn-white" onclick="window.open('https://pay.kiwify.com.br/JdytH3G','_blank')"><i class="ti ti-rocket" style="color:var(--primary)"></i> Assinar por R$47/mês</button>
-    <button class="btn-wpp-final" onclick="window.open('https://wa.me/5517996704054?text=Olá!%20Quero%20tirar%20dúvidas%20sobre%20o%20VendaAI','_blank')"><i class="ti ti-brand-whatsapp"></i> Tirar dúvidas no WhatsApp</button>
-  </div>
+  <h2>Comece a organizar seu negócio hoje</h2>
+  <p>Junte-se a centenas de empreendedores que já vendem mais com o VendaAI</p>
+  <button class="btn-white" onclick="window.open('https://venda-ai-jade.vercel.app','_blank')"><i class="ti ti-rocket" style="color:var(--primary)"></i> Criar minha conta grátis</button>
   <div class="cta-trust">
     <div class="cta-trust-item"><i class="ti ti-lock"></i>SSL Seguro</div>
-    <div class="cta-trust-item"><i class="ti ti-shield"></i>Garantia de 7 dias</div>
-    <div class="cta-trust-item"><i class="ti ti-x"></i>Sem Fidelidade</div>
-    <div class="cta-trust-item"><i class="ti ti-heart"></i>Suporte humanizado</div>
+    <div class="cta-trust-item"><i class="ti ti-check"></i>Sem cartão de crédito</div>
+    <div class="cta-trust-item"><i class="ti ti-x"></i>Sem fidelidade</div>
+    <div class="cta-trust-item"><i class="ti ti-heart"></i>Suporte em português</div>
   </div>
 </section>
 
@@ -415,15 +500,21 @@ footer{padding:36px 6%;border-top:1px solid var(--border);display:flex;align-ite
     <div style="width:28px;height:28px;background:linear-gradient(135deg,var(--primary),#0891B2);border-radius:8px;display:flex;align-items:center;justify-content:center"><i class="ti ti-chart-dots-3" style="font-size:14px;color:white"></i></div>
     VendaAI
   </div>
-  <div class="footer-copy">© 2026 VendaAI · Todos os direitos reservados</div>
+  <div class="footer-links">
+    <span class="footer-link">Privacidade</span>
+    <span class="footer-link">Termos de uso</span>
+    <span class="footer-link">Suporte</span>
+  </div>
+  <div class="footer-copy">© 2025 VendaAI · Todos os direitos reservados</div>
 </footer>
 
 <script>
+function scrollTo(id){document.querySelector(id).scrollIntoView({behavior:'smooth'});}
 function toggleFaq(el){
   const ans=el.nextElementSibling;
   const icon=el.querySelector('i');
   ans.classList.toggle('open');
-  icon.style.transform=ans.classList.contains('open')?'rotate(180deg)':'';
+  icon.style.transform=ans.classList.contains('open')?'rotate(180deg)':'rotate(0)';
   icon.style.transition='transform .2s';
 }
 </script>
