@@ -155,7 +155,7 @@ footer{padding:40px 5%;border-top:1px solid var(--border);display:flex;align-ite
     <div class="nav-logo-icon"><i class="ti ti-chart-dots-3" style="font-size:18px;color:white"></i></div>
     VendaAI
   </div>
-  <button class="nav-cta" onclick="scrollTo('#pricing')">Começar agora — R$47/mês</button>
+  <button class="nav-cta" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Ver planos</button>
 </nav>
 
 <!-- HERO -->
@@ -164,8 +164,8 @@ footer{padding:40px 5%;border-top:1px solid var(--border);display:flex;align-ite
   <h1>Pare de perder vendas por<br><span>falta de organização</span></h1>
   <p class="hero-sub">Pipeline de vendas, controle de estoque, contas a receber com parcelas e mensagens prontas para WhatsApp — tudo em um só lugar por menos do que um almoço por semana.</p>
   <div class="hero-btns">
-    <button class="btn-primary" onclick="window.open('https://venda-ai-jade.vercel.app','_blank')"><i class="ti ti-rocket"></i> Experimentar grátis agora</button>
-    <button class="btn-sec" onclick="scrollTo('#features')"><i class="ti ti-play"></i> Ver como funciona</button>
+    <button class="btn-primary" onclick="window.open('https://pay.kiwify.com.br/JdytH3G','_blank')"><i class="ti ti-rocket"></i> Ver planos</button>
+    <button class="btn-sec" onclick="window.open('https://wa.me/5517996704054?text=Olá!%20Quero%20saber%20mais%20sobre%20o%20VendaAI','_blank')"><i class="ti ti-brand-whatsapp"></i> Falar no WhatsApp</button>
   </div>
   <div class="hero-trust">
     <div class="trust-item"><i class="ti ti-check" style="color:var(--success)"></i>Sem cartão de crédito</div>
@@ -192,7 +192,7 @@ footer{padding:40px 5%;border-top:1px solid var(--border);display:flex;align-ite
         <div class="preview-dot" style="background:#FF5F57"></div>
         <div class="preview-dot" style="background:#FFBD2E"></div>
         <div class="preview-dot" style="background:#28C840"></div>
-        <div class="preview-url">venda-ai-jade.vercel.app</div>
+        <div class="preview-url">usevendaai.com.br</div>
       </div>
       <div class="preview-screen">
         <div style="font-size:13px;font-weight:700;color:#0F172A;margin-bottom:12px">📊 Visão geral do negócio</div>
@@ -348,70 +348,46 @@ footer{padding:40px 5%;border-top:1px solid var(--border);display:flex;align-ite
 </section>
 
 <!-- PRICING -->
-<style>
-.pricing-grid-new{display:flex;justify-content:center;gap:24px;margin-top:52px;flex-wrap:wrap;align-items:stretch}
-.pcard{background:white;border:2px solid var(--border);border-radius:20px;padding:36px;width:340px;position:relative;display:flex;flex-direction:column}
-.pcard.blue{border-color:var(--primary);box-shadow:0 12px 48px rgba(37,99,235,.15)}
-.pcard.gold{border-color:#F59E0B;box-shadow:0 12px 48px rgba(245,158,11,.18)}
-.pbadge{position:absolute;top:-15px;left:50%;transform:translateX(-50%);border-radius:999px;padding:5px 18px;font-size:12px;font-weight:700;white-space:nowrap;color:white}
-.pfeat{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text2);margin-bottom:11px}
-.pcta{width:100%;padding:15px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;border:none;transition:all .2s;margin-top:auto}
-.pcta:hover{transform:translateY(-1px)}
-@media(max-width:640px){.pricing-grid-new{flex-direction:column;align-items:center}.pcard{width:100%;max-width:380px}}
-</style>
-<section class="section section-center" id="pricing">
-  <div class="section-badge" style="background:#EFF6FF;color:var(--primary)">💰 Planos</div>
-  <div class="section-title">Escolha o melhor para você</div>
-  <div style="font-size:15px;color:var(--text2);margin-top:8px">Sem surpresas. Sem taxas escondidas.</div>
-
-  <div class="pricing-grid-new">
-    <div class="pcard blue">
-      <div class="pbadge" style="background:var(--primary)">🔥 Mais popular</div>
-      <div style="font-size:17px;font-weight:700;margin-bottom:6px">Plano Mensal</div>
-      <div style="font-size:52px;font-weight:800;color:var(--primary);margin:18px 0 2px;line-height:1;letter-spacing:-2px">R$47<span style="font-size:20px;font-weight:500;color:var(--text3)">/mês</span></div>
-      <div style="font-size:14px;color:var(--text3);margin-bottom:10px">cancele quando quiser</div>
-      <div style="font-size:13px;font-weight:600;color:var(--success);margin-bottom:24px;background:var(--success-light);padding:7px 14px;border-radius:999px;display:inline-block">= Apenas R$1,56 por dia</div>
-      <div style="text-align:left;margin-bottom:28px;flex:1">
-        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>Clientes e vendas ilimitados</div>
-        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>Controle de estoque completo</div>
-        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>Contas a receber + crediário</div>
-        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>Parcelamento em até 12x</div>
-        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>50+ templates de mensagem</div>
-        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>Vendas diretas com relatório</div>
-        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>Dados salvos na nuvem</div>
-        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>Funciona no celular e PC</div>
-        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>Acesso imediato após pagamento</div>
-        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>Suporte via WhatsApp</div>
+<section class="pricing" id="pricing">
+  <div class="section-badge" style="background:#EFF6FF;color:var(--primary)">💰 Preço justo</div>
+  <div class="section-title">Simples assim</div>
+  <div style="font-size:16px;color:var(--text2);margin-top:8px">Sem surpresas, sem taxas escondidas</div>
+  <div class="pricing-wrap">
+    <div class="price-card featured">
+      <div class="price-badge">⭐ Mais popular</div>
+      <div class="price-name">Plano Mensal</div>
+      <div class="price-val">R$<span>47</span></div>
+      <div class="price-period">/mês · cancele quando quiser</div>
+      <div class="price-features">
+        <div class="price-feat"><i class="ti ti-check"></i>Clientes ilimitados</div>
+        <div class="price-feat"><i class="ti ti-check"></i>Estoque ilimitado</div>
+        <div class="price-feat"><i class="ti ti-check"></i>Contas a receber + parcelas</div>
+        <div class="price-feat"><i class="ti ti-check"></i>50+ templates de mensagem</div>
+        <div class="price-feat"><i class="ti ti-check"></i>Vendas diretas com relatório</div>
+        <div class="price-feat"><i class="ti ti-check"></i>Dados salvos na nuvem</div>
+        <div class="price-feat"><i class="ti ti-check"></i>Funciona no celular</div>
+        <div class="price-feat"><i class="ti ti-check"></i>Suporte prioritário</div>
       </div>
-      <button class="pcta" style="background:var(--primary);color:white;box-shadow:0 4px 16px rgba(37,99,235,.35)" onclick="window.open('https://pay.kiwify.com.br/JdytH3G','_blank')">Assinar por R$47/mês →</button>
+      <button class="price-cta primary" onclick="window.open('https://pay.kiwify.com.br/JdytH3G','_blank')">Assinar agora →</button>
     </div>
-
-    <div class="pcard gold">
-      <div class="pbadge" style="background:linear-gradient(135deg,#D97706,#F59E0B)">⚡ Melhor custo-benefício</div>
-      <div style="font-size:17px;font-weight:700;margin-bottom:6px">Acesso Permanente</div>
-      <div style="font-size:52px;font-weight:800;color:#D97706;margin:18px 0 2px;line-height:1;letter-spacing:-2px">R$497<span style="font-size:20px;font-weight:500;color:var(--text3)">/único</span></div>
-      <div style="font-size:14px;color:var(--text3);margin-bottom:10px">pague uma vez, use para sempre</div>
-      <div style="font-size:13px;font-weight:600;color:#92400E;margin-bottom:24px;background:#FFFBEB;padding:7px 14px;border-radius:999px;display:inline-block">Quem assinar agora garante R$497 para sempre</div>
-      <div style="text-align:left;margin-bottom:16px;flex:1">
-        <div class="pfeat"><i class="ti ti-check" style="color:var(--success);font-size:16px;flex-shrink:0"></i>Tudo do plano mensal incluso</div>
-        <div class="pfeat"><i class="ti ti-check" style="color:#D97706;font-size:16px;flex-shrink:0"></i><strong>Nunca paga mensalidade</strong></div>
-        <div class="pfeat"><i class="ti ti-check" style="color:#D97706;font-size:16px;flex-shrink:0"></i><strong>Todas as atualizações futuras grátis</strong></div>
-        <div class="pfeat"><i class="ti ti-check" style="color:#D97706;font-size:16px;flex-shrink:0"></i><strong>Versão 2.0 sem custo extra</strong></div>
-        <div class="pfeat"><i class="ti ti-check" style="color:#D97706;font-size:16px;flex-shrink:0"></i>Prioridade máxima no suporte</div>
-        <div class="pfeat"><i class="ti ti-check" style="color:#D97706;font-size:16px;flex-shrink:0"></i>Acesso antecipado a novidades</div>
-        <div class="pfeat"><i class="ti ti-check" style="color:#D97706;font-size:16px;flex-shrink:0"></i>Badge exclusivo de membro permanente</div>
+    <div class="price-card" style="border-color:#7C3AED;box-shadow:0 8px 40px rgba(124,58,237,.15)">
+      <div class="price-badge" style="background:linear-gradient(135deg,#7C3AED,#2563EB)">♾️ Melhor custo-benefício</div>
+      <div class="price-name">Plano Vitalício</div>
+      <div class="price-val" style="color:#7C3AED">R$<span style="color:#7C3AED">497</span></div>
+      <div class="price-period">pagamento único · acesso para sempre</div>
+      <div class="price-features">
+        <div class="price-feat"><i class="ti ti-check"></i>Tudo do plano mensal</div>
+        <div class="price-feat"><i class="ti ti-check"></i>Paga uma vez, usa para sempre</div>
+        <div class="price-feat"><i class="ti ti-check"></i>Sem mensalidade nunca mais</div>
+        <div class="price-feat"><i class="ti ti-check"></i>Todas as atualizações inclusas</div>
+        <div class="price-feat"><i class="ti ti-check"></i>Suporte prioritário vitalício</div>
+        <div class="price-feat"><i class="ti ti-check"></i>Economize R$67/ano vs mensal</div>
       </div>
-      <div style="background:#FEF3C7;border-radius:10px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:#92400E;font-weight:600;text-align:center">
-        ⏳ Quando a versão 2.0 chegar com novos recursos,<br>o valor vai aumentar. Quem entrar agora fica no R$497.
-      </div>
-      <button class="pcta" style="background:linear-gradient(135deg,#D97706,#F59E0B);color:white;box-shadow:0 4px 16px rgba(217,119,6,.35)" onclick="window.open('https://pay.kiwify.com.br/Q9aKhlI','_blank')">Garantir acesso permanente →</button>
+      <button class="price-cta primary" style="background:linear-gradient(135deg,#7C3AED,#2563EB)" onclick="window.open('https://pay.kiwify.com.br/VITALICIO_LINK','_blank')">Garantir acesso vitalício →</button>
+      <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--text3)">💡 Equivale a ~10 meses do plano mensal</div>
     </div>
   </div>
-
-  <div class="founder-box" style="background:linear-gradient(135deg,#FFFBEB,#FEF3C7);border:1.5px solid #FCD34D;border-radius:16px;padding:22px 28px;max-width:600px;margin:28px auto 0;text-align:center">
-    <div style="font-size:15px;font-weight:700;color:#92400E;margin-bottom:7px">🔒 Garantia do Fundador</div>
-    <div style="font-size:13px;color:#92400E;line-height:1.65">Quem assinar agora <strong>trava o preço para sempre</strong>. Quando a versão 2.0 chegar com ainda mais recursos, você continua pagando o mesmo. Vagas limitadas!</div>
-  </div>
+  <div class="founder-tag">🔒 <strong>Oferta de Fundador:</strong> Quem assinar agora trava o preço de R$47/mês para sempre, mesmo quando o valor subir. Vagas limitadas!</div>
 </section>
 
 <!-- TESTIMONIALS -->
@@ -486,7 +462,10 @@ footer{padding:40px 5%;border-top:1px solid var(--border);display:flex;align-ite
 <section class="cta-final">
   <h2>Comece a organizar seu negócio hoje</h2>
   <p>Junte-se a centenas de empreendedores que já vendem mais com o VendaAI</p>
-  <button class="btn-white" onclick="window.open('https://venda-ai-jade.vercel.app','_blank')"><i class="ti ti-rocket" style="color:var(--primary)"></i> Criar minha conta grátis</button>
+  <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:24px">
+  <button class="btn-white" onclick="window.open('https://pay.kiwify.com.br/JdytH3G','_blank')"><i class="ti ti-rocket" style="color:var(--primary)"></i> Assinar por R$47/mês</button>
+  <button class="btn-white" style="background:linear-gradient(135deg,#7C3AED,#2563EB);color:white" onclick="window.open('https://pay.kiwify.com.br/VITALICIO_LINK','_blank')"><i class="ti ti-infinity"></i> Plano Vitalício R$497</button>
+</div>
   <div class="cta-trust">
     <div class="cta-trust-item"><i class="ti ti-lock"></i>SSL Seguro</div>
     <div class="cta-trust-item"><i class="ti ti-check"></i>Sem cartão de crédito</div>
@@ -505,7 +484,7 @@ footer{padding:40px 5%;border-top:1px solid var(--border);display:flex;align-ite
     <span class="footer-link">Termos de uso</span>
     <span class="footer-link">Suporte</span>
   </div>
-  <div class="footer-copy">© 2025 VendaAI · Todos os direitos reservados</div>
+  <div class="footer-copy">© 2026 VendaAI · Todos os direitos reservados</div>
 </footer>
 
 <script>
@@ -518,5 +497,9 @@ function toggleFaq(el){
   icon.style.transition='transform .2s';
 }
 </script>
+
+<div style="position:fixed;bottom:24px;right:24px;width:54px;height:54px;background:#22C55E;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(34,197,94,.45);cursor:pointer;z-index:999;transition:all .2s" onclick="window.open('https://wa.me/5517996704054?text=Olá!%20Tenho%20interesse%20no%20VendaAI','_blank')" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+  <i class="ti ti-brand-whatsapp" style="font-size:26px;color:white"></i>
+</div>
 </body>
 </html>
