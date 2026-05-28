@@ -251,6 +251,9 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
         <div class="fg"><label class="fl">E-mail</label><input class="fi" id="l-email" type="email" placeholder="seu@email.com"/></div>
         <div class="fg"><label class="fl">Senha</label><input class="fi" id="l-senha" type="password" placeholder="••••••••"/></div>
         <button class="btn-full" onclick="fazerLogin()">Entrar na conta</button>
+        <div style="text-align:right;margin-top:8px;margin-bottom:4px">
+          <a onclick="toggleAuth('forgot')" style="font-size:12px;color:var(--text3);cursor:pointer">Esqueci minha senha</a>
+        </div>
         <div class="auth-switch">Não tem conta? <a onclick="toggleAuth('register')">Criar conta grátis</a></div>
       <div class="auth-security">
           <div class="auth-sec-item"><i class="ti ti-lock" style="font-size:13px;color:var(--success)"></i>SSL 256-bit</div>
@@ -294,7 +297,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
         <div class="user-avatar" id="user-avatar">?</div>
         <div class="user-info">
           <div class="user-name" id="user-name">Usuário</div>
-          <div class="user-plan" id="user-plan">✦ Plano Mensal R$47/mês</div>
+          <div class="user-plan">✦ Founder R$47/mês</div>
         </div>
         <i class="ti ti-logout" style="font-size:15px;color:var(--text3)"></i>
       </div>
@@ -697,7 +700,7 @@ async function recuperarSenha(){
   const email=document.getElementById('f-email').value.trim();
   if(!email){showErr('Informe seu e-mail');return;}
   const{error}=await sb.auth.resetPasswordForEmail(email,{
-    redirectTo:'https://usevendaai.com.br/index.html'
+    redirectTo:'https://usevendaai.com.br'
   });
   if(error){showErr(error.message);return;}
   document.getElementById('forgot-success').style.display='block';
@@ -709,55 +712,16 @@ async function fazerLogin(){
   if(!email||!senha){showErr('Preencha todos os campos');return;}
   const{data,error}=await sb.auth.signInWithPassword({email,password:senha});
   if(error){showErr('E-mail ou senha incorretos');return;}
-  const acesso=await verificarAcesso(email);
-  if(!acesso){
-    await sb.auth.signOut();
-    showErr('');
-    document.getElementById('auth-err').innerHTML='❌ Acesso não liberado. <a href="/landing.html" style="color:var(--primary);font-weight:600">Adquira o VendaAI aqui →</a>';
-    document.getElementById('auth-err').style.display='block';
-    return;
-  }
-  user=data.user;
-  // Mostrar plano correto no sidebar
-  const{data:acessoData}=await sb.from('acessos').select('plano').eq('email',email.toLowerCase()).single();
-  if(acessoData){
-    const planoEl=document.getElementById('user-plan');
-    if(planoEl){
-      if(acessoData.plano==='vitalicio'){planoEl.textContent='♾️ Plano Vitalício';}
-      else{planoEl.textContent='✦ Plano Mensal R$47/mês';}
-    }
-    const badgeEl=document.querySelector('.badge-founder');
-    if(badgeEl){
-      if(acessoData.plano==='vitalicio'){badgeEl.textContent='♾️ Vitalício';}
-      else{badgeEl.textContent='✦ Founder';}
-    }
-  }
-  await entrarApp();
+  user=data.user;await entrarApp();
 }
 
 async function fazerRegistro(){
   const nome=document.getElementById('r-nome').value.trim(),email=document.getElementById('r-email').value.trim(),senha=document.getElementById('r-senha').value;
   if(!nome||!email||!senha){showErr('Preencha todos os campos');return;}
   if(senha.length<6){showErr('Senha mínimo 6 caracteres');return;}
-  // Check if email is authorized
-  const autorizado=await verificarAcesso(email);
-  if(!autorizado){
-    showErr('');
-    document.getElementById('auth-err').innerHTML='❌ Email não autorizado. <a href="/landing.html" style="color:var(--primary);font-weight:600">Adquira seu acesso aqui →</a>';
-    document.getElementById('auth-err').style.display='block';
-    return;
-  }
   const{data,error}=await sb.auth.signUp({email,password:senha,options:{data:{nome}}});
   if(error){showErr(error.message);return;}
   user=data.user;await entrarApp();
-}
-
-async function verificarAcesso(email){
-  try{
-    const{data,error}=await sb.from('acessos').select('email').eq('email',email.toLowerCase()).maybeSingle();
-    if(error)return false;
-    return!!data;
-  }catch(e){return false;}
 }
 
 function showErr(msg){const el=document.getElementById('auth-err');el.textContent=msg;el.style.display='block';}
