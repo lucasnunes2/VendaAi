@@ -1,3 +1,6 @@
+bash
+
+cat > /home/claude/landing.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -5,6 +8,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content="VendaAI — Gestão inteligente para pequenos negócios. Pipeline de vendas, estoque, contas a receber e mensagens prontas. Tudo por R$47/mês."/>
 <title>VendaAI — Gestão Inteligente para Pequenos Negócios</title>
+
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1035880055481728');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1035880055481728&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',system-ui,sans-serif}
@@ -164,7 +186,7 @@ footer{padding:40px 5%;border-top:1px solid var(--border);display:flex;align-ite
   <h1>Pare de perder vendas por <br><span>falta de organização</span></h1>
   <p class="hero-sub">Pipeline de vendas, controle de estoque, contas a receber com parcelas e mensagens prontas para WhatsApp — tudo em um só lugar.</p>
   <div class="hero-btns">
-    <button class="btn-primary" onclick="window.open('https://pay.kiwify.com.br/JdytH3G','_blank')"><i class="ti ti-rocket"></i> Ver planos</button>
+    <button class="btn-primary" onclick="trackAndOpen('https://pay.kiwify.com.br/JdytH3G','mensal')"><i class="ti ti-rocket"></i> Ver planos</button>
     <button class="btn-sec" onclick="window.open('https://wa.me/5517996704054?text=Olá!%20Quero%20saber%20mais%20sobre%20o%20VendaAI','_blank')"><i class="ti ti-brand-whatsapp"></i> Falar no WhatsApp</button>
   </div>
   <div class="hero-trust">
@@ -368,7 +390,7 @@ footer{padding:40px 5%;border-top:1px solid var(--border);display:flex;align-ite
         <div class="price-feat"><i class="ti ti-check"></i>Funciona no celular</div>
         <div class="price-feat"><i class="ti ti-check"></i>Suporte prioritário</div>
       </div>
-      <button class="price-cta primary" onclick="window.open('https://pay.kiwify.com.br/JdytH3G','_blank')">Assinar agora →</button>
+      <button class="price-cta primary" onclick="trackAndOpen('https://pay.kiwify.com.br/JdytH3G','mensal')">Assinar agora →</button>
     </div>
     <div class="price-card" style="border-color:#7C3AED;box-shadow:0 8px 40px rgba(124,58,237,.15)">
       <div class="price-badge" style="background:linear-gradient(135deg,#7C3AED,#2563EB)">♾️ Melhor custo-benefício</div>
@@ -383,7 +405,7 @@ footer{padding:40px 5%;border-top:1px solid var(--border);display:flex;align-ite
         <div class="price-feat"><i class="ti ti-check"></i>Suporte prioritário vitalício</div>
         <div class="price-feat"><i class="ti ti-check"></i>Economize R$67/ano vs mensal</div>
       </div>
-      <button class="price-cta primary" style="background:linear-gradient(135deg,#7C3AED,#2563EB)" onclick="window.open('https://pay.kiwify.com.br/Q9aKhlI','_blank')">Garantir acesso vitalício →</button>
+      <button class="price-cta primary" style="background:linear-gradient(135deg,#7C3AED,#2563EB)" onclick="trackAndOpen('https://pay.kiwify.com.br/Q9aKhlI','vitalicio')">Garantir acesso vitalício →</button>
       <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--text3)">💡 Equivale a ~10 meses do plano mensal</div>
     </div>
   </div>
@@ -463,8 +485,8 @@ footer{padding:40px 5%;border-top:1px solid var(--border);display:flex;align-ite
   <h2>Comece a organizar seu negócio hoje</h2>
   <p>Junte-se a centenas de empreendedores que já vendem mais com o VendaAI</p>
   <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:24px">
-  <button class="btn-white" onclick="window.open('https://pay.kiwify.com.br/JdytH3G','_blank')"><i class="ti ti-rocket" style="color:var(--primary)"></i> Assinar por R$47/mês</button>
-  <button class="btn-white" style="background:linear-gradient(135deg,#7C3AED,#2563EB);color:white" onclick="window.open('https://pay.kiwify.com.br/Q9aKhlI','_blank')"><i class="ti ti-infinity"></i> Plano Vitalício R$497</button>
+  <button class="btn-white" onclick="trackAndOpen('https://pay.kiwify.com.br/JdytH3G','mensal')"><i class="ti ti-rocket" style="color:var(--primary)"></i> Assinar por R$47/mês</button>
+  <button class="btn-white" style="background:linear-gradient(135deg,#7C3AED,#2563EB);color:white" onclick="trackAndOpen('https://pay.kiwify.com.br/Q9aKhlI','vitalicio')"><i class="ti ti-infinity"></i> Plano Vitalício R$497</button>
 </div>
   <div class="cta-trust">
     <div class="cta-trust-item"><i class="ti ti-lock"></i>SSL Seguro</div>
@@ -495,6 +517,19 @@ function toggleFaq(el){
   ans.classList.toggle('open');
   icon.style.transform=ans.classList.contains('open')?'rotate(180deg)':'rotate(0)';
   icon.style.transition='transform .2s';
+}
+
+// Função que dispara evento no pixel e abre o Kiwify
+function trackAndOpen(url, plano) {
+  var valor = plano === 'vitalicio' ? 497 : 47;
+  if(typeof fbq !== 'undefined') {
+    fbq('track', 'InitiateCheckout', {
+      value: valor,
+      currency: 'BRL',
+      content_name: 'VendaAI ' + (plano === 'vitalicio' ? 'Vitalício' : 'Mensal')
+    });
+  }
+  window.open(url, '_blank');
 }
 </script>
 
