@@ -1,3 +1,6 @@
+bash
+
+cat > /home/claude/index_novo.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -154,6 +157,12 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 .sec-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
 .sec-title{font-size:20px;font-weight:700;color:var(--text)}
 .sec-sub{font-size:13px;color:var(--text3);margin-top:2px}
+/* FINANCEIRO */
+.fin-tab{display:flex;gap:8px;margin-bottom:20px;border-bottom:2px solid var(--border);padding-bottom:0}
+.fin-tab-btn{padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--text3);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
+.fin-tab-btn.active{color:var(--primary);border-bottom-color:var(--primary)}
+.fin-section{display:none}.fin-section.active{display:block}
+.cat-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;margin:3px}
 @media(max-width:1024px){.grid4{grid-template-columns:repeat(2,1fr)}.kanban{grid-template-columns:1fr 1fr}.sidebar{width:200px}.main{margin-left:200px}}
 .mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);z-index:50;padding:8px 0 env(safe-area-inset-bottom,12px);box-shadow:0 -4px 12px rgba(0,0,0,.08)}
 .mobile-nav-items{display:flex;justify-content:space-around;align-items:center}
@@ -208,7 +217,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
       <div class="auth-feat"><div class="auth-feat-icon"><i class="ti ti-layout-kanban" style="font-size:14px;color:white"></i></div>Pipeline de vendas visual</div>
       <div class="auth-feat"><div class="auth-feat-icon"><i class="ti ti-package" style="font-size:14px;color:white"></i></div>Controle de estoque com alertas</div>
       <div class="auth-feat"><div class="auth-feat-icon"><i class="ti ti-cash" style="font-size:14px;color:white"></i></div>Contas a receber automático</div>
-      <div class="auth-feat"><div class="auth-feat-icon"><i class="ti ti-message-bolt" style="font-size:14px;color:white"></i></div>50+ templates de mensagem</div>
+      <div class="auth-feat"><div class="auth-feat-icon"><i class="ti ti-chart-line" style="font-size:14px;color:white"></i></div>Fluxo de caixa e resultado do mês</div>
     </div>
   </div>
   <div class="auth-right">
@@ -258,6 +267,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
       <button class="nav-item" onclick="show('estoque',this)"><i class="ti ti-package"></i>Estoque</button>
       <button class="nav-item" onclick="show('clientes',this)"><i class="ti ti-users"></i>Clientes</button>
       <button class="nav-item" onclick="show('receber',this)"><i class="ti ti-cash"></i>A Receber</button>
+      <button class="nav-item" onclick="show('financeiro',this)"><i class="ti ti-chart-line"></i>Financeiro</button>
       <div class="nav-section">Ferramentas</div>
       <button class="nav-item" onclick="show('ia',this)"><i class="ti ti-message-bolt"></i>Mensagens</button>
     </nav>
@@ -374,9 +384,52 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
         </div>
       </div>
 
+      <!-- FINANCEIRO -->
+      <div class="sec" id="sec-financeiro">
+        <div class="sec-header">
+          <div><div class="sec-title">Financeiro</div><div class="sec-sub">Entradas, saídas e resultado do mês</div></div>
+          <div style="display:flex;gap:8px">
+            <button class="btn" onclick="abrirModalFinanceiro('entrada')"><i class="ti ti-plus"></i> Nova entrada</button>
+            <button class="bsec" onclick="abrirModalFinanceiro('saida')" style="border-color:#FECACA;color:var(--danger)"><i class="ti ti-minus" style="font-size:13px"></i> Nova saída</button>
+          </div>
+        </div>
+
+        <!-- CARDS RESUMO -->
+        <div class="grid4" style="margin-bottom:20px">
+          <div class="mcard"><div class="mcard-top"><div class="mcard-label">Entradas do mês</div><div class="mcard-icon" style="background:#F0FDF4"><i class="ti ti-trending-up" style="color:var(--success)"></i></div></div><div class="mcard-val mcard-up" id="fin-entradas">R$ 0,00</div></div>
+          <div class="mcard"><div class="mcard-top"><div class="mcard-label">Saídas do mês</div><div class="mcard-icon" style="background:var(--danger-light)"><i class="ti ti-trending-down" style="color:var(--danger)"></i></div></div><div class="mcard-val mcard-dn" id="fin-saidas">R$ 0,00</div></div>
+          <div class="mcard"><div class="mcard-top"><div class="mcard-label">Resultado do mês</div><div class="mcard-icon" style="background:var(--primary-light)"><i class="ti ti-chart-bar" style="color:var(--primary)"></i></div></div><div class="mcard-val" id="fin-resultado">R$ 0,00</div></div>
+          <div class="mcard"><div class="mcard-top"><div class="mcard-label">Saldo total</div><div class="mcard-icon" style="background:var(--warning-light)"><i class="ti ti-wallet" style="color:var(--warning)"></i></div></div><div class="mcard-val" id="fin-saldo">R$ 0,00</div></div>
+        </div>
+
+        <!-- ABAS -->
+        <div class="fin-tab">
+          <button class="fin-tab-btn active" onclick="setFinTab('movimentacoes',this)">📋 Movimentações</button>
+          <button class="fin-tab-btn" onclick="setFinTab('categorias',this)">🏷️ Por categoria</button>
+        </div>
+
+        <!-- MOVIMENTAÇÕES -->
+        <div class="fin-section active" id="fin-movimentacoes">
+          <div class="seg-wrap">
+            <button class="seg-btn active" onclick="setFinSeg('todos',this)">Todos</button>
+            <button class="seg-btn" onclick="setFinSeg('entrada',this)">✅ Entradas</button>
+            <button class="seg-btn" onclick="setFinSeg('saida',this)">❌ Saídas</button>
+          </div>
+          <div class="tbl">
+            <div class="th-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 60px"><div class="th">Descrição</div><div class="th">Categoria</div><div class="th">Tipo</div><div class="th">Valor</div><div class="th">Data</div><div class="th"></div></div>
+            <div id="fin-list"></div>
+          </div>
+        </div>
+
+        <!-- POR CATEGORIA -->
+        <div class="fin-section" id="fin-categorias">
+          <div id="fin-cat-list"></div>
+        </div>
+      </div>
+
       <!-- MENSAGENS -->
       <div class="sec" id="sec-ia">
-        <div class="sec-header"><div><div class="sec-title">Central de Mensagens</div><div class="sec-sub">50+ templates prontos para WhatsApp</div></div></div>
+        <div class="sec-header"><div><div class="sec-title">Central de Mensagens</div><div class="sec-sub">70+ templates prontos para WhatsApp</div></div></div>
         <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:20px">
           <div class="mcard">
             <div style="font-size:14px;font-weight:700;margin-bottom:16px">Personalizar mensagem</div>
@@ -386,7 +439,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
               <div class="fg"><label class="fl">Produto</label><input class="fi" id="ia-prod" placeholder="Ex: bolo..."/></div>
             </div>
             <div class="ia-out" id="ia-out"><div class="ia-ph">Selecione um template ao lado para gerar a mensagem personalizada...</div></div>
-            <div style="display:flex;gap:8px;margin-top:12px" id="ia-acts" style="display:none">
+            <div style="display:flex;gap:8px;margin-top:12px" id="ia-acts">
               <button class="btn" onclick="copiarMsg()" style="flex:1;justify-content:center"><i class="ti ti-copy"></i> Copiar mensagem</button>
               <button class="bsec" onclick="limparMsg()"><i class="ti ti-refresh"></i></button>
             </div>
@@ -435,7 +488,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
   </div>
 </div>
 
-<!-- MODAIS -->
+<!-- MODAIS EXISTENTES -->
 <div class="modal-ov" id="modal-prod" style="display:none" onclick="fecharModal('modal-prod',event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="mtitle" id="mprod-title">Produto</div>
@@ -521,6 +574,50 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
   </div>
 </div>
 
+<!-- MODAL FINANCEIRO -->
+<div class="modal-ov" id="modal-financeiro" style="display:none" onclick="fecharModal('modal-financeiro',event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="mtitle" id="mfin-title">Nova movimentação</div>
+    <div class="fg">
+      <label class="fl">Tipo</label>
+      <select class="fi" id="mfin-tipo">
+        <option value="entrada">✅ Entrada (receita)</option>
+        <option value="saida">❌ Saída (despesa)</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Descrição</label><input class="fi" id="mfin-desc" placeholder="Ex: Venda de roupas, Aluguel, Fornecedor..."/></div>
+    <div class="fg">
+      <label class="fl">Categoria</label>
+      <select class="fi" id="mfin-cat">
+        <optgroup label="Entradas">
+          <option value="Vendas">💰 Vendas</option>
+          <option value="Serviços">🔧 Serviços</option>
+          <option value="Outros (entrada)">📥 Outros (entrada)</option>
+        </optgroup>
+        <optgroup label="Saídas">
+          <option value="Fornecedor">📦 Fornecedor</option>
+          <option value="Aluguel">🏠 Aluguel</option>
+          <option value="Luz">💡 Luz</option>
+          <option value="Água">💧 Água</option>
+          <option value="Internet">📶 Internet</option>
+          <option value="Funcionário">👤 Funcionário</option>
+          <option value="Marketing">📢 Marketing</option>
+          <option value="Transporte">🚗 Transporte</option>
+          <option value="Manutenção">🔨 Manutenção</option>
+          <option value="Sangria">💸 Sangria / Retirada</option>
+          <option value="Outros (saída)">📤 Outros (saída)</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Valor (R$)</label><input class="fi" id="mfin-val" type="number" step="0.01" min="0" placeholder="0,00"/></div>
+      <div class="fg"><label class="fl">Data</label><input class="fi" id="mfin-data" type="date"/></div>
+    </div>
+    <div class="fg"><label class="fl">Observação (opcional)</label><input class="fi" id="mfin-obs" placeholder="Ex: pago no pix, nota fiscal..."/></div>
+    <div class="mact"><button class="bsec" onclick="fecharModal('modal-financeiro')">Cancelar</button><button class="btn" onclick="salvarFinanceiro()"><i class="ti ti-check"></i> Salvar</button></div>
+  </div>
+</div>
+
 <div class="modal-ov" id="modal-admin" style="display:none" onclick="fecharModal('modal-admin',event)">
   <div class="modal" onclick="event.stopPropagation()" style="width:340px">
     <div class="mtitle">🔐 Acesso ADM</div>
@@ -530,7 +627,6 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
   </div>
 </div>
 
-<!-- MODAL FEEDBACK -->
 <div class="modal-ov" id="modal-feedback" style="display:none" onclick="fecharModal('modal-feedback',event)">
   <div class="modal" onclick="event.stopPropagation()" style="width:400px">
     <div style="text-align:center;margin-bottom:20px">
@@ -549,11 +645,9 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
     </div>
     <div class="fg" style="margin-bottom:16px">
       <label class="fl">Sua mensagem</label>
-      <textarea class="fi" id="fb-msg" rows="4" placeholder="Escreva aqui... Ex: Seria legal ter um relatório mensal em PDF..." style="resize:vertical;font-family:inherit;font-size:14px;line-height:1.6"></textarea>
+      <textarea class="fi" id="fb-msg" rows="4" placeholder="Escreva aqui..." style="resize:vertical;font-family:inherit;font-size:14px;line-height:1.6"></textarea>
     </div>
-    <div id="fb-success" style="display:none;background:var(--success-light);border:1px solid #6EE7B7;border-radius:var(--radius);padding:12px 16px;font-size:13px;color:var(--success);font-weight:500;text-align:center;margin-bottom:16px">
-      ✓ Feedback enviado! Obrigado, vamos analisar com carinho. 🙏
-    </div>
+    <div id="fb-success" style="display:none;background:var(--success-light);border:1px solid #6EE7B7;border-radius:var(--radius);padding:12px 16px;font-size:13px;color:var(--success);font-weight:500;text-align:center;margin-bottom:16px">✓ Feedback enviado! Obrigado 🙏</div>
     <div id="fb-error" style="display:none;background:var(--danger-light);border:1px solid #FECACA;border-radius:var(--radius);padding:12px 16px;font-size:13px;color:var(--danger);margin-bottom:16px"></div>
     <div class="mact">
       <button class="bsec" onclick="fecharModal('modal-feedback')">Cancelar</button>
@@ -570,13 +664,12 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
     <button class="mobile-nav-item" onclick="showMobile('pipeline',this)"><i class="ti ti-layout-kanban"></i>Pipeline</button>
     <button class="mobile-nav-item" onclick="showMobile('vendas',this)"><i class="ti ti-shopping-cart"></i>Vendas</button>
     <button class="mobile-nav-item" onclick="showMobile('estoque',this)"><i class="ti ti-package"></i>Estoque</button>
-    <button class="mobile-nav-item" onclick="showMobile('receber',this)"><i class="ti ti-cash"></i>Receber</button>
+    <button class="mobile-nav-item" onclick="showMobile('financeiro',this)"><i class="ti ti-chart-line"></i>Financeiro</button>
     <button class="mobile-nav-item" onclick="showMobile('ia',this)"><i class="ti ti-message-bolt"></i>MSG</button>
   </div>
 </div>
 
-<!-- BOTÃO FEEDBACK FLUTUANTE (mobile) -->
-<div id="btn-feedback-mobile" style="display:none;position:fixed;bottom:90px;right:20px;width:48px;height:48px;background:var(--primary);border-radius:50%;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(37,99,235,.45);cursor:pointer;z-index:998;transition:all .2s" onclick="abrirFeedback()" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+<div id="btn-feedback-mobile" style="display:none;position:fixed;bottom:90px;right:20px;width:48px;height:48px;background:var(--primary);border-radius:50%;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(37,99,235,.45);cursor:pointer;z-index:998;transition:all .2s" onclick="abrirFeedback()">
   <i class="ti ti-message-circle" style="font-size:22px;color:white"></i>
 </div>
 
@@ -585,40 +678,64 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 const SURL='https://nouyivisxqffmzfcbukn.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vdXlpdmlzeHFmZm16ZmNidWtuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNDQwMjQsImV4cCI6MjA5NDcyMDAyNH0.aUpkk4L_jOt8DnnQuzUvB2nd47F5Tc_NYnO6Boy6ZeQ';
 const sb=supabase.createClient(SURL,SKEY);
-let user=null,leads=[],prods=[],contas=[],vendas=[],seg='todos',editLead=null,editProd=null,tcat='Todos';
+let user=null,leads=[],prods=[],contas=[],vendas=[],movimentos=[],seg='todos',finSeg='todos',editLead=null,editProd=null,tcat='Todos';
 const stgs=[{k:"contato",l:"Primeiro contato"},{k:"proposta",l:"Proposta enviada"},{k:"negociando",l:"Negociando"},{k:"fechando",l:"Fechado ✓"}];
-const pageTitles={dashboard:'Dashboard',pipeline:'Pipeline de Vendas',vendas:'Vendas Diretas',estoque:'Controle de Estoque',clientes:'Clientes',receber:'Contas a Receber',ia:'Central de Mensagens'};
+const pageTitles={dashboard:'Dashboard',pipeline:'Pipeline de Vendas',vendas:'Vendas Diretas',estoque:'Controle de Estoque',clientes:'Clientes',receber:'Contas a Receber',financeiro:'Financeiro',ia:'Central de Mensagens'};
+
 const tmpl=[
+  // PRIMEIRO CONTATO
   {c:"Primeiro contato",t:"Apresentação simples",m:"Olá, {nome}! Tudo bem? 😊 Meu nome é [SEU NOME] e queria te apresentar algo que pode ajudar muito o seu negócio. Posso te contar mais?"},
   {c:"Primeiro contato",t:"Por indicação",m:"Oi, {nome}! Recebi seu contato através de [NOME] que me falou muito bem de você. Queria bater um papo rápido. Tem um minutinho?"},
   {c:"Primeiro contato",t:"Redes sociais",m:"Olá, {nome}! Vi seu perfil e adorei o que você faz! 👏 Acredito que tenho algo que pode complementar o seu negócio. Posso te apresentar?"},
   {c:"Primeiro contato",t:"Abordagem direta",m:"Olá, {nome}! Trabalho com [PRODUTO/SERVIÇO] e acredito que pode fazer muito sentido para você. Posso te mostrar como funciona?"},
+  // FOLLOW-UP
   {c:"Follow-up",t:"Retorno gentil",m:"Oi, {nome}! 😊 Passando para saber se você teve a chance de pensar na nossa conversa. Fico à disposição para tirar qualquer dúvida!"},
   {c:"Follow-up",t:"Proposta enviada",m:"Olá, {nome}! Conforme combinamos, segue a proposta. Quando você consegue dar uma olhada? 📋"},
   {c:"Follow-up",t:"Sem resposta 3 dias",m:"Oi, {nome}! Tudo bem por aí? Imagino que você deve estar muito ocupado. Quando tiver um momento, adoraria continuar nossa conversa. 😊"},
   {c:"Follow-up",t:"Última tentativa",m:"Oi, {nome}! Esse será meu último contato para não te incomodar. Se quiser retomar nossa conversa, estarei por aqui. Abraços! 🤝"},
+  // NEGOCIAÇÃO
   {c:"Negociação",t:"Condição especial",m:"Oi, {nome}! Tenho uma condição especial disponível por tempo limitado. Posso te apresentar agora? 🎯"},
   {c:"Negociação",t:"Objeção de preço",m:"Entendo sua preocupação com o investimento, {nome}. Posso te mostrar exatamente quanto isso vai gerar de retorno? 📊"},
   {c:"Negociação",t:"Facilitar pagamento",m:"Oi, {nome}! Para facilitar, posso oferecer parcelamento no cartão ou Pix. Qual opção funciona melhor para você? 💳"},
   {c:"Negociação",t:"Urgência",m:"Oi, {nome}! Essa condição especial encerra em breve. Não quero que você perca essa oportunidade!"},
+  // FECHAMENTO
   {c:"Fechamento",t:"Hora de fechar",m:"Olá, {nome}! 🤝 Baseado em tudo que conversamos, estamos alinhados. O que falta para fecharmos hoje?"},
   {c:"Fechamento",t:"Confirmar pedido",m:"Perfeito, {nome}! Confirmo seu pedido de {produto}. O pagamento será por Pix ou dinheiro? 😊"},
   {c:"Fechamento",t:"Fechar no pix",m:"Oi, {nome}! Para confirmar, basta o pix de {valor} para [CHAVE PIX]. Assim que confirmar já providencio tudo! 💚"},
   {c:"Fechamento",t:"Após aprovação",m:"Ótima escolha, {nome}! 🎉 Estou super feliz em ter você como cliente. Vou te passar todos os próximos passos agora mesmo!"},
+  // COBRANÇA - EXPANDIDA
   {c:"Cobrança",t:"Lembrete amigável",m:"Olá, {nome}! Tudo bem? 😊 Passando para lembrar que temos um valor de {valor} em aberto. Quando consegue resolver?"},
   {c:"Cobrança",t:"Vencimento hoje",m:"Oi, {nome}! Lembrete rápido: o pagamento de {valor} vence hoje. Pode ser no Pix! 😊"},
   {c:"Cobrança",t:"Pagamento atrasado",m:"Olá, {nome}! O pagamento de {valor} ainda está em aberto. Pode me avisar quando consegue regularizar? 🙏"},
   {c:"Cobrança",t:"Acordo de pagamento",m:"Olá, {nome}! Podemos negociar uma forma de pagamento que funcione para você? Me conta a situação. 🤝"},
+  {c:"Cobrança",t:"Segunda cobrança",m:"Oi, {nome}! Estou tentando te contatar sobre o valor de {valor} que está em aberto. Pode me retornar quando puder? 📞"},
+  {c:"Cobrança",t:"Prazo final amigável",m:"Olá, {nome}! Preciso que a gente resolva o valor de {valor} até sexta-feira. Consegue me ajudar? 🙏"},
+  {c:"Cobrança",t:"Cobrar sem constranger",m:"Oi, {nome}! Sei que a correria do dia a dia é grande. Quando der, me manda o pix de {valor} pra gente ficar em dia! 😊"},
+  {c:"Cobrança",t:"Pix chave rápida",m:"Oi, {nome}! Minha chave pix é [CHAVE]. O valor é {valor}. Me avisa quando fizer! 💚"},
+  {c:"Cobrança",t:"Parcela vencida",m:"Olá, {nome}! A parcela de {valor} referente a {produto} venceu. Pode regularizar hoje? 😊"},
+  {c:"Cobrança",t:"Fiado antigo",m:"Oi, {nome}! Passando para lembrá-lo que temos um fiado de {valor} em aberto faz um tempo. Quando consegue passar por aqui? 😊"},
+  {c:"Cobrança",t:"Tom mais firme",m:"Olá, {nome}. O valor de {valor} está em aberto há alguns dias. Preciso que resolva o quanto antes para não acumular. Obrigado!"},
+  {c:"Cobrança",t:"Última chance amigável",m:"Oi, {nome}! Vou precisar organizar minhas contas até o final do mês. Consegue me ajudar com os {valor} que está em aberto? 🙏"},
+  {c:"Cobrança",t:"Acordo parcelado",m:"Olá, {nome}! Sei que pode estar difícil agora. Se quiser, posso dividir os {valor} em algumas vezes. Me fala o que funciona para você! 😊"},
+  {c:"Cobrança",t:"Lembrete de crediário",m:"Oi, {nome}! Passando para lembrar que o crediário de {valor} vence essa semana. Qualquer dúvida, é só me chamar! 😊"},
+  {c:"Cobrança",t:"Agradecimento após pagamento",m:"Recebi, {nome}! Muito obrigado pelo pagamento de {valor}. Fico feliz em continuar te atendendo! 🙏💚"},
+  {c:"Cobrança",t:"Confirmar recebimento pix",m:"Oi, {nome}! Pix de {valor} confirmado! ✅ Obrigado pela pontualidade, qualquer coisa é só chamar!"},
+  {c:"Cobrança",t:"Valor total em aberto",m:"Olá, {nome}! Verificando aqui, o total em aberto está em {valor}. Podemos combinar um prazo para regularizar? 😊"},
+  // PÓS-VENDA
   {c:"Pós-venda",t:"Agradecimento",m:"Oi, {nome}! Muito obrigado pela sua compra! 🙏 Qualquer dúvida ou problema, pode me chamar!"},
   {c:"Pós-venda",t:"Verificar satisfação",m:"Olá, {nome}! Como está sendo sua experiência com {produto}? Seu feedback é muito importante para mim! 🌟"},
   {c:"Pós-venda",t:"Pedir indicação",m:"Oi, {nome}! Fico feliz que gostou! 😊 Você conhece alguém que poderia se beneficiar? Se indicar, tenho condição especial para você!"},
+  // PROMOÇÃO
   {c:"Promoção",t:"Oferta relâmpago",m:"🔥 OFERTA RELÂMPAGO, {nome}! Por hoje apenas, {produto} por apenas {valor}. Garante o seu agora?"},
   {c:"Promoção",t:"Novo produto",m:"Olá, {nome}! 🎉 Acabou de chegar {produto} aqui! Lembrei de você. Quer dar uma olhada?"},
   {c:"Promoção",t:"Black Friday",m:"🖤 BLACK FRIDAY, {nome}! {produto} saindo por {valor}. Aproveita enquanto tem estoque!"},
+  // CONFIRMAÇÕES
   {c:"Confirmações",t:"Confirmar pedido",m:"Olá, {nome}! Confirmo seu pedido: {produto}. Valor total: {valor}. ✅"},
   {c:"Confirmações",t:"Pagamento recebido",m:"Pagamento confirmado, {nome}! 💚 Já estou providenciando {produto}. Te aviso quando estiver pronto!"},
   {c:"Confirmações",t:"Pedido pronto",m:"Oi, {nome}! Seu pedido está pronto! 🎉 Pode retirar quando quiser!"},
+  // REENGAJAMENTO
   {c:"Reengajamento",t:"Cliente sumido",m:"Oi, {nome}! Saudades! 😊 Faz um tempo que não te vejo. Tem novidades que você vai adorar!"},
+  // SUPORTE
   {c:"Suporte",t:"Resolver problema",m:"Oi, {nome}! Lamento pelo inconveniente. Vou resolver isso agora mesmo. Pode me contar o que aconteceu? 🙏"},
   {c:"Suporte",t:"Troca ou devolução",m:"Olá, {nome}! Vamos resolver a troca sem problema. Pode trazer {produto} que te ajudo! 😊"},
 ];
@@ -670,8 +787,7 @@ async function entrarApp(){
 
 async function sair(){
   if(!confirm('Sair da conta?'))return;
-  await sb.auth.signOut();
-  user=null;
+  await sb.auth.signOut();user=null;
   document.getElementById('app-screen').style.display='none';
   document.getElementById('auth-screen').style.display='flex';
   document.getElementById('mobile-nav').style.display='none';
@@ -680,13 +796,14 @@ async function sair(){
 
 async function carregarDados(){
   const uid=user.id;
-  const[l,p,c,v]=await Promise.all([
+  const[l,p,c,v,m]=await Promise.all([
     sb.from('leads').select('*').eq('user_id',uid).order('created_at',{ascending:false}),
     sb.from('produtos').select('*').eq('user_id',uid).order('created_at',{ascending:false}),
     sb.from('contas').select('*').eq('user_id',uid).order('created_at',{ascending:false}),
     sb.from('vendas').select('*').eq('user_id',uid).order('created_at',{ascending:false}),
+    sb.from('movimentos').select('*').eq('user_id',uid).order('data',{ascending:false}),
   ]);
-  leads=l.data||[];prods=p.data||[];contas=c.data||[];vendas=v.data||[];
+  leads=l.data||[];prods=p.data||[];contas=c.data||[];vendas=v.data||[];movimentos=m.data||[];
 }
 
 function show(id,el){
@@ -701,8 +818,7 @@ function show(id,el){
 }
 
 function toast(msg,tipo){
-  const t=document.getElementById('toast');
-  const ic=t.querySelector('i');
+  const t=document.getElementById('toast');const ic=t.querySelector('i');
   document.getElementById('toast-msg').textContent=msg;
   if(tipo==='error'){t.style.background='var(--danger)';ic.className='ti ti-x';}
   else{t.style.background='#0F172A';ic.className='ti ti-check';}
@@ -710,7 +826,7 @@ function toast(msg,tipo){
 }
 
 function R(v){return'R$ '+(parseFloat(v)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
-function buildAll(){buildDash();buildKanban();buildVendas();buildEst();buildClients();buildReceber();buildTmpl();}
+function buildAll(){buildDash();buildKanban();buildVendas();buildEst();buildClients();buildReceber();buildTmpl();buildFinanceiro();}
 
 function buildDash(){
   const rL=leads.filter(l=>l.stage==='fechando').reduce((s,l)=>s+(parseFloat(l.val)||0),0);
@@ -798,6 +914,107 @@ function buildReceber(){
   }).join(''):'<div style="padding:28px;text-align:center;font-size:13px;color:var(--text3)">Nenhuma conta cadastrada.</div>';
 }
 
+// =============================================
+// FINANCEIRO
+// =============================================
+function buildFinanceiro(){
+  const mes=new Date().toISOString().substring(0,7);
+  const doMes=movimentos.filter(m=>m.data&&m.data.startsWith(mes));
+  const entradas=doMes.filter(m=>m.tipo==='entrada').reduce((s,m)=>s+(parseFloat(m.val)||0),0);
+  const saidas=doMes.filter(m=>m.tipo==='saida').reduce((s,m)=>s+(parseFloat(m.val)||0),0);
+  const totalEntradas=movimentos.filter(m=>m.tipo==='entrada').reduce((s,m)=>s+(parseFloat(m.val)||0),0);
+  const totalSaidas=movimentos.filter(m=>m.tipo==='saida').reduce((s,m)=>s+(parseFloat(m.val)||0),0);
+  const resultado=entradas-saidas;
+  const saldo=totalEntradas-totalSaidas;
+  document.getElementById('fin-entradas').textContent=R(entradas);
+  document.getElementById('fin-saidas').textContent=R(saidas);
+  const resEl=document.getElementById('fin-resultado');
+  resEl.textContent=R(resultado);
+  resEl.className='mcard-val '+(resultado>=0?'mcard-up':'mcard-dn');
+  const saldoEl=document.getElementById('fin-saldo');
+  saldoEl.textContent=R(saldo);
+  saldoEl.style.color=saldo>=0?'var(--success)':'var(--danger)';
+  // Lista movimentações
+  const filtrados=finSeg==='todos'?movimentos:movimentos.filter(m=>m.tipo===finSeg);
+  const catCores={
+    'Vendas':'#059669','Serviços':'#2563EB','Outros (entrada)':'#0891B2',
+    'Fornecedor':'#DC2626','Aluguel':'#D97706','Luz':'#F59E0B','Água':'#0891B2',
+    'Internet':'#7C3AED','Funcionário':'#DB2777','Marketing':'#EA580C',
+    'Transporte':'#65A30D','Manutenção':'#78716C','Sangria':'#991B1B','Outros (saída)':'#475569'
+  };
+  document.getElementById('fin-list').innerHTML=filtrados.length?filtrados.map(m=>{
+    const isEntrada=m.tipo==='entrada';
+    return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 60px">
+      <div class="td"><div style="font-weight:600">${m.descricao}</div>${m.obs?`<div style="font-size:11px;color:var(--text3)">${m.obs}</div>`:''}</div>
+      <div class="tdm"><span style="background:${catCores[m.cat]||'#94A3B8'}22;color:${catCores[m.cat]||'#94A3B8'};padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600">${m.cat||'—'}</span></div>
+      <div><span class="badge ${isEntrada?'bg':'br'}">${isEntrada?'✅ Entrada':'❌ Saída'}</span></div>
+      <div class="td" style="color:${isEntrada?'var(--success)':'var(--danger)'};font-weight:700">${isEntrada?'+':'−'}${R(m.val)}</div>
+      <div class="tdm">${m.data?new Date(m.data+'T00:00:00').toLocaleDateString('pt-BR'):'—'}</div>
+      <div><button onclick="remMovimento('${m.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:4px">✕</button></div>
+    </div>`;
+  }).join(''):'<div style="padding:28px;text-align:center;font-size:13px;color:var(--text3)">Nenhuma movimentação registrada ainda.</div>';
+  // Por categoria
+  const cats={};
+  movimentos.forEach(m=>{
+    if(!cats[m.cat])cats[m.cat]={total:0,tipo:m.tipo,count:0};
+    cats[m.cat].total+=parseFloat(m.val)||0;
+    cats[m.cat].count++;
+  });
+  const catArr=Object.entries(cats).sort((a,b)=>b[1].total-a[1].total);
+  document.getElementById('fin-cat-list').innerHTML=catArr.length?`
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+      ${catArr.map(([cat,d])=>`
+        <div class="mcard">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="font-size:13px;font-weight:700;color:var(--text)">${cat}</span>
+            <span class="badge ${d.tipo==='entrada'?'bg':'br'}">${d.tipo==='entrada'?'Entrada':'Saída'}</span>
+          </div>
+          <div style="font-size:22px;font-weight:800;color:${d.tipo==='entrada'?'var(--success)':'var(--danger)'}">${R(d.total)}</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:4px">${d.count} movimentação(ões)</div>
+        </div>
+      `).join('')}
+    </div>
+  `:'<div style="padding:28px;text-align:center;font-size:13px;color:var(--text3)">Nenhuma movimentação registrada ainda.</div>';
+}
+
+function setFinTab(tab,el){
+  document.querySelectorAll('.fin-tab-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');
+  document.querySelectorAll('.fin-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('fin-'+tab).classList.add('active');
+}
+
+function setFinSeg(s,el){finSeg=s;document.querySelectorAll('#fin-movimentacoes .seg-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');buildFinanceiro();}
+
+function abrirModalFinanceiro(tipo){
+  document.getElementById('mfin-tipo').value=tipo;
+  document.getElementById('mfin-data').value=new Date().toISOString().split('T')[0];
+  ['mfin-desc','mfin-val','mfin-obs'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('modal-financeiro').style.display='flex';
+}
+
+async function salvarFinanceiro(){
+  const desc=document.getElementById('mfin-desc').value.trim();
+  const val=parseFloat(document.getElementById('mfin-val').value)||0;
+  const data=document.getElementById('mfin-data').value;
+  if(!desc||!val||!data){toast('Preencha todos os campos','error');return;}
+  await sb.from('movimentos').insert({
+    descricao:desc,
+    tipo:document.getElementById('mfin-tipo').value,
+    cat:document.getElementById('mfin-cat').value,
+    val,data,
+    obs:document.getElementById('mfin-obs').value,
+    user_id:user.id
+  });
+  await carregarDados();fecharModal('modal-financeiro');buildFinanceiro();
+  toast('Movimentação salva! ✓');
+}
+
+async function remMovimento(id){
+  if(!confirm('Remover movimentação?'))return;
+  await sb.from('movimentos').delete().eq('id',id);
+  await carregarDados();buildFinanceiro();toast('Removido');
+}
+
 function buildTmpl(){
   const cats=['Todos',...new Set(tmpl.map(t=>t.c))];
   document.getElementById('tcat').innerHTML=cats.map(c=>`<button class="tcat-btn${c===tcat?' active':''}" onclick="setTcat('${c}',this)">${c}</button>`).join('');
@@ -818,7 +1035,7 @@ function usarTmpl(i){
 
 function copiarMsg(){const t=document.querySelector('.ia-txt');if(t){navigator.clipboard.writeText(t.innerText);toast('Mensagem copiada!');}}
 function limparMsg(){document.getElementById('ia-out').innerHTML='<div class="ia-ph">Selecione um template ao lado...</div>';document.getElementById('ia-acts').style.display='none';}
-function preIA(n,v){document.getElementById('ia-nome').value=n;document.getElementById('ia-valor').value=v;show('ia',document.querySelectorAll('.nav-item')[6]);}
+function preIA(n,v){document.getElementById('ia-nome').value=n;document.getElementById('ia-valor').value=v;show('ia',document.querySelectorAll('.nav-item')[7]);}
 
 function verificarVenc(){
   const hj=new Date();hj.setHours(0,0,0,0);
@@ -1010,15 +1227,12 @@ function showMobile(id,el){
 }
 
 // ADMIN
-const ADM_EMAIL='sidneysilvaa946@gmail.com';
 const ADM_SENHA='vendaai2026adm';
-
 function abrirAdmin(){
   document.getElementById('adm-senha').value='';
   document.getElementById('adm-err').style.display='none';
   document.getElementById('modal-admin').style.display='flex';
 }
-
 function entrarAdmin(){
   const senha=document.getElementById('adm-senha').value;
   if(senha!==ADM_SENHA){document.getElementById('adm-err').style.display='block';return;}
@@ -1028,12 +1242,7 @@ function entrarAdmin(){
   document.getElementById('admin-screen').style.display='block';
   buildAdmin();
 }
-
-function sairAdmin(){
-  document.getElementById('admin-screen').style.display='none';
-  document.getElementById('auth-screen').style.display='flex';
-}
-
+function sairAdmin(){document.getElementById('admin-screen').style.display='none';document.getElementById('auth-screen').style.display='flex';}
 async function buildAdmin(){
   const{data:acessos}=await sb.from('acessos').select('*').order('created_at',{ascending:false});
   const lista=acessos||[];
@@ -1044,7 +1253,6 @@ async function buildAdmin(){
     '<div style="display:flex;flex-wrap:wrap;gap:4px">'+lista.map(a=>`<div class="email-tag ${a.plano==='vitalicio'?'vitalicio':''}"><i class="ti ti-${a.plano==='vitalicio'?'infinity':'calendar-repeat'}" style="font-size:12px"></i>${a.email}<span style="font-size:10px;opacity:.7">${a.plano==='vitalicio'?'VITALÍCIO':'MENSAL'}</span><button onclick="removerAcesso('${a.id}','${a.email}')">✕</button></div>`).join('')+'</div>':
     '<div style="font-size:13px;color:var(--text3)">Nenhum cliente cadastrado ainda.</div>';
 }
-
 async function adicionarAcesso(){
   const email=document.getElementById('adm-email').value.trim().toLowerCase();
   const plano=document.getElementById('adm-plano').value;
@@ -1052,20 +1260,14 @@ async function adicionarAcesso(){
   const{error}=await sb.from('acessos').insert({email,plano});
   if(error){toast('Erro: email já cadastrado','error');return;}
   document.getElementById('adm-email').value='';
-  await buildAdmin();
-  toast(`Acesso liberado para ${email}! ✓`);
+  await buildAdmin();toast(`Acesso liberado para ${email}! ✓`);
 }
-
 async function removerAcesso(id,email){
   if(!confirm(`Remover acesso de ${email}?`))return;
   await sb.from('acessos').delete().eq('id',id);
-  await buildAdmin();
-  toast('Acesso removido');
+  await buildAdmin();toast('Acesso removido');
 }
 
-// =============================================
-// FEEDBACK
-// =============================================
 function abrirFeedback(){
   document.getElementById('fb-msg').value='';
   document.getElementById('fb-tipo').value='sugestao';
@@ -1075,45 +1277,28 @@ function abrirFeedback(){
   document.getElementById('fb-btn').innerHTML='<i class="ti ti-send"></i> Enviar feedback';
   document.getElementById('modal-feedback').style.display='flex';
 }
-
 async function enviarFeedback(){
   const msg=document.getElementById('fb-msg').value.trim();
   const tipo=document.getElementById('fb-tipo').value;
   const btn=document.getElementById('fb-btn');
-  if(!msg){
-    document.getElementById('fb-error').style.display='block';
-    document.getElementById('fb-error').textContent='⚠️ Escreva sua mensagem antes de enviar.';
-    return;
-  }
-  btn.disabled=true;
-  btn.innerHTML='<i class="ti ti-loader"></i> Enviando...';
-  document.getElementById('fb-success').style.display='none';
-  document.getElementById('fb-error').style.display='none';
+  if(!msg){document.getElementById('fb-error').style.display='block';document.getElementById('fb-error').textContent='⚠️ Escreva sua mensagem antes de enviar.';return;}
+  btn.disabled=true;btn.innerHTML='<i class="ti ti-loader"></i> Enviando...';
+  document.getElementById('fb-success').style.display='none';document.getElementById('fb-error').style.display='none';
   const tipoLabel={sugestao:'💡 Sugestão',bug:'🐛 Problema',elogio:'⭐ Elogio',outro:'📝 Outro'}[tipo]||tipo;
   try{
-    const res=await fetch('https://formspree.io/f/xzdqrpqy',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify({tipo:tipoLabel,mensagem:msg,usuario:user?.email||'não identificado',_subject:`[VendaAI Feedback] ${tipoLabel} de ${user?.email||'usuário'}`})
-    });
-    if(res.ok){
-      document.getElementById('fb-success').style.display='block';
-      btn.innerHTML='<i class="ti ti-check"></i> Enviado!';
-      setTimeout(()=>fecharModal('modal-feedback'),2500);
-    } else {throw new Error('Erro');}
+    const res=await fetch('https://formspree.io/f/xzdqrpqy',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({tipo:tipoLabel,mensagem:msg,usuario:user?.email||'não identificado',_subject:`[VendaAI Feedback] ${tipoLabel}`})});
+    if(res.ok){document.getElementById('fb-success').style.display='block';btn.innerHTML='<i class="ti ti-check"></i> Enviado!';setTimeout(()=>fecharModal('modal-feedback'),2500);}
+    else{throw new Error('Erro');}
   }catch(e){
-    document.getElementById('fb-error').style.display='block';
-    document.getElementById('fb-error').textContent='❌ Erro ao enviar. Tente novamente.';
-    btn.disabled=false;
-    btn.innerHTML='<i class="ti ti-send"></i> Enviar feedback';
+    document.getElementById('fb-error').style.display='block';document.getElementById('fb-error').textContent='❌ Erro ao enviar. Tente novamente.';
+    btn.disabled=false;btn.innerHTML='<i class="ti ti-send"></i> Enviar feedback';
   }
 }
 
 let clickCount=0;
 document.addEventListener('DOMContentLoaded',()=>{
-  document.querySelector('.auth-logo-dot')?.addEventListener('click',()=>{
-    clickCount++;
-    if(clickCount>=5){clickCount=0;abrirAdmin();}
+  document.querySelector('.sidebar-brand-icon')?.addEventListener('click',()=>{
+    clickCount++;if(clickCount>=5){clickCount=0;abrirAdmin();}
     setTimeout(()=>{clickCount=0;},2000);
   });
 });
