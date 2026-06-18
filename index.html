@@ -374,19 +374,9 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
     </div>
     <!-- CLIENTES -->
     <div class="sec" id="sec-clientes">
-      <div class="sec-header"><div><div class="sec-title">Clientes</div><div class="sec-sub">Cadastro completo de clientes</div></div><button class="btn" onclick="abrirModalCliente(null)"><i class="ti ti-plus"></i> Novo cliente</button></div>
-      <div style="display:flex;gap:10px;margin-bottom:16px">
-        <input class="fi" id="cli-busca" placeholder="🔍 Buscar por nome, CPF/CNPJ ou código..." oninput="buildClients()" style="flex:1;max-width:400px"/>
-        <select class="fi" id="cli-status-filtro" onchange="buildClients()" style="width:160px">
-          <option value="todos">Todos os clientes</option>
-          <option value="ativo">✅ Ativos</option>
-          <option value="inativo">❌ Inativos</option>
-        </select>
-      </div>
+      <div class="sec-header"><div><div class="sec-title">Clientes</div><div class="sec-sub">Todos os seus clientes em um só lugar</div></div><button class="btn" onclick="abrirModalLead(null)"><i class="ti ti-plus"></i> Novo cliente</button></div>
       <div class="tbl">
-        <div class="th-row" style="grid-template-columns:60px 2fr 1.2fr 1.2fr 1fr 100px 120px">
-          <div class="th">Cód.</div><div class="th">Cliente</div><div class="th">CPF/CNPJ</div><div class="th">Telefone</div><div class="th">Cidade</div><div class="th">Status</div><div class="th">Ações</div>
-        </div>
+        <div class="th-row" style="grid-template-columns:2fr 1.5fr 1fr 1fr 120px"><div class="th">Cliente</div><div class="th">Negócio</div><div class="th">Valor</div><div class="th">Status</div><div class="th">Ações</div></div>
         <div id="cli-list"></div>
       </div>
     </div>
@@ -468,51 +458,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 </div>
 <!-- MODAIS -->
 <div class="modal-ov" id="modal-prod" style="display:none" onclick="fecharModal('modal-prod',event)"><div class="modal" onclick="event.stopPropagation()"><div class="mtitle" id="mprod-title">Produto</div><div class="fg"><label class="fl">Nome</label><input class="fi" id="mp-nome" placeholder="Ex: Camiseta M azul"/></div><div class="fr2"><div class="fg"><label class="fl">Categoria</label><select class="fi" id="mp-cat"><option>Roupas</option><option>Alimentos</option><option>Calçados</option><option>Serviços</option><option>Acessórios</option><option>Outros</option></select></div><div class="fg"><label class="fl">Preço (R$)</label><input class="fi" id="mp-preco" type="number" step="0.01" min="0" placeholder="0,00"/></div></div><div class="fr2"><div class="fg"><label class="fl">Quantidade</label><input class="fi" id="mp-qtd" type="number" min="0" placeholder="0"/></div><div class="fg"><label class="fl">Estoque mínimo</label><input class="fi" id="mp-min" type="number" min="0" placeholder="5"/></div></div><div class="mact"><button class="bsec" onclick="fecharModal('modal-prod')">Cancelar</button><button class="btn" onclick="salvarProd()"><i class="ti ti-check"></i> Salvar</button></div></div></div>
-<!-- MODAL PIPELINE LEAD (mantido para o Pipeline) -->
-<div class="modal-ov" id="modal-lead" style="display:none" onclick="fecharModal('modal-lead',event)"><div class="modal" onclick="event.stopPropagation()"><div class="mtitle" id="mlead-title">Cliente no Pipeline</div><div class="fg"><label class="fl">Nome completo</label><input class="fi" id="ml-nome" placeholder="Ex: João Silva"/></div><div class="fg"><label class="fl">Negócio / produto de interesse</label><input class="fi" id="ml-biz" placeholder="Ex: loja de roupas..."/></div><div class="fr2"><div class="fg"><label class="fl">Valor (R$)</label><input class="fi" id="ml-val" type="number" step="0.01" min="0" placeholder="0,00"/></div><div class="fg"><label class="fl">Etapa</label><select class="fi" id="ml-stage"><option value="contato">Primeiro contato</option><option value="proposta">Proposta enviada</option><option value="negociando">Negociando</option><option value="fechando">Fechado ✓</option></select></div></div><div class="fg"><label class="fl">Observação</label><input class="fi" id="ml-obs" placeholder="Ex: prefere pix..."/></div><div class="mact"><button class="bsec" onclick="fecharModal('modal-lead')">Cancelar</button><button class="btn" onclick="salvarLead()"><i class="ti ti-check"></i> Salvar</button></div></div></div>
-
-<!-- MODAL FICHA COMPLETA DO CLIENTE -->
-<div class="modal-ov" id="modal-cliente" style="display:none" onclick="fecharModal('modal-cliente',event)">
-  <div class="modal" onclick="event.stopPropagation()" style="width:580px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-      <div class="mtitle" id="mcli-title" style="margin-bottom:0">Novo Cliente</div>
-      <div id="mcli-codigo" style="background:var(--primary-light);border:1.5px solid var(--primary);border-radius:var(--radius);padding:6px 14px;font-size:13px;font-weight:700;color:var(--primary)"></div>
-    </div>
-    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Informações do Cliente</div>
-    <div class="fr2">
-      <div class="fg"><label class="fl">Nome completo *</label><input class="fi" id="mc-nome" placeholder="Ex: João Silva"/></div>
-      <div class="fg"><label class="fl">Apelido / Nome fantasia</label><input class="fi" id="mc-apelido" placeholder="Ex: João da Padaria"/></div>
-    </div>
-    <div class="fr2">
-      <div class="fg"><label class="fl">CPF / CNPJ</label><input class="fi" id="mc-cpf" placeholder="000.000.000-00 ou 00.000.000/0001-00" oninput="mascararCpfCnpj(this)" maxlength="18"/></div>
-      <div class="fg"><label class="fl">Status</label>
-        <select class="fi" id="mc-status"><option value="ativo">✅ Ativo</option><option value="inativo">❌ Inativo</option></select>
-      </div>
-    </div>
-    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin:14px 0 10px">Contato</div>
-    <div class="fr2">
-      <div class="fg"><label class="fl">Telefone fixo</label><input class="fi" id="mc-tel" placeholder="(11) 3333-4444" oninput="mascararTel(this,'fixo')" maxlength="14"/></div>
-      <div class="fg"><label class="fl">Celular / WhatsApp</label><input class="fi" id="mc-cel" placeholder="(11) 99999-9999" oninput="mascararTel(this,'cel')" maxlength="15"/></div>
-    </div>
-    <div class="fg"><label class="fl">E-mail</label><input class="fi" id="mc-email" type="email" placeholder="cliente@email.com"/></div>
-    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin:14px 0 10px">Endereço</div>
-    <div class="fr2">
-      <div class="fg"><label class="fl">CEP</label><input class="fi" id="mc-cep" placeholder="00000-000" oninput="mascararCep(this)" maxlength="9"/></div>
-      <div class="fg"><label class="fl">Cidade</label><input class="fi" id="mc-cidade" placeholder="Ex: São Paulo"/></div>
-    </div>
-    <div class="fr2">
-      <div class="fg"><label class="fl">Endereço</label><input class="fi" id="mc-end" placeholder="Ex: Rua das Flores, 123"/></div>
-      <div class="fg"><label class="fl">Bairro</label><input class="fi" id="mc-bairro" placeholder="Ex: Centro"/></div>
-    </div>
-    <div class="fr2">
-      <div class="fg"><label class="fl">Estado (UF)</label><input class="fi" id="mc-uf" placeholder="Ex: SP" maxlength="2" style="text-transform:uppercase"/></div>
-      <div class="fg"><label class="fl">Complemento</label><input class="fi" id="mc-comp" placeholder="Ex: Apto 12, Sala 3"/></div>
-    </div>
-    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin:14px 0 10px">Outros</div>
-    <div class="fg"><label class="fl">Observações</label><textarea class="fi" id="mc-obs" rows="2" placeholder="Ex: prefere pix, cliente VIP..." style="resize:vertical;font-family:inherit"></textarea></div>
-    <div class="mact"><button class="bsec" onclick="fecharModal('modal-cliente')">Cancelar</button><button class="btn" onclick="salvarCliente()"><i class="ti ti-check"></i> Salvar cliente</button></div>
-  </div>
-</div>
+<div class="modal-ov" id="modal-lead" style="display:none" onclick="fecharModal('modal-lead',event)"><div class="modal" onclick="event.stopPropagation()"><div class="mtitle" id="mlead-title">Cliente</div><div class="fg"><label class="fl">Nome completo</label><input class="fi" id="ml-nome" placeholder="Ex: João Silva"/></div><div class="fg"><label class="fl">Negócio / produto de interesse</label><input class="fi" id="ml-biz" placeholder="Ex: loja de roupas..."/></div><div class="fr2"><div class="fg"><label class="fl">Valor (R$)</label><input class="fi" id="ml-val" type="number" step="0.01" min="0" placeholder="0,00"/></div><div class="fg"><label class="fl">Etapa</label><select class="fi" id="ml-stage"><option value="contato">Primeiro contato</option><option value="proposta">Proposta enviada</option><option value="negociando">Negociando</option><option value="fechando">Fechado ✓</option></select></div></div><div class="fg"><label class="fl">Observação</label><input class="fi" id="ml-obs" placeholder="Ex: prefere pix..."/></div><div class="mact"><button class="bsec" onclick="fecharModal('modal-lead')">Cancelar</button><button class="btn" onclick="salvarLead()"><i class="ti ti-check"></i> Salvar</button></div></div></div>
 <div class="modal-ov" id="modal-venda" style="display:none" onclick="fecharModal('modal-venda',event)">
   <div class="modal" onclick="event.stopPropagation()" style="width:540px">
     <div class="mtitle">🛒 Venda Direta</div>
@@ -539,36 +485,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
     <div class="mact"><button class="bsec" onclick="fecharModal('modal-orcamento')">Cancelar</button><button class="btn" onclick="salvarOrcamento()"><i class="ti ti-check"></i> Salvar orçamento</button></div>
   </div>
 </div>
-<div class="modal-ov" id="modal-receber" style="display:none" onclick="fecharModal('modal-receber',event)">
-  <div class="modal" onclick="event.stopPropagation()">
-    <div class="mtitle">Nova conta a receber</div>
-    <!-- Busca de cliente cadastrado -->
-    <div class="fg">
-      <label class="fl">Buscar cliente cadastrado</label>
-      <input class="fi" id="mr-busca" placeholder="Digite o nome para buscar..." oninput="filtrarClientesReceber()" autocomplete="off"/>
-      <div id="mr-sugestoes" style="display:none;position:absolute;z-index:999;background:white;border:1.5px solid var(--primary);border-radius:var(--radius);box-shadow:var(--shadow-md);max-height:180px;overflow-y:auto;width:calc(100% - 56px)"></div>
-    </div>
-    <div id="mr-cliente-selecionado" style="display:none;background:var(--primary-light);border:1.5px solid var(--primary);border-radius:var(--radius);padding:10px 14px;margin-bottom:12px;display:none">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div><div style="font-size:13px;font-weight:700;color:var(--primary)" id="mr-cli-nome-exib"></div><div style="font-size:11px;color:var(--text2);margin-top:2px" id="mr-cli-info-exib"></div></div>
-        <button onclick="limparClienteReceber()" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px">✕</button>
-      </div>
-    </div>
-    <div class="fg"><label class="fl">Ou digite o nome manualmente</label><input class="fi" id="mr-nome" placeholder="Ex: Maria Silva"/></div>
-    <div class="fg"><label class="fl">Descrição</label><input class="fi" id="mr-desc" placeholder="Ex: Bolo encomendado..."/></div>
-    <div class="fr2">
-      <div class="fg"><label class="fl">Valor total (R$)</label><input class="fi" id="mr-val" type="number" step="0.01" placeholder="0,00"/></div>
-      <div class="fg"><label class="fl">Forma</label><select class="fi" id="mr-forma" onchange="toggleMrParc()"><option>À vista</option><option>Cartão crédito</option><option>Boleto</option><option>Crediário</option></select></div>
-    </div>
-    <div class="fr2" id="mr-parc-row" style="display:none">
-      <div class="fg"><label class="fl">Nº de parcelas</label><select class="fi" id="mr-parcelas"><option value="2">2x</option><option value="3">3x</option><option value="4">4x</option><option value="6">6x</option><option value="10">10x</option><option value="12">12x</option></select></div>
-      <div class="fg"><label class="fl">Data da 1ª parcela</label><input class="fi" id="mr-data" type="date"/></div>
-    </div>
-    <div class="fg" id="mr-data-vista"><label class="fl">Data de vencimento</label><input class="fi" id="mr-data-unica" type="date"/></div>
-    <div class="fg"><label class="fl">Observação</label><input class="fi" id="mr-obs" placeholder=""/></div>
-    <div class="mact"><button class="bsec" onclick="fecharModal('modal-receber')">Cancelar</button><button class="btn" onclick="salvarReceber()"><i class="ti ti-check"></i> Salvar</button></div>
-  </div>
-</div>
+<div class="modal-ov" id="modal-receber" style="display:none" onclick="fecharModal('modal-receber',event)"><div class="modal" onclick="event.stopPropagation()"><div class="mtitle">Nova conta a receber</div><div class="fg"><label class="fl">Nome do cliente</label><input class="fi" id="mr-nome" placeholder="Ex: Maria Silva"/></div><div class="fg"><label class="fl">Descrição</label><input class="fi" id="mr-desc" placeholder="Ex: Bolo encomendado..."/></div><div class="fr2"><div class="fg"><label class="fl">Valor total (R$)</label><input class="fi" id="mr-val" type="number" step="0.01" placeholder="0,00"/></div><div class="fg"><label class="fl">Forma</label><select class="fi" id="mr-forma" onchange="toggleMrParc()"><option>À vista</option><option>Cartão crédito</option><option>Boleto</option><option>Crediário</option></select></div></div><div class="fr2" id="mr-parc-row" style="display:none"><div class="fg"><label class="fl">Nº de parcelas</label><select class="fi" id="mr-parcelas"><option value="2">2x</option><option value="3">3x</option><option value="4">4x</option><option value="6">6x</option><option value="10">10x</option><option value="12">12x</option></select></div><div class="fg"><label class="fl">Data da 1ª parcela</label><input class="fi" id="mr-data" type="date"/></div></div><div class="fg" id="mr-data-vista"><label class="fl">Data de vencimento</label><input class="fi" id="mr-data-unica" type="date"/></div><div class="fg"><label class="fl">Observação</label><input class="fi" id="mr-obs" placeholder=""/></div><div class="mact"><button class="bsec" onclick="fecharModal('modal-receber')">Cancelar</button><button class="btn" onclick="salvarReceber()"><i class="ti ti-check"></i> Salvar</button></div></div></div>
 <div class="modal-ov" id="modal-ec" style="display:none" onclick="fecharModal('modal-ec',event)"><div class="modal" onclick="event.stopPropagation()"><div class="mtitle">Editar conta</div><div class="fg"><label class="fl">Cliente</label><input class="fi" id="ec-nome"/></div><div class="fg"><label class="fl">Descrição</label><input class="fi" id="ec-desc"/></div><div class="fr2"><div class="fg"><label class="fl">Valor (R$)</label><input class="fi" id="ec-val" type="number" step="0.01"/></div><div class="fg"><label class="fl">Vencimento</label><input class="fi" id="ec-data" type="date"/></div></div><div class="fg"><label class="fl">Observação</label><input class="fi" id="ec-obs"/></div><div class="fg"><label class="fl">Status</label><select class="fi" id="ec-status"><option value="pendente">Pendente</option><option value="pago">Pago / Quitado</option></select></div><div class="mact"><button class="bsec" onclick="fecharModal('modal-ec')">Cancelar</button><button class="btn" onclick="salvarEditConta()"><i class="ti ti-check"></i> Salvar</button></div></div></div>
 <div class="modal-ov" id="modal-fin" style="display:none" onclick="fecharModal('modal-fin',event)"><div class="modal" onclick="event.stopPropagation()"><div class="mtitle">Nova movimentação</div><div class="fg"><label class="fl">Tipo</label><select class="fi" id="mfin-tipo"><option value="entrada">✅ Entrada (receita)</option><option value="saida">❌ Saída (despesa)</option></select></div><div class="fg"><label class="fl">Descrição</label><input class="fi" id="mfin-desc" placeholder="Ex: Venda, Aluguel, Fornecedor..."/></div><div class="fg"><label class="fl">Categoria</label><select class="fi" id="mfin-cat"><optgroup label="Entradas"><option value="Vendas">💰 Vendas</option><option value="Servicos">🔧 Serviços</option><option value="Outros entrada">📥 Outros</option></optgroup><optgroup label="Saídas"><option value="Fornecedor">📦 Fornecedor</option><option value="Aluguel">🏠 Aluguel</option><option value="Luz">💡 Luz</option><option value="Agua">💧 Água</option><option value="Internet">📶 Internet</option><option value="Funcionario">👤 Funcionário</option><option value="Marketing">📢 Marketing</option><option value="Transporte">🚗 Transporte</option><option value="Manutencao">🔨 Manutenção</option><option value="Sangria">💸 Sangria</option><option value="Outros saida">📤 Outros</option></optgroup></select></div><div class="fr2"><div class="fg"><label class="fl">Valor (R$)</label><input class="fi" id="mfin-val" type="number" step="0.01" placeholder="0,00"/></div><div class="fg"><label class="fl">Data</label><input class="fi" id="mfin-data" type="date"/></div></div><div class="fg"><label class="fl">Observação</label><input class="fi" id="mfin-obs" placeholder=""/></div><div class="mact"><button class="bsec" onclick="fecharModal('modal-fin')">Cancelar</button><button class="btn" onclick="salvarFin()"><i class="ti ti-check"></i> Salvar</button></div></div></div>
 <div class="modal-ov" id="modal-adm" style="display:none" onclick="fecharModal('modal-adm',event)"><div class="modal" onclick="event.stopPropagation()" style="width:320px"><div class="mtitle">🔐 Acesso ADM</div><div class="fg"><label class="fl">Senha</label><input class="fi" id="adm-senha" type="password" onkeydown="if(event.key==='Enter')entrarAdm()"/></div><div id="adm-err" style="font-size:13px;color:var(--danger);margin-bottom:10px;display:none">Senha incorreta</div><div class="mact"><button class="bsec" onclick="fecharModal('modal-adm')">Cancelar</button><button class="btn" onclick="entrarAdm()"><i class="ti ti-shield-check"></i> Entrar</button></div></div></div>
@@ -595,8 +512,8 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 const SURL='https://nouyivisxqffmzfcbukn.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vdXlpdmlzeHFmZm16ZmNidWtuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNDQwMjQsImV4cCI6MjA5NDcyMDAyNH0.aUpkk4L_jOt8DnnQuzUvB2nd47F5Tc_NYnO6Boy6ZeQ';
 const sb=supabase.createClient(SURL,SKEY);
-let user=null,leads=[],prods=[],contas=[],vendas=[],movimentos=[],orcamentos=[],clientes=[];
-let seg='todos',finSeg='todos',editLead=null,editProd=null,editContaId=null,editClienteId=null,tcat='Todos';
+let user=null,leads=[],prods=[],contas=[],vendas=[],movimentos=[],orcamentos=[];
+let seg='todos',finSeg='todos',editLead=null,editProd=null,editContaId=null,tcat='Todos';
 let vdTab='est',prodSel=null,orcItens=[];
 const stgs=[{k:'contato',l:'Primeiro contato'},{k:'proposta',l:'Proposta enviada'},{k:'negociando',l:'Negociando'},{k:'fechando',l:'Fechado'}];
 const pTitles={dashboard:'Dashboard',pipeline:'Pipeline de Vendas',vendas:'Venda Direta',orcamentos:'Orcamentos',estoque:'Controle de Estoque',clientes:'Clientes',receber:'Contas a Receber',financeiro:'Financeiro',ia:'Central de Mensagens'};
@@ -691,7 +608,6 @@ async function carregarDados(){
   ]);
   leads=l.data||[];prods=p.data||[];contas=c.data||[];vendas=v.data||[];movimentos=m.data||[];
   try{const o=await sb.from('orcamentos').select('*').eq('user_id',uid).order('created_at',{ascending:false});orcamentos=o.data||[];}catch(e){orcamentos=[];}
-  try{const cl=await sb.from('clientes').select('*').eq('user_id',uid).order('codigo',{ascending:true});clientes=cl.data||[];}catch(e){clientes=[];}
 }
 function buildAll(){buildDash();buildKanban();buildVendas();buildEst();buildClients();buildReceber();buildFin();buildOrc();buildTmpl();}
 function buildDash(){
@@ -816,136 +732,12 @@ function setSeg(s,el){seg=s;document.querySelectorAll('#seg-est .seg-btn').forEa
 function abrirModalProd(id){editProd=id;const p=id?prods.find(x=>x.id===id):null;document.getElementById('mprod-title').textContent=p?'Editar produto':'Adicionar produto';document.getElementById('mp-nome').value=p?.nome||'';document.getElementById('mp-cat').value=p?.cat||'Roupas';document.getElementById('mp-preco').value=p?.preco||'';document.getElementById('mp-qtd').value=p?.qtd||'';document.getElementById('mp-min').value=p?.min||'';document.getElementById('modal-prod').style.display='flex';}
 async function salvarProd(){const nome=document.getElementById('mp-nome').value.trim();if(!nome){toast('Informe o nome','error');return;}const d={nome,cat:document.getElementById('mp-cat').value,qtd:parseInt(document.getElementById('mp-qtd').value)||0,min:parseInt(document.getElementById('mp-min').value)||5,preco:parseFloat(document.getElementById('mp-preco').value)||0,user_id:user.id};if(editProd){await sb.from('produtos').update(d).eq('id',editProd);}else{await sb.from('produtos').insert(d);}await carregarDados();fecharModal('modal-prod');buildEst();buildDash();toast(editProd?'Produto atualizado!':'Produto adicionado!');}
 async function remProd(id){if(!confirm('Remover produto?'))return;await sb.from('produtos').delete().eq('id',id);await carregarDados();buildEst();buildDash();toast('Produto removido');}
-// ============================================================
-// CLIENTES — FICHA COMPLETA
-// ============================================================
-function mascararCpfCnpj(el){
-  let v=el.value.replace(/\D/g,'');
-  if(v.length<=11){v=v.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2');}
-  else{v=v.replace(/^(\d{2})(\d)/,'$1.$2').replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2.$3').replace(/\.(\d{3})(\d)/,'.$1/$2').replace(/(\d{4})(\d)/,'$1-$2');}
-  el.value=v;
-}
-function mascararTel(el,tipo){
-  let v=el.value.replace(/\D/g,'');
-  if(tipo==='cel'){v=v.replace(/^(\d{2})(\d)/,'($1) $2').replace(/(\d{5})(\d)/,'$1-$2');}
-  else{v=v.replace(/^(\d{2})(\d)/,'($1) $2').replace(/(\d{4})(\d)/,'$1-$2');}
-  el.value=v;
-}
-function mascararCep(el){let v=el.value.replace(/\D/g,'');v=v.replace(/(\d{5})(\d)/,'$1-$2');el.value=v;}
-
-function gerarCodigoCliente(){
-  if(!clientes.length) return 101;
-  return Math.max(...clientes.map(c=>c.codigo||100))+1;
-}
-
 function buildClients(){
-  const busca=(document.getElementById('cli-busca')?.value||'').toLowerCase();
-  const filtroStatus=document.getElementById('cli-status-filtro')?.value||'todos';
-  let lista=clientes;
-  if(filtroStatus!=='todos') lista=lista.filter(c=>c.status===filtroStatus);
-  if(busca) lista=lista.filter(c=>(c.nome||'').toLowerCase().includes(busca)||(c.cpf_cnpj||'').includes(busca)||String(c.codigo||'').includes(busca));
   const av=['#EFF6FF','#ECFDF5','#FFFBEB','#FEF2F2','#F5F3FF','#F0FDF4'],ac=['#1D4ED8','#065F46','#92400E','#991B1B','#5B21B6','#14532D'];
-  document.getElementById('cli-list').innerHTML=lista.length?lista.map((c,i)=>`
-    <div class="td-row" style="grid-template-columns:60px 2fr 1.2fr 1.2fr 1fr 100px 120px">
-      <div class="td" style="font-weight:700;color:var(--primary);font-size:12px">#${c.codigo||'?'}</div>
-      <div class="td" style="display:flex;align-items:center;gap:10px">
-        <div style="width:32px;height:32px;border-radius:50%;background:${av[i%6]};color:${ac[i%6]};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">${(c.nome||'?').split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()}</div>
-        <div><div style="font-weight:600">${c.nome}</div><div style="font-size:11px;color:var(--text3)">${c.apelido||''}</div></div>
-      </div>
-      <div class="tdm">${c.cpf_cnpj||'—'}</div>
-      <div class="tdm">${c.celular||c.telefone||'—'}</div>
-      <div class="tdm">${c.cidade||'—'}</div>
-      <div><span class="badge ${c.status==='ativo'?'bg':'br'}">${c.status==='ativo'?'Ativo':'Inativo'}</span></div>
-      <div style="display:flex;gap:6px">
-        <button class="bwarn" onclick="abrirModalCliente('${c.id}')" style="font-size:11px;padding:4px 8px"><i class="ti ti-edit" style="font-size:12px"></i></button>
-        <button onclick="remCliente('${c.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px">✕</button>
-      </div>
-    </div>`).join(''):'<div style="padding:32px;text-align:center;font-size:13px;color:var(--text3)">Nenhum cliente cadastrado ainda.<br><span style="color:var(--primary);font-size:12px">Clique em "Novo cliente" para começar!</span></div>';
+  document.getElementById('cli-list').innerHTML=leads.length?leads.map((l,i)=>`<div class="td-row" style="grid-template-columns:2fr 1.5fr 1fr 1fr 120px"><div class="td" style="display:flex;align-items:center;gap:10px"><div style="width:32px;height:32px;border-radius:50%;background:${av[i%6]};color:${ac[i%6]};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">${l.nome.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()}</div><div><div style="font-weight:600">${l.nome}</div>${l.obs?`<div style="font-size:11px;color:var(--text3)">${l.obs}</div>`:''}</div></div><div class="tdm">${l.biz||'-'}</div><div class="td" style="color:var(--primary);font-weight:700">${R(l.val)}</div><div><span class="badge ${l.stage==='fechando'?'bg':l.stage==='negociando'?'ba':'bgr'}">${stgs.find(s=>s.k===l.stage)?.l||l.stage}</span></div><div style="display:flex;gap:6px"><button class="bwarn" onclick="abrirModalLead('${l.id}')" style="font-size:11px;padding:4px 8px"><i class="ti ti-edit" style="font-size:12px"></i></button><button onclick="remLead('${l.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px">✕</button></div></div>`).join(''):'<div style="padding:28px;text-align:center;font-size:13px;color:var(--text3)">Nenhum cliente cadastrado.</div>';
 }
-
-function abrirModalCliente(id){
-  editClienteId=id;
-  const c=id?clientes.find(x=>x.id===id):null;
-  const novoCodig=c?c.codigo:gerarCodigoCliente();
-  document.getElementById('mcli-title').textContent=c?'Editar cliente':'Novo cliente';
-  document.getElementById('mcli-codigo').textContent='Código: #'+novoCodig;
-  document.getElementById('mc-nome').value=c?.nome||'';
-  document.getElementById('mc-apelido').value=c?.apelido||'';
-  document.getElementById('mc-cpf').value=c?.cpf_cnpj||'';
-  document.getElementById('mc-status').value=c?.status||'ativo';
-  document.getElementById('mc-tel').value=c?.telefone||'';
-  document.getElementById('mc-cel').value=c?.celular||'';
-  document.getElementById('mc-email').value=c?.email||'';
-  document.getElementById('mc-cep').value=c?.cep||'';
-  document.getElementById('mc-end').value=c?.endereco||'';
-  document.getElementById('mc-bairro').value=c?.bairro||'';
-  document.getElementById('mc-cidade').value=c?.cidade||'';
-  document.getElementById('mc-uf').value=c?.uf||'';
-  document.getElementById('mc-comp').value=c?.complemento||'';
-  document.getElementById('mc-obs').value=c?.obs||'';
-  document.getElementById('modal-cliente').style.display='flex';
-}
-
-async function salvarCliente(){
-  const nome=document.getElementById('mc-nome').value.trim();
-  if(!nome){toast('Informe o nome do cliente','error');return;}
-  const d={
-    nome, apelido:document.getElementById('mc-apelido').value,
-    cpf_cnpj:document.getElementById('mc-cpf').value,
-    status:document.getElementById('mc-status').value,
-    telefone:document.getElementById('mc-tel').value,
-    celular:document.getElementById('mc-cel').value,
-    email:document.getElementById('mc-email').value,
-    cep:document.getElementById('mc-cep').value,
-    endereco:document.getElementById('mc-end').value,
-    bairro:document.getElementById('mc-bairro').value,
-    cidade:document.getElementById('mc-cidade').value,
-    uf:document.getElementById('mc-uf').value.toUpperCase(),
-    complemento:document.getElementById('mc-comp').value,
-    obs:document.getElementById('mc-obs').value,
-    user_id:user.id
-  };
-  if(!editClienteId) d.codigo=gerarCodigoCliente();
-  if(editClienteId){await sb.from('clientes').update(d).eq('id',editClienteId);}
-  else{await sb.from('clientes').insert(d);}
-  await carregarDados();fecharModal('modal-cliente');buildClients();
-  toast(editClienteId?'Cliente atualizado!':'Cliente cadastrado! ✓');
-}
-async function remCliente(id){if(!confirm('Remover cliente?'))return;await sb.from('clientes').delete().eq('id',id);await carregarDados();buildClients();toast('Cliente removido');}
-
-// Pipeline ainda usa leads
-function abrirModalLead(id){editLead=id;const l=id?leads.find(x=>x.id===id):null;document.getElementById('mlead-title').textContent=l?'Editar':'Novo cliente no Pipeline';document.getElementById('ml-nome').value=l?.nome||'';document.getElementById('ml-biz').value=l?.biz||'';document.getElementById('ml-val').value=l?.val||'';document.getElementById('ml-stage').value=l?.stage||'contato';document.getElementById('ml-obs').value=l?.obs||'';document.getElementById('modal-lead').style.display='flex';}
-async function salvarLead(){const nome=document.getElementById('ml-nome').value.trim();if(!nome){toast('Informe o nome','error');return;}const d={nome,biz:document.getElementById('ml-biz').value,val:parseFloat(document.getElementById('ml-val').value)||0,stage:document.getElementById('ml-stage').value,obs:document.getElementById('ml-obs').value,user_id:user.id};if(editLead){await sb.from('leads').update(d).eq('id',editLead);}else{await sb.from('leads').insert(d);}await carregarDados();fecharModal('modal-lead');buildAll();toast(editLead?'Atualizado!':'Cliente adicionado ao Pipeline!');}
-
-// ============================================================
-// BUSCA DE CLIENTE NO MODAL CONTAS A RECEBER
-// ============================================================
-function filtrarClientesReceber(){
-  const busca=document.getElementById('mr-busca').value.toLowerCase().trim();
-  const sug=document.getElementById('mr-sugestoes');
-  if(!busca||!clientes.length){sug.style.display='none';return;}
-  const f=clientes.filter(c=>c.status==='ativo'&&((c.nome||'').toLowerCase().includes(busca)||(c.apelido||'').toLowerCase().includes(busca))).slice(0,6);
-  if(!f.length){sug.style.display='none';return;}
-  sug.style.display='block';
-  sug.innerHTML=f.map(c=>`<div onclick="selecionarClienteReceber('${c.id}')" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--border);font-size:13px" onmouseover="this.style.background='var(--primary-light)'" onmouseout="this.style.background='white'">
-    <div style="font-weight:600">${c.nome}${c.apelido?' <span style=\\'color:var(--text3);font-weight:400\\'>('+c.apelido+')</span>':''}</div>
-    <div style="font-size:11px;color:var(--text3)">${c.cpf_cnpj?'CPF/CNPJ: '+c.cpf_cnpj+' · ':''}${c.celular||c.telefone||''}</div>
-  </div>`).join('');
-}
-function selecionarClienteReceber(id){
-  const c=clientes.find(x=>x.id===id);if(!c)return;
-  document.getElementById('mr-busca').value='';
-  document.getElementById('mr-sugestoes').style.display='none';
-  document.getElementById('mr-nome').value=c.nome;
-  document.getElementById('mr-cli-nome-exib').textContent=c.nome+(c.apelido?' ('+c.apelido+')':'');
-  document.getElementById('mr-cli-info-exib').textContent=(c.cpf_cnpj?'CPF/CNPJ: '+c.cpf_cnpj+' · ':'')+(c.celular||c.telefone||'')+(c.cidade?' · '+c.cidade:'');
-  const box=document.getElementById('mr-cliente-selecionado');box.style.display='block';
-}
-function limparClienteReceber(){
-  document.getElementById('mr-nome').value='';
-  document.getElementById('mr-cliente-selecionado').style.display='none';
-  document.getElementById('mr-busca').value='';
-}
+function abrirModalLead(id){editLead=id;const l=id?leads.find(x=>x.id===id):null;document.getElementById('mlead-title').textContent=l?'Editar cliente':'Novo cliente';document.getElementById('ml-nome').value=l?.nome||'';document.getElementById('ml-biz').value=l?.biz||'';document.getElementById('ml-val').value=l?.val||'';document.getElementById('ml-stage').value=l?.stage||'contato';document.getElementById('ml-obs').value=l?.obs||'';document.getElementById('modal-lead').style.display='flex';}
+async function salvarLead(){const nome=document.getElementById('ml-nome').value.trim();if(!nome){toast('Informe o nome','error');return;}const d={nome,biz:document.getElementById('ml-biz').value,val:parseFloat(document.getElementById('ml-val').value)||0,stage:document.getElementById('ml-stage').value,obs:document.getElementById('ml-obs').value,user_id:user.id};if(editLead){await sb.from('leads').update(d).eq('id',editLead);}else{await sb.from('leads').insert(d);}await carregarDados();fecharModal('modal-lead');buildAll();toast(editLead?'Cliente atualizado!':'Cliente adicionado!');}
 async function remLead(id){if(!confirm('Remover cliente?'))return;await sb.from('leads').delete().eq('id',id);await carregarDados();buildAll();toast('Cliente removido');}
 function buildReceber(){
   const hjD=new Date();hjD.setHours(0,0,0,0);const pend=contas.filter(c=>c.status!=='pago');
@@ -959,16 +751,7 @@ function buildReceber(){
     return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 130px"><div class="td"><div style="font-weight:600">${c.nome}</div>${pInfo}${c.obs?`<div style="font-size:11px;color:var(--text3)">${c.obs}</div>`:''}</div><div class="tdm">${c.descricao||'-'}</div><div class="td" style="color:var(--warning);font-weight:700">${R(c.val)}</div><div class="tdm">${new Date(c.data+'T00:00:00').toLocaleDateString('pt-BR')}</div><div><span class="badge ${st}">${lb}</span></div><div style="display:flex;gap:5px;align-items:center">${c.status!=='pago'&&c.total_parcelas>1?`<button class="bgreen" onclick="pagarParcela('${c.id}')" style="font-size:11px;padding:5px 8px"><i class="ti ti-check" style="font-size:11px"></i> Parcela</button>`:c.status!=='pago'?`<button class="bgreen" onclick="marcarPago('${c.id}')" style="font-size:11px;padding:5px 8px"><i class="ti ti-check" style="font-size:11px"></i> Pago</button>`:'<span style="font-size:11px;color:var(--success);font-weight:600">Quitado</span>'}<button class="bwarn" onclick="editarConta('${c.id}')" style="font-size:11px;padding:4px 6px"><i class="ti ti-edit" style="font-size:11px"></i></button><button onclick="remConta('${c.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>`;
   }).join(''):'<div style="padding:28px;text-align:center;font-size:13px;color:var(--text3)">Nenhuma conta cadastrada.</div>';
 }
-function abrirModalReceber(){
-  const h=hj();document.getElementById('mr-data').value=h;document.getElementById('mr-data-unica').value=h;
-  ['mr-nome','mr-desc','mr-val','mr-obs','mr-busca'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('mr-forma').value='À vista';
-  document.getElementById('mr-parc-row').style.display='none';
-  document.getElementById('mr-data-vista').style.display='block';
-  document.getElementById('mr-sugestoes').style.display='none';
-  document.getElementById('mr-cliente-selecionado').style.display='none';
-  document.getElementById('modal-receber').style.display='flex';
-}
+function abrirModalReceber(){const h=hj();document.getElementById('mr-data').value=h;document.getElementById('mr-data-unica').value=h;['mr-nome','mr-desc','mr-val','mr-obs'].forEach(id=>document.getElementById(id).value='');document.getElementById('mr-forma').value='À vista';document.getElementById('mr-parc-row').style.display='none';document.getElementById('mr-data-vista').style.display='block';document.getElementById('modal-receber').style.display='flex';}
 function toggleMrParc(){const f=document.getElementById('mr-forma').value,s=['Cartão crédito','Boleto','Crediário'].includes(f);document.getElementById('mr-parc-row').style.display=s?'grid':'none';document.getElementById('mr-data-vista').style.display=s?'none':'block';}
 async function salvarReceber(){
   const nome=document.getElementById('mr-nome').value.trim(),val=parseFloat(document.getElementById('mr-val').value)||0,forma=document.getElementById('mr-forma').value;
