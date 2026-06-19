@@ -171,7 +171,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 .orc-item-row:last-child{border-bottom:none}
 .security-bar{background:linear-gradient(135deg,#F0FDF4,#ECFDF5);border:1px solid #86EFAC;border-radius:var(--radius);padding:10px 16px;display:flex;align-items:center;justify-content:center;gap:20px;margin-bottom:20px;flex-wrap:wrap}
 .sec-badge{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:#065F46}
-.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);z-index:50;padding:8px 0 env(safe-area-inset-bottom,12px);box-shadow:0 -4px 12px rgba(0,0,0,.08)}
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);z-index:50;padding:8px 0 env(safe-area-inset-bottom,12px);box-shadow:0 -4px 12px rgba(0,0,0,.08);flex-direction:column}
 .mobile-nav-items{display:flex;justify-content:space-around;align-items:center}
 .mobile-nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 6px;border-radius:var(--radius);border:none;background:none;color:var(--text3);font-size:9px;font-weight:500;min-width:44px}
 .mobile-nav-item.active{color:var(--primary)}
@@ -205,7 +205,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 @media(max-width:1024px){.grid4{grid-template-columns:repeat(2,1fr)}.kanban{grid-template-columns:1fr 1fr}.prod-grid{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:769px){.mobile-nav{display:none !important}}
 @media(max-width:768px){
-  .sidebar{display:none}.main{margin-left:0;padding-bottom:72px}.mobile-nav{display:block}
+  .sidebar{display:none}.main{margin-left:0;padding-bottom:140px}.mobile-nav{display:flex}
   .auth-left{display:none}.auth-right{width:100%}.kanban{grid-template-columns:1fr}
   .grid4{grid-template-columns:1fr 1fr}.topbar{padding:0 16px}.content{padding:16px}
   .modal{width:95vw;padding:20px}.prod-grid{grid-template-columns:repeat(2,1fr)}
@@ -712,9 +712,23 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 </div>
 
 <div class="modal-ov" id="modal-receber" style="display:none" onclick="fecharModal('modal-receber',event)">
-  <div class="modal" onclick="event.stopPropagation()">
-    <div class="mtitle">Nova conta a receber</div>
-    <div class="fg"><label class="fl">Nome do cliente</label><input class="fi" id="mr-nome" placeholder="Ex: Maria Silva"/></div>
+  <div class="modal" onclick="event.stopPropagation()" style="width:540px">
+    <div class="mtitle">💰 Nova conta a receber</div>
+    <div class="vd-tabs">
+      <button class="vd-tab active" id="mr-tab-cad" onclick="setMrTab('cad')">👤 Cliente cadastrado</button>
+      <button class="vd-tab" id="mr-tab-novo" onclick="setMrTab('novo')">✏️ Novo cliente</button>
+    </div>
+    <div id="mr-cad-panel">
+      <div style="font-size:12px;color:var(--text3);margin-bottom:8px">Clique no cliente para selecionar:</div>
+      <div class="prod-grid" id="mr-cli-grid"></div>
+      <div id="mr-cli-sel-box" style="display:none;background:var(--primary-light);border:1.5px solid var(--primary);border-radius:var(--radius);padding:10px 14px;margin-bottom:12px">
+        <div style="font-size:13px;font-weight:700;color:var(--primary)" id="mr-cli-sel-nome"></div>
+        <div style="font-size:12px;color:var(--text2);margin-top:2px" id="mr-cli-sel-info"></div>
+      </div>
+    </div>
+    <div id="mr-novo-panel" style="display:none">
+      <div class="fg"><label class="fl">Nome do cliente</label><input class="fi" id="mr-nome" placeholder="Ex: Maria Silva" oninput="capitalizarNome(this)"/></div>
+    </div>
     <div class="fg"><label class="fl">Descrição</label><input class="fi" id="mr-desc" placeholder="Ex: Bolo encomendado..."/></div>
     <div class="fr2">
       <div class="fg"><label class="fl">Valor total (R$)</label><input class="fi" id="mr-val" type="number" step="0.01" placeholder="0,00"/></div>
@@ -788,12 +802,18 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 <div class="toast" id="toast"><i class="ti ti-check" style="font-size:15px"></i><span id="toast-msg"></span></div>
 
 <div class="mobile-nav" id="mobile-nav" style="display:none">
-  <div class="mobile-nav-items">
+  <div class="mobile-nav-items" id="mob-main">
     <button class="mobile-nav-item active" onclick="showM('dashboard',this)"><i class="ti ti-layout-dashboard"></i>Início</button>
     <button class="mobile-nav-item" onclick="showM('vendas',this)"><i class="ti ti-shopping-cart"></i>Venda</button>
+    <button class="mobile-nav-item" onclick="showM('financeiro',this)"><i class="ti ti-chart-line"></i>Financ.</button>
+    <button class="mobile-nav-item" onclick="showM('receber',this)"><i class="ti ti-cash"></i>Receber</button>
+    <button class="mobile-nav-item" onclick="toggleMobMenu(this)"><i class="ti ti-dots"></i>Mais</button>
+  </div>
+  <div class="mobile-nav-items" id="mob-extra" style="display:none;border-top:1px solid var(--border);padding-top:6px">
+    <button class="mobile-nav-item" onclick="showM('pipeline',this)"><i class="ti ti-layout-kanban"></i>Pipeline</button>
+    <button class="mobile-nav-item" onclick="showM('clientes',this)"><i class="ti ti-users"></i>Clientes</button>
     <button class="mobile-nav-item" onclick="showM('orcamentos',this)"><i class="ti ti-file-invoice"></i>Orçam.</button>
     <button class="mobile-nav-item" onclick="showM('estoque',this)"><i class="ti ti-package"></i>Estoque</button>
-    <button class="mobile-nav-item" onclick="showM('financeiro',this)"><i class="ti ti-chart-line"></i>Financ.</button>
     <button class="mobile-nav-item" onclick="showM('ia',this)"><i class="ti ti-message-bolt"></i>MSG</button>
   </div>
 </div>
@@ -863,7 +883,18 @@ function show(id,el){
     el.classList.add('active');
   }
 }
-function showM(id,el){show(id,el);}
+function showM(id,el){
+  show(id,el);
+  const extra=document.getElementById('mob-extra');
+  if(extra)extra.style.display='none';
+  document.querySelectorAll('.mobile-nav-item').forEach(b=>b.classList.remove('active'));
+  if(el)el.classList.add('active');
+}
+function toggleMobMenu(btn){
+  const extra=document.getElementById('mob-extra');
+  const open=extra.style.display==='flex';
+  extra.style.display=open?'none':'flex';
+}
 
 // ============================================================
 // AUTH
@@ -924,7 +955,7 @@ async function entrarApp(){
   document.getElementById('loading-screen').style.display='none';
   document.getElementById('auth-screen').style.display='none';
   document.getElementById('app-screen').style.display='flex';
-  document.getElementById('mobile-nav').style.display='block';
+  document.getElementById('mobile-nav').style.display='flex';
   document.getElementById('fab-fb').style.display='flex';
   const nome=user.user_metadata?.nome||user.email||'Usuário';
   document.getElementById('user-avatar').textContent=nome.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
@@ -1383,10 +1414,43 @@ function buildReceber(){
     return`<div class="td-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 130px"><div class="td"><div style="font-weight:600">${c.nome}</div>${pInfo}${c.obs?`<div style="font-size:11px;color:var(--text3)">${c.obs}</div>`:''}</div><div class="tdm">${c.descricao||'—'}</div><div class="td" style="color:var(--warning);font-weight:700">${R(c.val)}</div><div class="tdm">${new Date(c.data+'T00:00:00').toLocaleDateString('pt-BR')}</div><div><span class="badge ${st}">${lb}</span></div><div style="display:flex;gap:5px;align-items:center">${c.status!=='pago'&&c.total_parcelas>1?`<button class="bgreen" onclick="pagarParcela('${c.id}')" style="font-size:11px;padding:5px 8px"><i class="ti ti-check" style="font-size:11px"></i> Parcela</button>`:c.status!=='pago'?`<button class="bgreen" onclick="marcarPago('${c.id}')" style="font-size:11px;padding:5px 8px"><i class="ti ti-check" style="font-size:11px"></i> Pago</button>`:'<span style="font-size:11px;color:var(--success);font-weight:600">✓ Quitado</span>'}<button class="bwarn" onclick="editarConta('${c.id}')" style="font-size:11px;padding:4px 6px"><i class="ti ti-edit" style="font-size:11px"></i></button><button onclick="remConta('${c.id}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px">✕</button></div></div>`;
   }).join(''):'<div style="padding:28px;text-align:center;font-size:13px;color:var(--text3)">Nenhuma conta cadastrada.</div>';
 }
+let mrTab='cad', mrCliSel=null;
+
+function setMrTab(t){
+  mrTab=t;
+  document.getElementById('mr-tab-cad').className='vd-tab'+(t==='cad'?' active':'');
+  document.getElementById('mr-tab-novo').className='vd-tab'+(t==='novo'?' active':'');
+  document.getElementById('mr-cad-panel').style.display=t==='cad'?'block':'none';
+  document.getElementById('mr-novo-panel').style.display=t==='novo'?'block':'none';
+}
+
+function buildMrCliGrid(){
+  const g=document.getElementById('mr-cli-grid');
+  const ativos=leads.filter(l=>l.ativo!==false);
+  if(!ativos.length){g.innerHTML='<div style="grid-column:1/-1;padding:20px;text-align:center;font-size:13px;color:var(--text3)">Nenhum cliente cadastrado.<br>Use a aba "Novo cliente" ou cadastre em <strong>Clientes</strong>.</div>';return;}
+  g.innerHTML=ativos.map(l=>`<button class="prod-btn" onclick="selMrCliente('${l.id}')">
+    <div class="prod-btn-nome">${l.nome}</div>
+    <div class="prod-btn-qtd">${l.celular||l.apelido||'sem contato'}</div>
+  </button>`).join('');
+}
+
+function selMrCliente(id){
+  mrCliSel=leads.find(l=>l.id===id);
+  document.querySelectorAll('#mr-cli-grid .prod-btn').forEach(b=>b.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  document.getElementById('mr-cli-sel-nome').textContent=mrCliSel.nome;
+  document.getElementById('mr-cli-sel-info').innerHTML=(mrCliSel.celular?'Celular: <strong>'+mrCliSel.celular+'</strong>':'')+(mrCliSel.cpf_cnpj?' · CPF/CNPJ: <strong>'+mrCliSel.cpf_cnpj+'</strong>':'');
+  document.getElementById('mr-cli-sel-box').style.display='block';
+}
+
 function abrirModalReceber(){
   const h=hj();document.getElementById('mr-data').value=h;document.getElementById('mr-data-unica').value=h;
   ['mr-nome','mr-desc','mr-val','mr-obs'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('mr-forma').value='À vista';document.getElementById('mr-parc-row').style.display='none';document.getElementById('mr-data-vista').style.display='block';
+  mrCliSel=null;
+  document.getElementById('mr-cli-sel-box').style.display='none';
+  setMrTab('cad');
+  buildMrCliGrid();
   document.getElementById('modal-receber').style.display='flex';
 }
 function toggleMrParc(){
@@ -1396,8 +1460,16 @@ function toggleMrParc(){
   document.getElementById('mr-data-vista').style.display=s?'none':'block';
 }
 async function salvarReceber(){
-  const nome=document.getElementById('mr-nome').value.trim(),val=parseFloat(document.getElementById('mr-val').value)||0,forma=document.getElementById('mr-forma').value;
-  if(!nome||!val){toast('Preencha os campos obrigatórios','error');return;}
+  let nome='';
+  if(mrTab==='cad'){
+    if(!mrCliSel){toast('Selecione um cliente ou use "Novo cliente"','error');return;}
+    nome=mrCliSel.nome;
+  } else {
+    nome=document.getElementById('mr-nome').value.trim();
+    if(!nome){toast('Informe o nome do cliente','error');return;}
+  }
+  const val=parseFloat(document.getElementById('mr-val').value)||0,forma=document.getElementById('mr-forma').value;
+  if(!val){toast('Informe o valor','error');return;}
   const isP=['Cartão crédito','Boleto','Crediário'].includes(forma);
   if(isP){
     const nP=parseInt(document.getElementById('mr-parcelas').value)||2,dB=document.getElementById('mr-data').value;
